@@ -41,7 +41,7 @@
 
     <script>
         // MASUKKAN URL WEB APP GOOGLE APPS SCRIPT ANDA DI SINI
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyAO7v7Em850ZyCfp2W0eL_tlS801C-MlMSz4ifRvn0U2TtvBThZS15digWG2KGe7Cc/exec'; 
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwqXgsGR8Peoj49JUE7Kkj83ehpbPFMFKhUcQUxUZm6J0_agqvzuVKSkiKBR28buaCO/exec'; 
     </script>
 
     <!-- Sidebar Admin Desktop -->
@@ -79,14 +79,13 @@
         </nav>
     </aside>
 
-    <!-- FAB: Floating Button untuk Toggle Navigasi Bawah di HP (iPhone) -->
+    <!-- FAB: Floating Button untuk Toggle Navigasi Bawah di HP -->
     <button id="fab-menu" onclick="toggleMobileNav()" class="md:hidden fixed bottom-6 right-6 z-[60] w-14 h-14 rounded-full bg-blue-500 text-white shadow-lg shadow-blue-500/40 flex items-center justify-center transition-transform active:scale-90 pb-safe">
         <i id="fab-icon" class="fa-solid fa-bars text-xl"></i>
     </button>
 
-    <!-- Mobile Header & Nav (Dapat Dimunculkan/Diturunkan) dengan Scroll Horizontal -->
+    <!-- Mobile Header & Nav (Scroll Horizontal) -->
     <div id="mobile-nav-container" class="md:hidden fixed bottom-0 inset-x-0 glass-panel z-50 rounded-t-[32px] shadow-[0_-8px_32px_rgba(0,0,0,0.08)] safe-pb-nav transform translate-y-full transition-transform duration-400 ease-in-out">
-        <!-- flex justify-start agar item berjejer dari kiri dan bisa di-scroll. shrink-0 agar tidak mengecil. -->
         <div class="flex justify-start p-2 pt-4 px-4 overflow-x-auto hide-scrollbar scroll-touch gap-2">
             <button onclick="switchTab('dashboard')" id="nav-mob-dashboard" class="flex flex-col items-center gap-1 p-2 text-blue-500 min-w-[72px] shrink-0 active:scale-90 transition-transform">
                 <i class="fa-solid fa-chart-pie text-xl"></i><span class="text-[10px] font-bold">Dash</span>
@@ -166,16 +165,41 @@
                     <form id="form-produk" onsubmit="handleSaveProduk(event)" class="grid grid-cols-1 md:grid-cols-6 gap-4 md:gap-5">
                         <div class="col-span-1 md:col-span-2"><label class="block text-[12px] font-bold text-slate-500 uppercase mb-2 ml-1">ID Baju</label><input type="text" id="p-id" required class="w-full bg-[#F2F2F7] border-0 rounded-2xl px-4 py-3.5 focus:ring-2 focus:ring-blue-500 outline-none font-semibold text-black placeholder-slate-400"></div>
                         <div class="col-span-1 md:col-span-4"><label class="block text-[12px] font-bold text-slate-500 uppercase mb-2 ml-1">Nama Baju</label><input type="text" id="p-nama" required class="w-full bg-[#F2F2F7] border-0 rounded-2xl px-4 py-3.5 focus:ring-2 focus:ring-blue-500 outline-none font-semibold text-black placeholder-slate-400"></div>
-                        <div class="col-span-1 md:col-span-2"><label class="block text-[12px] font-bold text-slate-500 uppercase mb-2 ml-1">Kategori</label><select id="p-kategori" class="w-full bg-[#F2F2F7] border-0 rounded-2xl px-4 py-3.5 focus:ring-2 focus:ring-blue-500 outline-none font-semibold text-black appearance-none cursor-pointer"><option>Kaos</option><option>Kemeja</option><option>Jaket</option><option>Celana</option><option>Aksesoris</option></select></div>
+                        
+                        <!-- UPDATE: KATEGORI MENGGUNAKAN DATALIST (Dapat diisi dinamis) -->
+                        <div class="col-span-1 md:col-span-2">
+                            <label class="block text-[12px] font-bold text-slate-500 uppercase mb-2 ml-1">Kategori</label>
+                            <input list="list-kategori" id="p-kategori" required placeholder="Pilih atau Ketik Baru..." class="w-full bg-[#F2F2F7] border-0 rounded-2xl px-4 py-3.5 focus:ring-2 focus:ring-blue-500 outline-none font-semibold text-black placeholder-slate-400">
+                            <datalist id="list-kategori">
+                                <option value="Kaos"></option>
+                                <option value="Kemeja"></option>
+                                <option value="Jaket"></option>
+                                <option value="Celana"></option>
+                                <option value="Aksesoris"></option>
+                            </datalist>
+                        </div>
+                        
                         <div class="col-span-1 md:col-span-2"><label class="block text-[12px] font-bold text-slate-500 uppercase mb-2 ml-1">Harga (Rp)</label><input type="number" id="p-harga" required class="w-full bg-[#F2F2F7] border-0 rounded-2xl px-4 py-3.5 focus:ring-2 focus:ring-blue-500 outline-none font-semibold text-black placeholder-slate-400"></div>
                         <div class="col-span-1 md:col-span-2"><label class="block text-[12px] font-bold text-slate-500 uppercase mb-2 ml-1">Stok</label><input type="number" id="p-stok" required class="w-full bg-[#F2F2F7] border-0 rounded-2xl px-4 py-3.5 focus:ring-2 focus:ring-blue-500 outline-none font-semibold text-black placeholder-slate-400"></div>
                         
+                        <!-- UPDATE: UPLOAD MULTIPLE GAMBAR -->
                         <div class="col-span-1 md:col-span-6 mt-1">
-                            <label class="block text-[12px] md:text-[13px] font-bold text-slate-500 uppercase tracking-wider mb-2 ml-1">Upload Foto <span id="label-foto-edit" class="text-[10px] lowercase italic font-normal">(Opsional saat edit)</span></label>
-                            <div onclick="document.getElementById('p-gambar-file').click()" class="relative w-full h-48 rounded-[24px] bg-[#F2F2F7] hover:bg-[#E5E5EA] flex flex-col items-center justify-center cursor-pointer overflow-hidden border border-transparent">
-                                <input type="file" id="p-gambar-file" accept="image/*" class="hidden" onchange="previewImage(event, 'p-gambar-preview', 'base64Gambar')">
-                                <div id="upload-placeholder" class="text-center flex flex-col items-center"><div class="w-14 h-14 bg-white rounded-full flex items-center justify-center shadow-sm mb-3 text-blue-500"><i class="fa-solid fa-camera text-xl"></i></div><span class="text-sm font-bold text-black" id="teks-pilih-foto">Ketuk untuk memilih foto</span></div>
-                                <img id="p-gambar-preview" src="" class="absolute inset-0 w-full h-full object-contain hidden bg-white">
+                            <label class="block text-[12px] md:text-[13px] font-bold text-slate-500 uppercase tracking-wider mb-2 ml-1">Upload Foto Produk <span id="label-foto-edit" class="text-[10px] lowercase italic font-normal text-blue-500">(Bisa pilih lebih dari 1 foto sekaligus)</span></label>
+                            
+                            <!-- Area Drag & Drop / Klik -->
+                            <div onclick="document.getElementById('p-gambar-file').click()" class="relative w-full min-h-[12rem] rounded-[24px] bg-[#F2F2F7] hover:bg-[#E5E5EA] flex flex-col justify-center cursor-pointer overflow-hidden border border-transparent transition-colors p-4">
+                                <input type="file" id="p-gambar-file" accept="image/*" multiple class="hidden" onchange="previewImageMultiple(event)">
+                                
+                                <!-- Placeholder Awal -->
+                                <div id="upload-placeholder" class="text-center flex flex-col items-center py-6 w-full">
+                                    <div class="w-14 h-14 bg-white rounded-full flex items-center justify-center shadow-sm mb-3 text-blue-500"><i class="fa-solid fa-camera text-xl"></i></div>
+                                    <span class="text-sm font-bold text-black" id="teks-pilih-foto">Ketuk untuk memilih foto-foto produk</span>
+                                </div>
+                                
+                                <!-- Container Preview Banyak Foto -->
+                                <div id="p-gambar-preview-container" class="hidden flex flex-wrap gap-3 items-center justify-center sm:justify-start w-full">
+                                    <!-- Diisi Preview Gambar via JS -->
+                                </div>
                             </div>
                         </div>
 
@@ -214,12 +238,9 @@
 
             <!-- ==================== PENJUALAN / PESANAN SECTION ==================== -->
             <section id="sec-penjualan" class="hidden space-y-6 md:space-y-8">
-                
-                <!-- Filter Bulan Pesanan -->
                 <div class="bg-white p-5 rounded-[24px] shadow-[0_8px_24px_rgba(0,0,0,0.04)] border border-slate-100">
                     <h3 class="font-bold text-black text-sm tracking-tight mb-3">Filter Berdasarkan Bulan</h3>
                     <div id="filter-bulan-container" class="flex gap-2 overflow-x-auto scroll-touch hide-scrollbar pb-1">
-                        <!-- Buttons Bulan Diisi via JS -->
                         <div class="text-xs text-slate-400 italic">Memuat bulan...</div>
                     </div>
                 </div>
@@ -248,7 +269,7 @@
                 </div>
             </section>
 
-            <!-- ==================== TRANSKRIP PENJUALAN (BARU) ==================== -->
+            <!-- ==================== TRANSKRIP PENJUALAN ==================== -->
             <section id="sec-transkrip" class="hidden space-y-6 md:space-y-8">
                 <div class="bg-white p-5 md:p-8 rounded-[32px] md:rounded-[40px] shadow-[0_8px_24px_rgba(0,0,0,0.04)] border border-slate-100">
                     <div class="flex justify-between items-center mb-6">
@@ -258,9 +279,7 @@
                         </div>
                         <button onclick="fetchTranskrip()" class="bg-[#F2F2F7] hover:bg-[#E5E5EA] text-blue-500 w-10 h-10 rounded-full flex items-center justify-center transition active:scale-90 shrink-0"><i class="fa-solid fa-rotate-right"></i></button>
                     </div>
-                    <div id="grid-transkrip" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                        <!-- Diisi via JS -->
-                    </div>
+                    <div id="grid-transkrip" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
                 </div>
             </section>
 
@@ -285,17 +304,37 @@
                     <p class="text-xs md:text-sm text-slate-500 mb-6 md:mb-8 font-medium">Ubah logo, latar belakang login, dan banner promo aplikasi.</p>
                     <form id="form-pengaturan" onsubmit="handleSavePengaturan(event)" class="space-y-5 md:space-y-6">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-                            <div class="bg-[#F2F2F7] p-5 rounded-[24px]"><label class="block font-bold text-black mb-1">Logo Aplikasi</label><div onclick="document.getElementById('set-logo').click()" class="w-20 h-20 bg-white rounded-[20px] flex items-center justify-center cursor-pointer shadow-sm relative overflow-hidden"><input type="file" id="set-logo" accept="image/*" class="hidden" onchange="previewImage(event, 'preview-logo', 'base64Logo')"><i class="fa-solid fa-image text-slate-300 text-xl"></i><img id="preview-logo" src="" class="absolute inset-0 w-full h-full object-contain p-2 hidden bg-white"></div></div>
-                            <div class="bg-[#F2F2F7] p-5 rounded-[24px]"><label class="block font-bold text-black mb-1">Wallpaper Login</label><div onclick="document.getElementById('set-loginbg').click()" class="w-full h-20 bg-white rounded-[20px] flex items-center justify-center cursor-pointer shadow-sm relative overflow-hidden"><input type="file" id="set-loginbg" accept="image/*" class="hidden" onchange="previewImage(event, 'preview-loginbg', 'base64LoginBg', true)"><i class="fa-solid fa-image text-slate-300 text-xl"></i><img id="preview-loginbg" src="" class="absolute inset-0 w-full h-full object-cover hidden bg-white"></div></div>
+                            <div class="bg-[#F2F2F7] p-5 rounded-[24px]"><label class="block font-bold text-black mb-1">Logo Aplikasi</label><div onclick="document.getElementById('set-logo').click()" class="w-20 h-20 bg-white rounded-[20px] flex items-center justify-center cursor-pointer shadow-sm relative overflow-hidden"><input type="file" id="set-logo" accept="image/*" class="hidden" onchange="previewImageSingle(event, 'preview-logo', 'base64Logo')"><i class="fa-solid fa-image text-slate-300 text-xl"></i><img id="preview-logo" src="" class="absolute inset-0 w-full h-full object-contain p-2 hidden bg-white"></div></div>
+                            <div class="bg-[#F2F2F7] p-5 rounded-[24px]"><label class="block font-bold text-black mb-1">Wallpaper Login</label><div onclick="document.getElementById('set-loginbg').click()" class="w-full h-20 bg-white rounded-[20px] flex items-center justify-center cursor-pointer shadow-sm relative overflow-hidden"><input type="file" id="set-loginbg" accept="image/*" class="hidden" onchange="previewImageSingle(event, 'preview-loginbg', 'base64LoginBg', true)"><i class="fa-solid fa-image text-slate-300 text-xl"></i><img id="preview-loginbg" src="" class="absolute inset-0 w-full h-full object-cover hidden bg-white"></div></div>
                         </div>
                         <div class="bg-[#F2F2F7] p-5 rounded-[24px]">
                             <label class="block font-bold text-black mb-2">Banner Promo Slideshow</label>
                             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                                <div onclick="document.getElementById('set-ban1').click()" class="h-28 bg-white rounded-[20px] flex flex-col items-center justify-center cursor-pointer shadow-sm relative overflow-hidden"><input type="file" id="set-ban1" accept="image/*" class="hidden" onchange="previewImage(event, 'preview-ban1', 'base64Ban1', true)"><i class="fa-solid fa-plus text-slate-300 text-xl mb-1"></i><span class="text-[10px] font-bold text-slate-400">Slot 1</span><img id="preview-ban1" src="" class="absolute inset-0 w-full h-full object-cover hidden"></div>
-                                <div onclick="document.getElementById('set-ban2').click()" class="h-28 bg-white rounded-[20px] flex flex-col items-center justify-center cursor-pointer shadow-sm relative overflow-hidden"><input type="file" id="set-ban2" accept="image/*" class="hidden" onchange="previewImage(event, 'preview-ban2', 'base64Ban2', true)"><i class="fa-solid fa-plus text-slate-300 text-xl mb-1"></i><span class="text-[10px] font-bold text-slate-400">Slot 2</span><img id="preview-ban2" src="" class="absolute inset-0 w-full h-full object-cover hidden"></div>
-                                <div onclick="document.getElementById('set-ban3').click()" class="h-28 bg-white rounded-[20px] flex flex-col items-center justify-center cursor-pointer shadow-sm relative overflow-hidden"><input type="file" id="set-ban3" accept="image/*" class="hidden" onchange="previewImage(event, 'preview-ban3', 'base64Ban3', true)"><i class="fa-solid fa-plus text-slate-300 text-xl mb-1"></i><span class="text-[10px] font-bold text-slate-400">Slot 3</span><img id="preview-ban3" src="" class="absolute inset-0 w-full h-full object-cover hidden"></div>
+                                <div onclick="document.getElementById('set-ban1').click()" class="h-28 bg-white rounded-[20px] flex flex-col items-center justify-center cursor-pointer shadow-sm relative overflow-hidden"><input type="file" id="set-ban1" accept="image/*" class="hidden" onchange="previewImageSingle(event, 'preview-ban1', 'base64Ban1', true)"><i class="fa-solid fa-plus text-slate-300 text-xl mb-1"></i><span class="text-[10px] font-bold text-slate-400">Slot 1</span><img id="preview-ban1" src="" class="absolute inset-0 w-full h-full object-cover hidden"></div>
+                                <div onclick="document.getElementById('set-ban2').click()" class="h-28 bg-white rounded-[20px] flex flex-col items-center justify-center cursor-pointer shadow-sm relative overflow-hidden"><input type="file" id="set-ban2" accept="image/*" class="hidden" onchange="previewImageSingle(event, 'preview-ban2', 'base64Ban2', true)"><i class="fa-solid fa-plus text-slate-300 text-xl mb-1"></i><span class="text-[10px] font-bold text-slate-400">Slot 2</span><img id="preview-ban2" src="" class="absolute inset-0 w-full h-full object-cover hidden"></div>
+                                <div onclick="document.getElementById('set-ban3').click()" class="h-28 bg-white rounded-[20px] flex flex-col items-center justify-center cursor-pointer shadow-sm relative overflow-hidden"><input type="file" id="set-ban3" accept="image/*" class="hidden" onchange="previewImageSingle(event, 'preview-ban3', 'base64Ban3', true)"><i class="fa-solid fa-plus text-slate-300 text-xl mb-1"></i><span class="text-[10px] font-bold text-slate-400">Slot 3</span><img id="preview-ban3" src="" class="absolute inset-0 w-full h-full object-cover hidden"></div>
                             </div>
                         </div>
+                        
+                        <!-- TAMBAHAN BARCODE QRIS -->
+                        <div class="bg-[#F2F2F7] p-5 rounded-[24px]">
+                            <label class="block font-bold text-black mb-2">Barcode Pembayaran (QRIS)</label>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="bg-white p-3 rounded-[20px] border border-slate-100 flex flex-col items-center justify-center cursor-pointer shadow-sm relative overflow-hidden" onclick="document.getElementById('set-qris-lunas').click()">
+                                    <p class="text-[11px] font-bold text-slate-500 mb-2">QRIS Bayar Lunas</p>
+                                    <input type="file" id="set-qris-lunas" accept="image/*" class="hidden" onchange="previewImageSingle(event, 'preview-qris-lunas', 'base64QrisLunas')">
+                                    <div class="w-16 h-16 bg-[#F2F2F7] rounded-[12px] flex items-center justify-center"><i class="fa-solid fa-qrcode text-slate-400 text-2xl"></i></div>
+                                    <img id="preview-qris-lunas" src="" class="absolute inset-0 w-full h-full object-contain bg-white p-2 hidden">
+                                </div>
+                                <div class="bg-white p-3 rounded-[20px] border border-slate-100 flex flex-col items-center justify-center cursor-pointer shadow-sm relative overflow-hidden" onclick="document.getElementById('set-qris-dp').click()">
+                                    <p class="text-[11px] font-bold text-slate-500 mb-2">QRIS Bayar DP (50%)</p>
+                                    <input type="file" id="set-qris-dp" accept="image/*" class="hidden" onchange="previewImageSingle(event, 'preview-qris-dp', 'base64QrisDp')">
+                                    <div class="w-16 h-16 bg-[#F2F2F7] rounded-[12px] flex items-center justify-center"><i class="fa-solid fa-qrcode text-slate-400 text-2xl"></i></div>
+                                    <img id="preview-qris-dp" src="" class="absolute inset-0 w-full h-full object-contain bg-white p-2 hidden">
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="flex justify-end pt-2"><button type="submit" id="btn-save-pengaturan" class="w-full md:w-auto bg-blue-500 text-white px-8 py-4 rounded-full font-bold shadow-lg shadow-blue-500/30 active:scale-95 text-sm transition-all">Terapkan Perubahan</button></div>
                     </form>
                 </div>
@@ -303,10 +342,12 @@
         </div>
     </main>
 
-    <!-- ==================== MODAL BUKTI PEMBAYARAN ==================== -->
-    <div id="modal-bukti" class="modal opacity-0 pointer-events-none fixed w-full h-full top-0 left-0 flex items-center justify-center z-[80] transition-opacity duration-300">
+    <!-- ==================== SEMUA MODALS ==================== -->
+    
+    <!-- Modal Bukti Pembayaran -->
+    <div id="modal-bukti" class="modal opacity-0 pointer-events-none fixed w-full h-full top-0 left-0 flex items-center justify-center z-[90] transition-opacity duration-300">
         <div class="absolute w-full h-full bg-black/80 backdrop-blur-md" onclick="toggleModalBukti()"></div>
-        <div class="modal-sheet bg-transparent w-full sm:w-11/12 sm:max-w-xl mx-auto rounded-[40px] z-[80] flex flex-col items-center relative p-4">
+        <div class="modal-sheet bg-transparent w-full sm:w-11/12 sm:max-w-xl mx-auto rounded-[40px] z-[90] flex flex-col items-center relative p-4">
             <div class="bg-white p-2 rounded-[32px] w-full max-w-sm mx-auto shadow-2xl relative">
                 <button onclick="toggleModalBukti()" class="absolute -top-4 -right-4 bg-white text-black w-10 h-10 rounded-full flex items-center justify-center shadow-lg active:scale-90 transition-transform"><i class="fa-solid fa-times text-lg"></i></button>
                 <img id="img-bukti-detail" src="" class="w-full h-auto max-h-[70vh] object-contain rounded-[24px] bg-slate-100">
@@ -314,46 +355,23 @@
         </div>
     </div>
 
-    <!-- ==================== MODAL DETAIL TRANSKRIP PER PRODUK ==================== -->
+    <!-- Modal Transkrip Detail (Per Produk) -->
     <div id="modal-transkrip" class="modal opacity-0 pointer-events-none fixed w-full h-full top-0 left-0 flex items-end sm:items-center justify-center z-[70] transition-opacity duration-300">
         <div class="absolute w-full h-full bg-black/50 backdrop-blur-sm" onclick="toggleModalTranskrip()"></div>
         <div class="modal-sheet bg-[#F2F2F7] w-full sm:w-11/12 sm:max-w-4xl mx-auto rounded-t-[40px] sm:rounded-[40px] shadow-2xl z-[70] max-h-[90vh] flex flex-col relative pb-safe">
             <div class="w-12 h-1.5 bg-slate-300 rounded-full mx-auto mt-4 mb-2 sm:hidden shrink-0"></div>
             <div class="px-5 sm:px-8 py-4 flex justify-between items-start shrink-0">
-                <div>
-                    <h3 id="transkrip-nama-produk" class="font-bold text-xl sm:text-2xl text-black tracking-tight">Nama Baju</h3>
-                    <p id="transkrip-id-produk" class="text-blue-500 font-semibold text-sm mt-0.5">ID Baju</p>
-                </div>
+                <div><h3 id="transkrip-nama-produk" class="font-bold text-xl sm:text-2xl text-black tracking-tight">Nama Baju</h3><p id="transkrip-id-produk" class="text-blue-500 font-semibold text-sm mt-0.5">ID Baju</p></div>
                 <button onclick="toggleModalTranskrip()" class="text-slate-400 hover:text-black bg-slate-200/50 w-8 h-8 rounded-full flex items-center justify-center transition-colors"><i class="fa-solid fa-times"></i></button>
             </div>
-
-            <!-- Filter Bulan Transkrip -->
-            <div class="px-5 sm:px-8 shrink-0 mb-3">
-                <p class="font-bold text-slate-500 uppercase tracking-wider text-[10px] mb-2 ml-1">Pilih Bulan</p>
-                <div id="transkrip-filter-bulan" class="flex gap-2 overflow-x-auto scroll-touch hide-scrollbar pb-2"></div>
-            </div>
-
-            <!-- List Transaksi Transkrip -->
+            <div class="px-5 sm:px-8 shrink-0 mb-3"><p class="font-bold text-slate-500 uppercase tracking-wider text-[10px] mb-2 ml-1">Pilih Bulan</p><div id="transkrip-filter-bulan" class="flex gap-2 overflow-x-auto scroll-touch hide-scrollbar pb-2"></div></div>
             <div class="flex-1 overflow-y-auto px-5 sm:px-8 pb-8 scroll-touch hide-scrollbar bg-white rounded-t-[32px] pt-4 shadow-inner">
-                <div class="overflow-x-auto scroll-touch pb-2">
-                    <table class="w-full text-left text-sm whitespace-nowrap">
-                        <thead class="bg-white border-b border-slate-100 text-slate-400">
-                            <tr>
-                                <th class="px-4 py-3 text-[11px] uppercase tracking-wider font-bold">ID Trx & Waktu</th>
-                                <th class="px-4 py-3 text-[11px] uppercase tracking-wider font-bold">Pembeli</th>
-                                <th class="px-4 py-3 text-[11px] uppercase tracking-wider font-bold">Qty & Harga</th>
-                                <th class="px-4 py-3 text-[11px] uppercase tracking-wider font-bold text-center">Struk</th>
-                                <th class="px-4 py-3 text-[11px] uppercase tracking-wider font-bold text-center">Status</th>
-                            </tr>
-                        </thead>
-                        <tbody id="transkrip-table-body" class="divide-y divide-slate-50"></tbody>
-                    </table>
-                </div>
+                <div class="overflow-x-auto scroll-touch pb-2"><table class="w-full text-left text-sm whitespace-nowrap"><thead class="bg-white border-b border-slate-100 text-slate-400"><tr><th class="px-4 py-3 text-[11px] uppercase tracking-wider font-bold">ID Trx & Waktu</th><th class="px-4 py-3 text-[11px] uppercase tracking-wider font-bold">Pembeli</th><th class="px-4 py-3 text-[11px] uppercase tracking-wider font-bold">Qty & Harga</th><th class="px-4 py-3 text-[11px] uppercase tracking-wider font-bold text-center">Struk</th><th class="px-4 py-3 text-[11px] uppercase tracking-wider font-bold text-center">Status</th></tr></thead><tbody id="transkrip-table-body" class="divide-y divide-slate-50"></tbody></table></div>
             </div>
         </div>
     </div>
 
-    <!-- ==================== MODAL DETAIL PELANGGAN ==================== -->
+    <!-- Modal Profil Pelanggan -->
     <div id="modal-pelanggan" class="modal opacity-0 pointer-events-none fixed w-full h-full top-0 left-0 flex items-end sm:items-center justify-center z-[70] transition-opacity duration-300">
         <div class="absolute w-full h-full bg-black/50 backdrop-blur-sm" onclick="toggleModalPelanggan()"></div>
         <div class="modal-sheet bg-[#F2F2F7] w-full sm:w-11/12 sm:max-w-2xl mx-auto rounded-t-[40px] sm:rounded-[40px] shadow-2xl z-[70] max-h-[90vh] flex flex-col relative pb-safe">
@@ -372,6 +390,20 @@
         </div>
     </div>
 
+    <!-- UPDATE BARU: Modal Ekstra Detail Pesanan -->
+    <div id="modal-detail-pesanan" class="modal opacity-0 pointer-events-none fixed w-full h-full top-0 left-0 flex items-end sm:items-center justify-center z-[80] transition-opacity duration-300">
+        <div class="absolute w-full h-full bg-black/60 backdrop-blur-sm" onclick="toggleModalDetailPesanan()"></div>
+        <div class="modal-sheet bg-white w-full sm:w-11/12 sm:max-w-md mx-auto rounded-t-[40px] sm:rounded-[40px] shadow-2xl z-[80] flex flex-col relative p-6 pb-safe">
+            <button onclick="toggleModalDetailPesanan()" class="absolute top-4 right-4 bg-slate-100 text-slate-500 hover:text-black w-8 h-8 rounded-full flex items-center justify-center transition-colors hidden sm:flex"><i class="fa-solid fa-times"></i></button>
+            <div class="w-12 h-1.5 bg-slate-200 rounded-full mx-auto mt-0 mb-4 sm:hidden shrink-0"></div>
+            
+            <h3 class="font-bold text-xl text-black tracking-tight mb-4 border-b border-slate-100 pb-3">Informasi Pesanan</h3>
+            <div id="content-detail-pesanan" class="space-y-5 overflow-y-auto hide-scrollbar scroll-touch max-h-[70vh]">
+               <!-- Diisi Dinamis lewat JS -->
+            </div>
+        </div>
+    </div>
+
 
     <!-- ==================== SCRIPTS LOGIC ==================== -->
     <script>
@@ -381,13 +413,13 @@
         // Variabel Global
         let globalPenjualan = [];
         let globalPelanggan = [];
+        let globalProduk = [];
         let activeBulanFilter = 'Semua Waktu';
         
-        // Mode Edit Produk
         let isEditingProduk = false;
         let produkIdToEdit = null;
 
-        // Fab Menu Mobile
+        // Fab Menu Mobile (Manual)
         let navVisible = false;
         function toggleMobileNav() {
             const nav = document.getElementById('mobile-nav-container'); const icon = document.getElementById('fab-icon');
@@ -395,7 +427,6 @@
             else { nav.classList.add('translate-y-full'); nav.classList.remove('translate-y-0'); icon.className = "fa-solid fa-bars text-xl"; }
             navVisible = !navVisible;
         }
-        // Listener dihapus agar pengguna yang secara manual mengontrol turunnya menu
 
         function updateNavTitles(tab) {
             const titles = { 'dashboard': 'Dashboard', 'produk': 'Katalog', 'penjualan': 'Pesanan', 'transkrip': 'Laporan', 'pelanggan': 'Pelanggan', 'pengaturan': 'Sistem' };
@@ -416,7 +447,6 @@
             if(mobActive) mobActive.className = "flex flex-col items-center gap-1 p-2 text-blue-500 min-w-[72px] shrink-0 active:scale-90 transition-transform drop-shadow-sm";
             
             updateNavTitles(tab);
-            // Tidak auto-hide menu lagi di sini!
 
             if (tab === 'dashboard') fetchDashboard();
             if (tab === 'produk') fetchProduk();
@@ -440,37 +470,88 @@
             showLoading(false);
         }
 
-        // --- PRODUK API ---
+        // --- PRODUK & KATEGORI DINAMIS ---
+        function updateDatalistKategori() {
+            const datalist = document.getElementById('list-kategori');
+            let listKat = ["Kaos", "Kemeja", "Jaket", "Celana", "Aksesoris"];
+            if(globalProduk.length > 0) {
+                globalProduk.forEach(p => { const k = p.Kategori || p.kategori; if(k && !listKat.includes(k)) listKat.push(k); });
+            }
+            datalist.innerHTML = listKat.map(k => `<option value="${k}">`).join('');
+        }
+
         async function fetchProduk() {
             showLoading(true);
             const tbody = document.getElementById('table-produk');
             tbody.innerHTML = `<tr><td colspan="7" class="px-6 py-12 text-center text-slate-500 font-medium"><i class="fa-solid fa-spinner fa-spin mr-2"></i> Mengambil data...</td></tr>`;
             try {
                 const res = await fetch(`${SCRIPT_URL}?action=getProduk`); const data = await res.json();
-                if(data.status === 'success' && data.data.length > 0) {
-                    tbody.innerHTML = data.data.map(p => {
-                        const id = p.ID || p.id; const nm = p['Nama Baju'] || p.nama; const kat = p.Kategori || p.kategori; 
-                        const hrg = p.Harga || p.harga; const stk = p.Stok || p.stok; const gbr = p['URL Gambar'] || '';
-                        const safeGbr = gbr || 'https://via.placeholder.com/50';
-                        return `
-                        <tr class="hover:bg-[#F2F2F7]/50 transition-colors border-b border-slate-50 last:border-0">
-                            <td class="px-5 py-3"><img src="${safeGbr}" class="w-10 h-10 object-cover rounded-[10px] shadow-sm border border-slate-100"></td>
-                            <td class="px-5 py-4 font-mono font-semibold text-slate-500 text-[11px]">${id}</td>
-                            <td class="px-5 py-4 font-bold text-black text-sm">${nm}</td>
-                            <td class="px-5 py-4"><span class="bg-[#F2F2F7] text-slate-600 px-3 py-1 rounded-full text-[10px] font-bold">${kat}</span></td>
-                            <td class="px-5 py-4 font-bold text-blue-500 text-sm">${formatRp(hrg)}</td>
-                            <td class="px-5 py-4 font-bold text-sm ${stk <= 5 ? 'text-red-500' : 'text-black'}">${stk} Pcs</td>
-                            <td class="px-5 py-4 text-center">
-                                <div class="flex gap-2 justify-center">
-                                    <button onclick="mulaiEditProduk('${id}', '${nm.replace(/'/g, "\\'")}', '${kat}', ${hrg}, ${stk}, '${gbr}')" class="w-8 h-8 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition-colors flex items-center justify-center active:scale-90"><i class="fa-solid fa-pen text-xs"></i></button>
-                                    <button onclick="hapusProduk('${id}')" class="w-8 h-8 rounded-full bg-red-50 text-red-600 hover:bg-red-100 transition-colors flex items-center justify-center active:scale-90"><i class="fa-solid fa-trash text-xs"></i></button>
-                                </div>
-                            </td>
-                        </tr>`
-                    }).join('');
-                } else { tbody.innerHTML = `<tr><td colspan="7" class="px-6 py-12 text-center text-slate-400 font-medium">Belum ada produk.</td></tr>`; }
+                if(data.status === 'success') {
+                    globalProduk = data.data; 
+                    updateDatalistKategori(); // Update opsi kategori dari data
+
+                    if(globalProduk.length > 0) {
+                        tbody.innerHTML = globalProduk.map(p => {
+                            const id = p.ID || p.id; const nm = p['Nama Baju'] || p.nama; const kat = p.Kategori || p.kategori; 
+                            const hrg = p.Harga || p.harga; const stk = p.Stok || p.stok; const gbr = p['URL Gambar'] || '';
+                            const safeGbr = (gbr.split(',')[0]) || 'https://via.placeholder.com/50'; // Ambil foto pertama saja untuk thumbnail
+                            
+                            return `
+                            <tr class="hover:bg-[#F2F2F7]/50 transition-colors border-b border-slate-50 last:border-0">
+                                <td class="px-5 py-3"><img src="${safeGbr}" class="w-10 h-10 object-cover rounded-[10px] shadow-sm border border-slate-100"></td>
+                                <td class="px-5 py-4 font-mono font-semibold text-slate-500 text-[11px]">${id}</td>
+                                <td class="px-5 py-4 font-bold text-black text-sm">${nm}</td>
+                                <td class="px-5 py-4"><span class="bg-[#F2F2F7] text-slate-600 px-3 py-1 rounded-full text-[10px] font-bold">${kat}</span></td>
+                                <td class="px-5 py-4 font-bold text-blue-500 text-sm">${formatRp(hrg)}</td>
+                                <td class="px-5 py-4 font-bold text-sm ${stk <= 5 ? 'text-red-500' : 'text-black'}">${stk} Pcs</td>
+                                <td class="px-5 py-4 text-center">
+                                    <div class="flex gap-2 justify-center">
+                                        <button onclick="mulaiEditProduk('${id}', '${nm.replace(/'/g, "\\'")}', '${kat}', ${hrg}, ${stk}, '${gbr}')" class="w-8 h-8 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition-colors flex items-center justify-center active:scale-90"><i class="fa-solid fa-pen text-xs"></i></button>
+                                        <button onclick="hapusProduk('${id}')" class="w-8 h-8 rounded-full bg-red-50 text-red-600 hover:bg-red-100 transition-colors flex items-center justify-center active:scale-90"><i class="fa-solid fa-trash text-xs"></i></button>
+                                    </div>
+                                </td>
+                            </tr>`
+                        }).join('');
+                    } else { tbody.innerHTML = `<tr><td colspan="7" class="px-6 py-12 text-center text-slate-400 font-medium">Belum ada produk.</td></tr>`; }
+                }
             } catch (err) {}
             showLoading(false);
+        }
+
+        // --- SISTEM MULTIPLE GAMBAR ---
+        let base64GambarArray = [];
+        
+        function previewImageMultiple(event) {
+            const files = event.target.files;
+            if (!files || files.length === 0) return;
+
+            document.getElementById('upload-placeholder').classList.add('hidden');
+            const container = document.getElementById('p-gambar-preview-container');
+            container.classList.remove('hidden');
+            
+            // Reset state saat user memilih file baru agar tidak rancu
+            base64GambarArray = [];
+            container.innerHTML = '';
+
+            Array.from(files).forEach((file) => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = new Image();
+                    img.onload = function() {
+                        const canvas = document.createElement('canvas'); const MAX_SIZE = 800; 
+                        let width = img.width; let height = img.height;
+                        if (width > height && width > MAX_SIZE) { height *= MAX_SIZE / width; width = MAX_SIZE; } 
+                        else if (height > MAX_SIZE) { width *= MAX_SIZE / height; height = MAX_SIZE; }
+                        canvas.width = width; canvas.height = height; const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, width, height);
+                        const base64Str = canvas.toDataURL('image/jpeg', 0.8);
+                        
+                        base64GambarArray.push(base64Str);
+                        container.innerHTML += `<img src="${base64Str}" class="w-20 h-20 md:w-24 md:h-24 object-cover rounded-xl shadow-sm border border-slate-200 shrink-0">`;
+                    }
+                    img.src = e.target.result;
+                }
+                reader.readAsDataURL(file);
+            });
         }
 
         function mulaiEditProduk(id, nama, kategori, harga, stok, urlGambar) {
@@ -481,8 +562,17 @@
             document.getElementById('p-id').value = id; document.getElementById('p-id').disabled = true; document.getElementById('p-id').classList.add('opacity-50', 'cursor-not-allowed');
             document.getElementById('p-nama').value = nama; document.getElementById('p-kategori').value = kategori; document.getElementById('p-harga').value = harga; document.getElementById('p-stok').value = stok;
             
-            if(urlGambar) { document.getElementById('p-gambar-preview').src = urlGambar; document.getElementById('p-gambar-preview').classList.remove('hidden'); document.getElementById('upload-placeholder').classList.add('hidden'); } 
-            else { document.getElementById('p-gambar-preview').classList.add('hidden'); document.getElementById('upload-placeholder').classList.remove('hidden'); }
+            // Tampilkan kembali multi gambar yang sudah tersimpan
+            base64GambarArray = urlGambar ? urlGambar.split(',') : [];
+            const container = document.getElementById('p-gambar-preview-container');
+            if(base64GambarArray.length > 0 && base64GambarArray[0] !== "") { 
+                document.getElementById('upload-placeholder').classList.add('hidden');
+                container.classList.remove('hidden');
+                container.innerHTML = base64GambarArray.map(url => `<img src="${url}" class="w-20 h-20 md:w-24 md:h-24 object-cover rounded-xl shadow-sm border border-slate-200 shrink-0">`).join('');
+            } else { 
+                container.classList.add('hidden'); container.innerHTML = '';
+                document.getElementById('upload-placeholder').classList.remove('hidden'); 
+            }
             
             const btnSubmit = document.getElementById('btn-submit-produk');
             btnSubmit.innerHTML = `<i class="fa-solid fa-pen-to-square"></i> Update Produk`;
@@ -498,7 +588,11 @@
             
             document.getElementById('p-id').disabled = false; document.getElementById('p-id').classList.remove('opacity-50', 'cursor-not-allowed');
             document.getElementById('form-produk').reset();
-            base64Gambar = ""; document.getElementById('p-gambar-preview').classList.add('hidden'); document.getElementById('upload-placeholder').classList.remove('hidden');
+            
+            base64GambarArray = [];
+            document.getElementById('p-gambar-preview-container').classList.add('hidden');
+            document.getElementById('p-gambar-preview-container').innerHTML = '';
+            document.getElementById('upload-placeholder').classList.remove('hidden');
             
             const btnSubmit = document.getElementById('btn-submit-produk');
             btnSubmit.innerHTML = `<i class="fa-solid fa-cloud-arrow-up"></i> Simpan ke Katalog`;
@@ -507,11 +601,12 @@
 
         async function handleSaveProduk(e) {
             e.preventDefault();
-            const btn = document.getElementById('btn-submit-produk'); const ogText = btn.innerHTML; btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Memproses...'; btn.disabled = true;
+            const btn = document.getElementById('btn-submit-produk'); const ogText = btn.innerHTML; btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Memproses... (Bisa butuh waktu jika foto banyak)'; btn.disabled = true;
             
             const payload = {
                 action: isEditingProduk ? "editProduk" : "addProduk", id: document.getElementById('p-id').value, nama: document.getElementById('p-nama').value,
-                kategori: document.getElementById('p-kategori').value, harga: document.getElementById('p-harga').value, stok: document.getElementById('p-stok').value, gambar: base64Gambar 
+                kategori: document.getElementById('p-kategori').value, harga: document.getElementById('p-harga').value, stok: document.getElementById('p-stok').value, 
+                gambar: base64GambarArray 
             };
 
             try {
@@ -537,12 +632,10 @@
         function getBulanTahun(tglStr) {
             if(!tglStr) return "Riwayat Lama";
             try {
-                const split1 = tglStr.split(',')[0]; 
-                const parts = split1.split('/'); 
+                const split1 = tglStr.split(',')[0]; const parts = split1.split('/'); 
                 if(parts.length >= 3) {
                     const months = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Ags", "Sep", "Okt", "Nov", "Des"];
-                    let idxBulan = parseInt(parts[1]) - 1; 
-                    if(parseInt(parts[1]) > 12) idxBulan = parseInt(parts[0]) - 1; 
+                    let idxBulan = parseInt(parts[1]) - 1; if(parseInt(parts[1]) > 12) idxBulan = parseInt(parts[0]) - 1; 
                     return `${months[idxBulan]} ${parts[2]}`;
                 }
             } catch(e) {}
@@ -557,8 +650,7 @@
                 const res = await fetch(`${SCRIPT_URL}?action=getPenjualan`); const data = await res.json();
                 if(data.status === 'success') {
                     globalPenjualan = data.data.reverse(); 
-                    renderFilterBulan(); 
-                    renderTabelPenjualan(activeBulanFilter); 
+                    renderFilterBulan(); renderTabelPenjualan(activeBulanFilter); 
                 }
             } catch (err) {}
             if(!silent) showLoading(false);
@@ -626,12 +718,11 @@
             selectElement.disabled = false; selectElement.value = ""; showLoading(false);
         }
 
-        // --- DASHBOARD TRANSKRIP PENJUALAN (BARU) ---
+        // --- DASHBOARD TRANSKRIP PENJUALAN ---
         async function fetchTranskrip() {
             showLoading(true);
             try {
-                const res = await fetch(`${SCRIPT_URL}?action=getPenjualan`);
-                const data = await res.json();
+                const res = await fetch(`${SCRIPT_URL}?action=getPenjualan`); const data = await res.json();
                 if(data.status === 'success') { globalPenjualan = data.data.reverse(); }
             } catch(e) {}
 
@@ -641,27 +732,17 @@
             globalPenjualan.forEach(p => {
                 const id = p['ID Baju'];
                 if(!produkTerjual[id]) { produkTerjual[id] = { id: id, nama: p['Nama Baju'], qty: 0, total: 0 }; }
-                produkTerjual[id].qty += parseInt(p.Jumlah || 0);
-                produkTerjual[id].total += parseInt(p['Total Harga'] || 0);
+                produkTerjual[id].qty += parseInt(p.Jumlah || 0); produkTerjual[id].total += parseInt(p['Total Harga'] || 0);
             });
 
             const arrProduk = Object.values(produkTerjual);
             if(arrProduk.length > 0) {
                 grid.innerHTML = arrProduk.map(p => `
                     <div onclick="bukaTranskripDetail('${p.id}')" class="bg-[#F2F2F7] p-5 rounded-[24px] cursor-pointer hover:bg-blue-50 transition-colors active:scale-95 border border-transparent hover:border-blue-100 flex flex-col justify-between">
-                        <div>
-                            <h4 class="font-bold text-black text-lg truncate pr-2">${p.nama}</h4>
-                            <p class="text-[10px] font-mono font-bold text-slate-400 mb-4">${p.id}</p>
-                        </div>
+                        <div><h4 class="font-bold text-black text-lg truncate pr-2">${p.nama}</h4><p class="text-[10px] font-mono font-bold text-slate-400 mb-4">${p.id}</p></div>
                         <div class="flex justify-between items-end">
-                            <div>
-                                <p class="text-[9px] uppercase font-bold text-slate-400 tracking-wider">Total Terjual</p>
-                                <p class="font-bold text-blue-500 text-xl tracking-tight leading-none mt-1">${p.qty} Pcs</p>
-                            </div>
-                            <div class="text-right">
-                                <p class="text-[9px] uppercase font-bold text-slate-400 tracking-wider">Pendapatan</p>
-                                <p class="font-extrabold text-emerald-600 text-sm mt-1">${formatRp(p.total)}</p>
-                            </div>
+                            <div><p class="text-[9px] uppercase font-bold text-slate-400 tracking-wider">Total Terjual</p><p class="font-bold text-blue-500 text-xl tracking-tight leading-none mt-1">${p.qty} Pcs</p></div>
+                            <div class="text-right"><p class="text-[9px] uppercase font-bold text-slate-400 tracking-wider">Pendapatan</p><p class="font-extrabold text-emerald-600 text-sm mt-1">${formatRp(p.total)}</p></div>
                         </div>
                     </div>
                 `).join('');
@@ -669,8 +750,7 @@
             showLoading(false);
         }
 
-        let activeTranskripId = null;
-        let activeTranskripBulan = 'Semua Waktu';
+        let activeTranskripId = null; let activeTranskripBulan = 'Semua Waktu';
 
         function bukaTranskripDetail(id) {
             activeTranskripId = id; activeTranskripBulan = 'Semua Waktu';
@@ -768,19 +848,79 @@
             if(pesananUser.length > 0) {
                 listPesanan.innerHTML = pesananUser.map(p => {
                     const status = p.Status || "Menunggu"; let badgeColor = status === 'Diproses' ? "text-blue-600" : (status === 'Selesai' ? "text-emerald-600" : (status === 'Dibatalkan' ? "text-red-600" : "text-orange-600"));
-                    return `<div class="bg-white p-4 rounded-[20px] shadow-sm border border-slate-100 flex justify-between items-center"><div><p class="font-bold text-black text-sm">${p['Nama Baju']}</p><p class="text-[10px] text-slate-400 mt-1 font-mono">${p['ID Transaksi']} &bull; ${p.Tanggal.split(' ')[0]}</p><p class="text-xs font-bold text-slate-700 mt-1">${formatRp(p['Total Harga'])} <span class="text-[10px] text-slate-400 ml-1">(x${p.Jumlah})</span></p></div><div class="text-right"><span class="block text-[11px] font-bold ${badgeColor} uppercase tracking-wider">${status}</span>${p['Bukti Pembayaran'] ? `<button onclick="bukaBuktiModal('${p['Bukti Pembayaran']}')" class="inline-block mt-2 text-[10px] bg-slate-100 hover:bg-blue-100 hover:text-blue-600 text-slate-500 font-bold px-2.5 py-1 rounded-lg transition"><i class="fa-solid fa-image"></i> Cek Struk</button>` : ''}</div></div>`;
+                    // UPDATE: Baris pesanan bisa diklik dan membuka modal Detail Pesanan
+                    return `
+                    <div onclick="bukaDetailPesananModal('${p['ID Transaksi']}')" class="bg-white p-4 rounded-[20px] shadow-sm border border-slate-100 flex justify-between items-center cursor-pointer hover:border-blue-300 transition-colors active:scale-95 group">
+                        <div>
+                            <p class="font-bold text-black text-sm">${p['Nama Baju']}</p>
+                            <p class="text-[10px] text-slate-400 mt-1 font-mono">${p['ID Transaksi']} &bull; ${p.Tanggal.split(' ')[0]}</p>
+                            <p class="text-xs font-bold text-slate-700 mt-1">${formatRp(p['Total Harga'])} <span class="text-[10px] text-slate-400 ml-1">(x${p.Jumlah})</span></p>
+                        </div>
+                        <div class="text-right">
+                            <span class="block text-[11px] font-bold ${badgeColor} uppercase tracking-wider">${status}</span>
+                            <div class="text-[10px] text-blue-500 mt-2 opacity-0 group-hover:opacity-100 transition-opacity font-bold">Lihat Detail <i class="fa-solid fa-arrow-right"></i></div>
+                        </div>
+                    </div>`;
                 }).join('');
             } else { listPesanan.innerHTML = `<div class="bg-white p-6 rounded-[20px] text-center text-slate-400 font-medium text-sm">Pelanggan belum melakukan transaksi.</div>`; }
             toggleModalPelanggan();
         }
 
-        // --- SISTEM UPDATE & SETTING API LAINNYA ---
-        let base64Gambar = ""; let base64Logo = ""; let base64LoginBg = ""; 
-        let base64Ban1 = ""; let base64Ban2 = ""; let base64Ban3 = "";
+        // UPDATE: FITUR MODAL EXTRA DETAIL PESANAN
+        function toggleModalDetailPesanan() {
+            const body = document.querySelector('body'); const modal = document.getElementById('modal-detail-pesanan');
+            if(modal.classList.contains('opacity-0')) { modal.classList.remove('opacity-0', 'pointer-events-none'); setTimeout(() => modal.classList.add('show'), 10); } 
+            else { modal.classList.remove('show'); setTimeout(() => { modal.classList.add('opacity-0', 'pointer-events-none'); }, 300); }
+        }
 
-        function previewImage(event, previewId, targetVar, isLarge = false) {
+        function bukaDetailPesananModal(idTrx) {
+            const trx = globalPenjualan.find(p => p['ID Transaksi'] === idTrx);
+            if(!trx) return;
+
+            const content = document.getElementById('content-detail-pesanan');
+            const status = trx.Status || "Menunggu";
+            let badgeColor = status === 'Diproses' ? "bg-blue-50 text-blue-600" : (status === 'Selesai' ? "bg-emerald-50 text-emerald-600" : (status === 'Dibatalkan' ? "bg-red-50 text-red-600" : "bg-orange-50 text-orange-600"));
+
+            content.innerHTML = `
+                <div class="flex justify-between items-center">
+                    <span class="font-mono text-xs font-bold text-slate-400">${trx['ID Transaksi']}</span>
+                    <span class="px-3 py-1 rounded-full text-[10px] font-bold ${badgeColor} uppercase">${status}</span>
+                </div>
+                <div>
+                    <p class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Tanggal Pemesanan</p>
+                    <p class="font-bold text-black text-sm">${trx.Tanggal}</p>
+                </div>
+                <div>
+                    <p class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Produk yang Dibeli</p>
+                    <p class="font-bold text-blue-500 text-lg">${trx['Nama Baju']}</p>
+                    <p class="text-xs font-bold text-slate-500">${trx.Jumlah} Pcs x ${formatRp(trx['Total Harga']/trx.Jumlah)}</p>
+                </div>
+                <div class="flex justify-between items-center bg-[#F2F2F7] p-4 rounded-[20px]">
+                    <div>
+                        <p class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Total Tagihan</p>
+                        <p class="font-extrabold text-black text-xl">${formatRp(trx['Total Harga'])}</p>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Tipe Bayar</p>
+                        <p class="font-bold text-slate-700 text-sm">${trx['Tipe Pembayaran'] || 'Lunas'}</p>
+                    </div>
+                </div>
+                ${trx['Bukti Pembayaran'] ? `
+                <button onclick="bukaBuktiModal('${trx['Bukti Pembayaran']}')" class="w-full bg-blue-50 hover:bg-blue-100 text-blue-600 font-bold py-3 rounded-full transition active:scale-95 text-sm flex justify-center items-center gap-2">
+                    <i class="fa-solid fa-image"></i> Lihat Struk Pembayaran
+                </button>` : `<div class="text-center text-xs text-red-500 font-bold bg-red-50 py-3 rounded-full">Pelanggan belum mengunggah struk</div>`}
+            `;
+            toggleModalDetailPesanan();
+        }
+
+        // --- SISTEM PENGATURAN LAINNYA ---
+        let base64Logo = ""; let base64LoginBg = ""; 
+        let base64Ban1 = ""; let base64Ban2 = ""; let base64Ban3 = "";
+        let base64QrisLunas = ""; let base64QrisDp = "";
+
+        function previewImageSingle(event, previewId, targetVar, isLarge = false) {
             const file = event.target.files[0]; const preview = document.getElementById(previewId);
-            if (!file) { window[targetVar] = ""; preview.classList.add('hidden'); if(targetVar === 'base64Gambar') { document.getElementById('upload-placeholder').classList.remove('hidden'); document.getElementById('teks-pilih-foto').textContent = 'Ketuk untuk memilih foto'; document.getElementById('label-foto-edit').classList.remove('hidden'); } return; }
+            if (!file) { window[targetVar] = ""; preview.classList.add('hidden'); return; }
             const reader = new FileReader();
             reader.onload = function(e) {
                 const img = new Image();
@@ -792,9 +932,9 @@
                     canvas.width = width; canvas.height = height; const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, width, height);
                     const base64Str = canvas.toDataURL('image/jpeg', 0.8);
                     
-                    if(targetVar === 'base64Gambar') { base64Gambar = base64Str; document.getElementById('upload-placeholder').classList.add('hidden'); }
                     if(targetVar === 'base64Logo') base64Logo = base64Str; if(targetVar === 'base64LoginBg') base64LoginBg = base64Str;
                     if(targetVar === 'base64Ban1') base64Ban1 = base64Str; if(targetVar === 'base64Ban2') base64Ban2 = base64Str; if(targetVar === 'base64Ban3') base64Ban3 = base64Str;
+                    if(targetVar === 'base64QrisLunas') base64QrisLunas = base64Str; if(targetVar === 'base64QrisDp') base64QrisDp = base64Str;
                     preview.src = base64Str; preview.classList.remove('hidden');
                 }
                 img.src = e.target.result;
@@ -813,6 +953,8 @@
                         if(item.Key === 'banner_1' && item.Value) { document.getElementById('preview-ban1').src = item.Value; document.getElementById('preview-ban1').classList.remove('hidden'); }
                         if(item.Key === 'banner_2' && item.Value) { document.getElementById('preview-ban2').src = item.Value; document.getElementById('preview-ban2').classList.remove('hidden'); }
                         if(item.Key === 'banner_3' && item.Value) { document.getElementById('preview-ban3').src = item.Value; document.getElementById('preview-ban3').classList.remove('hidden'); }
+                        if(item.Key === 'qris_lunas' && item.Value) { document.getElementById('preview-qris-lunas').src = item.Value; document.getElementById('preview-qris-lunas').classList.remove('hidden'); }
+                        if(item.Key === 'qris_dp' && item.Value) { document.getElementById('preview-qris-dp').src = item.Value; document.getElementById('preview-qris-dp').classList.remove('hidden'); }
                     });
                 }
             } catch(e){}
@@ -823,13 +965,13 @@
             e.preventDefault();
             const btn = document.getElementById('btn-save-pengaturan');
             btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Menyimpan...'; btn.disabled = true;
-            const payload = { action: "savePengaturan", logo: base64Logo, login_bg: base64LoginBg, banner_1: base64Ban1, banner_2: base64Ban2, banner_3: base64Ban3 };
+            const payload = { action: "savePengaturan", logo: base64Logo, login_bg: base64LoginBg, banner_1: base64Ban1, banner_2: base64Ban2, banner_3: base64Ban3, qris_lunas: base64QrisLunas, qris_dp: base64QrisDp };
             try {
                 const res = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload), headers: { 'Content-Type': 'text/plain;charset=utf-8' } });
                 const data = await res.json();
                 if(data.status === 'success') {
                     alert('Pengaturan tampilan berhasil diperbarui!');
-                    base64Logo = ""; base64LoginBg = ""; base64Ban1 = ""; base64Ban2 = ""; base64Ban3 = "";
+                    base64Logo = ""; base64LoginBg = ""; base64Ban1 = ""; base64Ban2 = ""; base64Ban3 = ""; base64QrisLunas = ""; base64QrisDp = "";
                 } else alert('Gagal menyimpan: ' + data.message);
             } catch (err) { alert('Terjadi kesalahan jaringan.'); }
             btn.innerHTML = 'Terapkan Perubahan'; btn.disabled = false;
