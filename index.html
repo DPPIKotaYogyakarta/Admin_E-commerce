@@ -47,7 +47,7 @@
 <body class="text-zinc-100 h-screen flex overflow-hidden selection:bg-blue-500/30 relative">
 
     <script>
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwPHoyf-hGR5_oYdnc3Fz6NIxcGicwV2Q63_6UntL6Xex8WtFv3-wlAZp01zica1keN/exec'; 
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz4A8oLgkoil9VA3E7pywipVKqnxp0mdF23T5kUcsgyWrSfynCN6RhiJJg5s_W3xUqY/exec'; 
     </script>
 
     <!-- Sidebar Admin Desktop -->
@@ -137,7 +137,7 @@
             <!-- PRODUK SECTION -->
             <section id="sec-produk" class="hidden space-y-6 md:space-y-8">
                 
-                <!-- KONTINER FORM TAMBAH/EDIT PRODUK (Dibuat Hidden Secara Default) -->
+                <!-- KONTINER FORM TAMBAH/EDIT PRODUK -->
                 <div class="bg-[#18181b] p-5 md:p-8 rounded-[40px] shadow-lg border border-zinc-800 transition-all hidden" id="form-produk-container">
                     <div class="flex justify-between items-center mb-5 md:mb-6">
                         <h3 class="text-lg md:text-xl font-bold text-white tracking-tight flex items-center gap-2" id="title-form-produk">
@@ -191,7 +191,7 @@
                         <h3 class="font-bold text-white text-lg md:text-xl tracking-tight">Daftar Produk</h3>
                         <div class="flex gap-2">
                             <button onclick="toggleFormProduk()" class="bg-blue-600 hover:bg-blue-500 text-white px-5 py-2 rounded-full text-xs md:text-sm font-bold transition-colors flex items-center gap-2 shadow-md"><i class="fa-solid fa-plus"></i> Tambah</button>
-                            <button onclick="fetchProduk()" class="bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-blue-400 w-10 h-10 rounded-full flex items-center justify-center transition active:scale-90"><i class="fa-solid fa-rotate-right"></i></button>
+                            <button onclick="fetchProduk(true)" class="bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-blue-400 w-10 h-10 rounded-full flex items-center justify-center transition active:scale-90"><i class="fa-solid fa-rotate-right"></i></button>
                         </div>
                     </div>
                     <div class="overflow-x-auto scroll-touch pb-2">
@@ -221,7 +221,7 @@
                 <div class="bg-[#18181b] rounded-[40px] shadow-lg border border-zinc-800 overflow-hidden">
                     <div class="flex justify-between items-center p-5 md:p-8 border-b border-zinc-800">
                         <h3 class="font-bold text-white text-lg md:text-xl tracking-tight">Pesanan: <span id="label-bulan-aktif" class="text-blue-400">Semua Waktu</span></h3>
-                        <button onclick="fetchPenjualan()" class="bg-blue-500/10 text-blue-400 border border-blue-500/20 px-4 py-2 rounded-full text-xs md:text-sm font-bold hover:bg-blue-500/20 transition active:scale-95 flex items-center gap-2"><i class="fa-solid fa-rotate-right"></i> Refresh</button>
+                        <button onclick="fetchPenjualan(true)" class="bg-blue-500/10 text-blue-400 border border-blue-500/20 px-4 py-2 rounded-full text-xs md:text-sm font-bold hover:bg-blue-500/20 transition active:scale-95 flex items-center gap-2"><i class="fa-solid fa-rotate-right"></i> Refresh</button>
                     </div>
                     <div class="overflow-x-auto scroll-touch pb-2">
                         <table class="w-full text-left text-sm whitespace-nowrap">
@@ -249,7 +249,7 @@
                             <h3 class="text-xl font-bold text-white tracking-tight">Transkrip Penjualan Produk</h3>
                             <p class="text-xs text-zinc-400 font-medium mt-1">Ketuk produk untuk melihat laporan.</p>
                         </div>
-                        <button onclick="fetchTranskrip()" class="bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-blue-400 w-10 h-10 rounded-full flex items-center justify-center"><i class="fa-solid fa-rotate-right"></i></button>
+                        <button onclick="fetchTranskrip(true)" class="bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-blue-400 w-10 h-10 rounded-full flex items-center justify-center"><i class="fa-solid fa-rotate-right"></i></button>
                     </div>
                     <div id="grid-transkrip" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
                 </div>
@@ -262,7 +262,7 @@
                         <div>
                             <h3 class="text-xl font-bold text-white tracking-tight">Database Pelanggan</h3>
                         </div>
-                        <button onclick="fetchPelanggan()" class="bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-blue-400 w-10 h-10 rounded-full flex items-center justify-center"><i class="fa-solid fa-rotate-right"></i></button>
+                        <button onclick="fetchPelanggan(true)" class="bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-blue-400 w-10 h-10 rounded-full flex items-center justify-center"><i class="fa-solid fa-rotate-right"></i></button>
                     </div>
                     <div id="grid-pelanggan" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
                 </div>
@@ -391,6 +391,10 @@
         const formatRp = (angka) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka);
         const showLoading = (show) => document.getElementById('loading-indicator').style.display = show ? 'flex' : 'none';
 
+        // VARIABEL CACHING (Menyimpan data agar tidak reload berulang)
+        let dataLoaded = { dashboard: false, produk: false, penjualan: false, pelanggan: false, pengaturan: false };
+        let dashData = { totalProduk: 0, totalTerjual: 0, totalPendapatan: 0 };
+        
         let globalPenjualan = []; let globalPelanggan = []; let globalProduk = [];
         let activeBulanFilter = 'Semua Waktu'; let isEditingProduk = false; let produkIdToEdit = null;
         let navVisible = false;
@@ -420,25 +424,29 @@
             if(mobActive) mobActive.className = "flex flex-col items-center gap-1 p-2 text-blue-500 min-w-[72px] shrink-0 active:scale-90 transition-transform drop-shadow-sm";
             
             updateNavTitles(tab);
+            // Panggil API HANYA JIKA cache belum ada (ditangani oleh masing-masing fungsi)
             if (tab === 'dashboard') fetchDashboard();
             if (tab === 'produk') fetchProduk();
             if (tab === 'penjualan') fetchPenjualan();
             if (tab === 'transkrip') fetchTranskrip();
-            if (tab === 'pelanggan') { fetchPelanggan(); fetchPenjualan(true); }
+            if (tab === 'pelanggan') { fetchPelanggan(); fetchPenjualan(); }
             if (tab === 'pengaturan') fetchPengaturanAdmin();
         }
 
-        async function fetchDashboard() {
+        async function fetchDashboard(force = false) {
+            if (!force && dataLoaded.dashboard) { renderDashboard(); return; }
             showLoading(true);
             try {
                 const res = await fetch(`${SCRIPT_URL}?action=getDashboard`); const data = await res.json();
                 if(data.status === 'success') {
-                    document.getElementById('dash-produk').textContent = data.data.totalProduk;
-                    document.getElementById('dash-terjual').textContent = data.data.totalTerjual;
-                    document.getElementById('dash-pendapatan').textContent = formatRp(data.data.totalPendapatan);
+                    dashData = data.data; dataLoaded.dashboard = true; renderDashboard();
                 }
-            } catch (err) {}
-            showLoading(false);
+            } catch (err) {} showLoading(false);
+        }
+        function renderDashboard() {
+            document.getElementById('dash-produk').textContent = dashData.totalProduk;
+            document.getElementById('dash-terjual').textContent = dashData.totalTerjual;
+            document.getElementById('dash-pendapatan').textContent = formatRp(dashData.totalPendapatan);
         }
 
         function updateDatalistKategori() {
@@ -453,10 +461,7 @@
             if (formContainer.classList.contains('hidden')) {
                 formContainer.classList.remove('hidden');
                 formContainer.scrollIntoView({behavior: "smooth"});
-            } else {
-                batalEditProduk(); 
-                formContainer.classList.add('hidden');
-            }
+            } else { batalEditProduk(); formContainer.classList.add('hidden'); }
         }
 
         function toggleModalDetailProduk() {
@@ -470,81 +475,61 @@
             if(!p) return;
             const content = document.getElementById('content-detail-produk');
             
-            const nm = p['Nama Baju'] || p.nama; 
-            const kat = p.Kategori || p.kategori; 
-            const hrg = p.Harga || p.harga; 
-            const stk = p.Stok || p.stok; 
-            const dsc = p.Deskripsi || 'Tidak ada deskripsi.';
-            const gbrRaw = p['URL Gambar'] || '';
-            const imgs = gbrRaw.split(',').filter(u => u.trim() !== "");
+            const nm = p['Nama Baju'] || p.nama; const kat = p.Kategori || p.kategori; 
+            const hrg = p.Harga || p.harga; const stk = p.Stok || p.stok; const dsc = p.Deskripsi || 'Tidak ada deskripsi.';
+            const gbrRaw = p['URL Gambar'] || ''; const imgs = gbrRaw.split(',').filter(u => u.trim() !== "");
             const safeGbr = imgs[0] || 'https://via.placeholder.com/400';
             
             let imgHtml = `<img src="${safeGbr}" class="w-full h-48 object-cover rounded-2xl mb-4 border border-zinc-800">`;
-            if(imgs.length > 1) {
-                imgHtml += `<div class="flex gap-2 overflow-x-auto hide-scrollbar mb-4">` + imgs.map(u => `<img src="${u}" class="w-16 h-16 object-cover rounded-lg border border-zinc-700">`).join('') + `</div>`;
-            }
+            if(imgs.length > 1) { imgHtml += `<div class="flex gap-2 overflow-x-auto hide-scrollbar mb-4">` + imgs.map(u => `<img src="${u}" class="w-16 h-16 object-cover rounded-lg border border-zinc-700">`).join('') + `</div>`; }
 
             content.innerHTML = `
                 ${imgHtml}
                 <div class="flex justify-between items-start mb-2">
-                    <div>
-                        <h4 class="font-bold text-lg text-white">${nm}</h4>
-                        <p class="font-mono text-xs text-zinc-500">${id}</p>
-                    </div>
+                    <div><h4 class="font-bold text-lg text-white">${nm}</h4><p class="font-mono text-xs text-zinc-500">${id}</p></div>
                     <span class="bg-zinc-800 text-zinc-300 text-[10px] font-bold px-2 py-1 rounded border border-zinc-700">${kat}</span>
                 </div>
                 <div class="flex justify-between items-center bg-[#09090b] border border-zinc-800 p-3 rounded-xl mb-4">
-                    <div>
-                        <p class="text-[10px] text-zinc-500 font-bold uppercase">Harga</p>
-                        <p class="text-blue-400 font-bold text-sm">${formatRp(hrg)}</p>
-                    </div>
-                    <div class="text-right">
-                        <p class="text-[10px] text-zinc-500 font-bold uppercase">Stok</p>
-                        <p class="font-bold ${stk <= 5 ? 'text-red-400' : 'text-zinc-200'} text-sm">${stk} Pcs</p>
-                    </div>
+                    <div><p class="text-[10px] text-zinc-500 font-bold uppercase">Harga</p><p class="text-blue-400 font-bold text-sm">${formatRp(hrg)}</p></div>
+                    <div class="text-right"><p class="text-[10px] text-zinc-500 font-bold uppercase">Stok</p><p class="font-bold ${stk <= 5 ? 'text-red-400' : 'text-zinc-200'} text-sm">${stk} Pcs</p></div>
                 </div>
-                <div>
-                    <p class="text-[10px] text-zinc-500 font-bold uppercase mb-1">Deskripsi</p>
-                    <p class="text-sm text-zinc-300 whitespace-pre-wrap leading-relaxed">${dsc}</p>
-                </div>
+                <div><p class="text-[10px] text-zinc-500 font-bold uppercase mb-1">Deskripsi</p><p class="text-sm text-zinc-300 whitespace-pre-wrap leading-relaxed">${dsc}</p></div>
             `;
             toggleModalDetailProduk();
         }
 
-        async function fetchProduk() {
-            showLoading(true); const tbody = document.getElementById('table-produk');
+        async function fetchProduk(force = false) {
+            if(!force && dataLoaded.produk && globalProduk.length > 0) { renderTableProduk(); return; }
+            showLoading(true); 
             try {
                 const res = await fetch(`${SCRIPT_URL}?action=getProduk`); const data = await res.json();
-                if(data.status === 'success') {
-                    globalProduk = data.data; updateDatalistKategori();
-                    if(globalProduk.length > 0) {
-                        tbody.innerHTML = globalProduk.map(p => {
-                            const id = p.ID || p.id; const nm = p['Nama Baju'] || p.nama; const kat = p.Kategori || p.kategori; 
-                            const hrg = p.Harga || p.harga; const stk = p.Stok || p.stok; const gbr = p['URL Gambar'] || '';
-                            const dsc = p.Deskripsi || ''; 
-                            const safeGbr = (gbr.split(',')[0]) || 'https://via.placeholder.com/50'; 
-                            const safeDesc = dsc.replace(/"/g, '&quot;').replace(/'/g, "\\'").replace(/\n/g, '\\n');
-                            return `
-                            <tr class="hover:bg-zinc-800/30 border-b border-zinc-800/50 cursor-pointer" onclick="bukaDetailProdukModal('${id}')">
-                                <td class="px-5 py-3"><img src="${safeGbr}" class="w-10 h-10 object-cover rounded-[10px] shadow-sm border border-zinc-700"></td>
-                                <td class="px-5 py-4">
-                                    <span class="font-bold text-white text-sm block">${nm}</span>
-                                    <span class="font-mono text-zinc-400 text-[10px]">${id} &bull; ${kat}</span>
-                                </td>
-                                <td class="px-5 py-4 font-bold text-blue-400 text-sm">${formatRp(hrg)}</td>
-                                <td class="px-5 py-4 font-bold text-sm ${stk <= 5 ? 'text-red-400' : 'text-zinc-200'}">${stk}</td>
-                                <td class="px-5 py-4 text-center" onclick="event.stopPropagation()">
-                                    <div class="flex gap-2 justify-center">
-                                        <button onclick="mulaiEditProduk('${id}', '${nm.replace(/'/g, "\\'")}', '${kat}', ${hrg}, ${stk}, '${gbr}', '${safeDesc}')" class="w-8 h-8 rounded-full bg-blue-500/10 text-blue-400 hover:bg-blue-500/20 transition-colors"><i class="fa-solid fa-pen text-xs"></i></button>
-                                        <button onclick="hapusProduk('${id}')" class="w-8 h-8 rounded-full bg-red-500/10 text-red-400 hover:bg-red-500/20 transition-colors"><i class="fa-solid fa-trash text-xs"></i></button>
-                                    </div>
-                                </td>
-                            </tr>`
-                        }).join('');
-                    } else tbody.innerHTML = `<tr><td colspan="5" class="text-center py-12 text-zinc-500 font-medium">Belum ada produk.</td></tr>`;
-                }
-            } catch (err) {}
-            showLoading(false);
+                if(data.status === 'success') { globalProduk = data.data; dataLoaded.produk = true; updateDatalistKategori(); renderTableProduk(); }
+            } catch (err) {} showLoading(false);
+        }
+
+        function renderTableProduk() {
+            const tbody = document.getElementById('table-produk');
+            if(globalProduk.length > 0) {
+                tbody.innerHTML = globalProduk.map(p => {
+                    const id = p.ID || p.id; const nm = p['Nama Baju'] || p.nama; const kat = p.Kategori || p.kategori; 
+                    const hrg = p.Harga || p.harga; const stk = p.Stok || p.stok; const gbr = p['URL Gambar'] || ''; const dsc = p.Deskripsi || ''; 
+                    const safeGbr = (gbr.split(',')[0]) || 'https://via.placeholder.com/50'; 
+                    const safeDesc = dsc.replace(/"/g, '&quot;').replace(/'/g, "\\'").replace(/\n/g, '\\n');
+                    return `
+                    <tr class="hover:bg-zinc-800/30 border-b border-zinc-800/50 cursor-pointer" onclick="bukaDetailProdukModal('${id}')">
+                        <td class="px-5 py-3"><img src="${safeGbr}" class="w-10 h-10 object-cover rounded-[10px] shadow-sm border border-zinc-700"></td>
+                        <td class="px-5 py-4"><span class="font-bold text-white text-sm block">${nm}</span><span class="font-mono text-zinc-400 text-[10px]">${id} &bull; ${kat}</span></td>
+                        <td class="px-5 py-4 font-bold text-blue-400 text-sm">${formatRp(hrg)}</td>
+                        <td class="px-5 py-4 font-bold text-sm ${stk <= 5 ? 'text-red-400' : 'text-zinc-200'}">${stk}</td>
+                        <td class="px-5 py-4 text-center" onclick="event.stopPropagation()">
+                            <div class="flex gap-2 justify-center">
+                                <button onclick="mulaiEditProduk('${id}', '${nm.replace(/'/g, "\\'")}', '${kat}', ${hrg}, ${stk}, '${gbr}', '${safeDesc}')" class="w-8 h-8 rounded-full bg-blue-500/10 text-blue-400 hover:bg-blue-500/20 transition-colors"><i class="fa-solid fa-pen text-xs"></i></button>
+                                <button onclick="hapusProduk('${id}')" class="w-8 h-8 rounded-full bg-red-500/10 text-red-400 hover:bg-red-500/20 transition-colors"><i class="fa-solid fa-trash text-xs"></i></button>
+                            </div>
+                        </td>
+                    </tr>`
+                }).join('');
+            } else tbody.innerHTML = `<tr><td colspan="5" class="text-center py-12 text-zinc-500 font-medium">Belum ada produk.</td></tr>`;
         }
 
         let base64GambarArray = [];
@@ -575,8 +560,7 @@
         function mulaiEditProduk(id, nama, kategori, harga, stok, urlGambar, deskripsi) {
             isEditingProduk = true; produkIdToEdit = id;
             document.getElementById('title-form-produk').innerHTML = `<div class="w-7 h-7 rounded-full bg-orange-500/10 text-orange-400 flex items-center justify-center text-xs"><i class="fa-solid fa-pen"></i></div><span>Edit Produk: ${id}</span>`;
-            document.getElementById('btn-batal-edit').classList.remove('hidden');
-            document.getElementById('form-produk-container').classList.remove('hidden');
+            document.getElementById('btn-batal-edit').classList.remove('hidden'); document.getElementById('form-produk-container').classList.remove('hidden');
             
             document.getElementById('p-id').value = id; document.getElementById('p-id').disabled = true; document.getElementById('p-id').classList.add('opacity-50', 'cursor-not-allowed');
             document.getElementById('p-nama').value = nama; document.getElementById('p-kategori').value = kategori; document.getElementById('p-harga').value = harga; document.getElementById('p-stok').value = stok;
@@ -612,17 +596,12 @@
             const payload = {
                 action: isEditingProduk ? "editProduk" : "addProduk", id: document.getElementById('p-id').value, nama: document.getElementById('p-nama').value,
                 kategori: document.getElementById('p-kategori').value, harga: document.getElementById('p-harga').value, stok: document.getElementById('p-stok').value, 
-                gambar: base64GambarArray,
-                deskripsi: document.getElementById('p-deskripsi').value 
+                gambar: base64GambarArray, deskripsi: document.getElementById('p-deskripsi').value 
             };
             try {
                 const res = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload), headers: { 'Content-Type': 'text/plain' } });
                 const data = await res.json();
-                if(data.status === 'success') { 
-                    alert(data.message); 
-                    batalEditProduk(); 
-                    fetchProduk(); 
-                } else alert('Gagal: ' + data.message);
+                if(data.status === 'success') { alert(data.message); batalEditProduk(); fetchProduk(true); } else alert('Gagal: ' + data.message);
             } catch (err) {}
             btn.innerHTML = ogText; btn.disabled = false;
         }
@@ -631,7 +610,7 @@
             if(!confirm(`Hapus produk ID: ${id}?`)) return; showLoading(true);
             try {
                 const res = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({action: "deleteProduk", id: id}), headers: { 'Content-Type': 'text/plain' } });
-                const data = await res.json(); if(data.status === 'success') fetchProduk();
+                const data = await res.json(); if(data.status === 'success') fetchProduk(true);
             } catch (e) {} showLoading(false);
         }
 
@@ -647,17 +626,13 @@
             } catch(e) {} return "Bulan Lainnya";
         }
 
-        async function fetchPenjualan(silent = false) {
-            if(!silent) showLoading(true);
-            const tbody = document.getElementById('table-penjualan');
+        async function fetchPenjualan(force = false) {
+            if(!force && dataLoaded.penjualan && globalPenjualan.length > 0) { renderFilterBulan(); renderTabelPenjualan(activeBulanFilter); return; }
+            showLoading(true);
             try {
                 const res = await fetch(`${SCRIPT_URL}?action=getPenjualan`); const data = await res.json();
-                if(data.status === 'success') {
-                    globalPenjualan = data.data.reverse(); 
-                    renderFilterBulan(); renderTabelPenjualan(activeBulanFilter); 
-                }
-            } catch (err) {}
-            if(!silent) showLoading(false);
+                if(data.status === 'success') { globalPenjualan = data.data.reverse(); dataLoaded.penjualan = true; renderFilterBulan(); renderTabelPenjualan(activeBulanFilter); }
+            } catch (err) {} showLoading(false);
         }
 
         function renderFilterBulan() {
@@ -682,8 +657,7 @@
             if(dataTampil.length > 0) {
                 tbody.innerHTML = dataTampil.map(p => {
                     const idTrx = p['ID Transaksi']; const status = p.Status || "Menunggu Konfirmasi";
-                    const isCash = p['Metode Bayar'] === 'Cash';
-                    const isDP = p['Tipe Pembayaran'] === 'DP';
+                    const isCash = p['Metode Bayar'] === 'Cash'; const isDP = p['Tipe Pembayaran'] === 'DP';
 
                     let badgeColor = status === 'Diproses' ? "bg-blue-500/10 text-blue-400" : (status === 'Selesai' ? "bg-emerald-500/10 text-emerald-400" : (status === 'Dibatalkan' ? "bg-red-500/10 text-red-400" : "bg-orange-500/10 text-orange-400"));
                     const bayarBadge = isDP ? "bg-purple-500/10 text-purple-400" : "bg-emerald-500/10 text-emerald-400";
@@ -697,28 +671,15 @@
                     if(isDP) {
                        if (p['Bukti Pelunasan'] && p['Bukti Pelunasan'].startsWith('http')) {
                           bukti2 = `<button onclick="bukaBuktiModal('${p['Bukti Pelunasan']}')" class="bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 px-3 py-1.5 rounded-xl text-[10px] font-bold transition-colors"><i class="fa-solid fa-image"></i> Cek Lunas</button>`;
-                       } else {
-                          bukti2 = `<span class="text-[10px] text-orange-400 font-bold bg-orange-500/10 px-2 py-1 rounded">Belum Lunas</span>`;
-                       }
+                       } else { bukti2 = `<span class="text-[10px] text-orange-400 font-bold bg-orange-500/10 px-2 py-1 rounded">Belum Lunas</span>`; }
                     }
 
                     return `
                     <tr class="hover:bg-zinc-800/30 border-b border-zinc-800/50">
-                        <td class="px-5 py-3">
-                            <span class="font-mono font-bold text-white block text-[11px]">${idTrx}</span>
-                            <span class="text-[10px] text-zinc-400 block mt-1"><i class="fa-regular fa-user"></i> ${p['Username Pembeli'] || '-'}</span>
-                            <span class="text-[9px] text-zinc-500 block mt-1">${p.Tanggal.split(' ')[0]}</span>
-                        </td>
-                        <td class="px-5 py-3">
-                            <p class="font-bold text-white text-[11px] w-40 truncate" title="${p['Nama Baju']}">${p['Nama Baju']}</p>
-                            <p class="text-blue-400 font-extrabold text-[11px] mt-1">${formatRp(p['Total Harga'])} <span class="text-[9px] text-zinc-500 font-normal ml-1">(${p.Jumlah}x)</span></p>
-                        </td>
-                        <td class="px-5 py-3 text-center">
-                            <span class="px-2 py-1 rounded text-[9px] font-bold uppercase bg-zinc-800 text-zinc-300 block mb-1 border border-zinc-700">${p['Metode Bayar']||'Transfer'}</span>
-                            <span class="px-2 py-1 rounded text-[9px] font-bold uppercase ${bayarBadge} block border border-transparent" title="${p['Detail DP']||''}">${p['Tipe Pembayaran']}</span>
-                        </td>
-                        <td class="px-5 py-3 text-center">${bukti1}</td>
-                        <td class="px-5 py-3 text-center">${bukti2}</td>
+                        <td class="px-5 py-3"><span class="font-mono font-bold text-white block text-[11px]">${idTrx}</span><span class="text-[10px] text-zinc-400 block mt-1"><i class="fa-regular fa-user"></i> ${p['Username Pembeli'] || '-'}</span><span class="text-[9px] text-zinc-500 block mt-1">${p.Tanggal.split(' ')[0]}</span></td>
+                        <td class="px-5 py-3"><p class="font-bold text-white text-[11px] w-40 truncate" title="${p['Nama Baju']}">${p['Nama Baju']}</p><p class="text-blue-400 font-extrabold text-[11px] mt-1">${formatRp(p['Total Harga'])} <span class="text-[9px] text-zinc-500 font-normal ml-1">(${p.Jumlah}x)</span></p></td>
+                        <td class="px-5 py-3 text-center"><span class="px-2 py-1 rounded text-[9px] font-bold uppercase bg-zinc-800 text-zinc-300 block mb-1 border border-zinc-700">${p['Metode Bayar']||'Transfer'}</span><span class="px-2 py-1 rounded text-[9px] font-bold uppercase ${bayarBadge} block border border-transparent" title="${p['Detail DP']||''}">${p['Tipe Pembayaran']}</span></td>
+                        <td class="px-5 py-3 text-center">${bukti1}</td><td class="px-5 py-3 text-center">${bukti2}</td>
                         <td class="px-5 py-3 text-center">
                             <span class="px-2 py-1 rounded text-[9px] font-bold w-full max-w-[90px] text-center inline-block mb-1 ${badgeColor}">${status}</span>
                             <select onchange="updateStatusPesanan('${idTrx}', this)" class="w-full max-w-[90px] bg-zinc-800 border border-zinc-700 text-white text-[9px] font-bold rounded px-1 py-1.5 outline-none text-center cursor-pointer">
@@ -735,17 +696,21 @@
             try {
                 const res = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: "updateStatus", id_transaksi: idTransaksi, status_baru: statusBaru }), headers: { 'Content-Type': 'text/plain' } });
                 const data = await res.json();
-                if(data.status === 'success') { fetchPenjualan(true); } else alert('Gagal: ' + data.message);
+                if(data.status === 'success') { fetchPenjualan(true); fetchDashboard(true); fetchTranskrip(true); } else alert('Gagal: ' + data.message);
             } catch (err) {}
             selectElement.disabled = false; selectElement.value = ""; showLoading(false);
         }
 
-        async function fetchTranskrip() {
+        async function fetchTranskrip(force = false) {
+            if(!force && dataLoaded.penjualan) { renderGridTranskrip(); return; }
             showLoading(true);
             try {
                 const res = await fetch(`${SCRIPT_URL}?action=getPenjualan`); const data = await res.json();
-                if(data.status === 'success') { globalPenjualan = data.data.reverse(); }
-            } catch(e) {}
+                if(data.status === 'success') { globalPenjualan = data.data.reverse(); dataLoaded.penjualan = true; renderGridTranskrip(); }
+            } catch(e) {} showLoading(false);
+        }
+
+        function renderGridTranskrip() {
             const grid = document.getElementById('grid-transkrip'); const produkTerjual = {};
             globalPenjualan.forEach(p => {
                 const id = p['ID Baju'];
@@ -764,19 +729,15 @@
                     </div>
                 `).join('');
             } else { grid.innerHTML = `<div class="col-span-full text-center py-12 text-zinc-500">Belum ada rekaman.</div>`; }
-            showLoading(false);
         }
 
         let activeTranskripId = null; let activeTranskripBulan = 'Semua Waktu';
         function bukaTranskripDetail(id) {
-            activeTranskripId = id; activeTranskripBulan = 'Semua Waktu';
-            const p = globalPenjualan.find(x => x['ID Baju'] === id);
-            document.getElementById('transkrip-nama-produk').textContent = p ? p['Nama Baju'] : id;
-            renderTranskripFilterBulan(); renderTranskripTable(); toggleModalTranskrip();
+            activeTranskripId = id; activeTranskripBulan = 'Semua Waktu'; const p = globalPenjualan.find(x => x['ID Baju'] === id);
+            document.getElementById('transkrip-nama-produk').textContent = p ? p['Nama Baju'] : id; renderTranskripFilterBulan(); renderTranskripTable(); toggleModalTranskrip();
         }
         function renderTranskripFilterBulan() {
-            const container = document.getElementById('transkrip-filter-bulan');
-            const dataProduk = globalPenjualan.filter(p => p['ID Baju'] === activeTranskripId);
+            const container = document.getElementById('transkrip-filter-bulan'); const dataProduk = globalPenjualan.filter(p => p['ID Baju'] === activeTranskripId);
             let listBulan = [...new Set(dataProduk.map(p => getBulanTahun(p.Tanggal)))];
             let html = `<button onclick="setTranskripBulan('Semua Waktu')" class="shrink-0 px-4 py-2 rounded-full text-xs font-bold transition-all border ${activeTranskripBulan === 'Semua Waktu' ? 'bg-blue-600 text-white border-blue-600' : 'bg-zinc-800 text-zinc-400 border-zinc-700 hover:bg-zinc-700'}">Semua Waktu</button>`;
             listBulan.forEach(bln => {
@@ -787,8 +748,7 @@
         }
         function setTranskripBulan(bulan) { activeTranskripBulan = bulan; renderTranskripFilterBulan(); renderTranskripTable(); }
         function renderTranskripTable() {
-            const tbody = document.getElementById('transkrip-table-body');
-            let dataTampil = globalPenjualan.filter(p => p['ID Baju'] === activeTranskripId);
+            const tbody = document.getElementById('transkrip-table-body'); let dataTampil = globalPenjualan.filter(p => p['ID Baju'] === activeTranskripId);
             if(activeTranskripBulan !== 'Semua Waktu') { dataTampil = dataTampil.filter(p => getBulanTahun(p.Tanggal) === activeTranskripBulan); }
             if(dataTampil.length > 0) {
                 tbody.innerHTML = dataTampil.map(p => `
@@ -814,20 +774,25 @@
         }
         function bukaBuktiModal(url) { document.getElementById('img-bukti-detail').src = url; toggleModalBukti(); }
 
-        async function fetchPelanggan() {
-            showLoading(true); const grid = document.getElementById('grid-pelanggan');
+        async function fetchPelanggan(force = false) {
+            if(!force && dataLoaded.pelanggan && globalPelanggan.length > 0) { renderGridPelanggan(); return; }
+            showLoading(true); 
             try {
                 const res = await fetch(`${SCRIPT_URL}?action=getPelanggan`); const data = await res.json();
-                if(data.status === 'success' && data.data.length > 0) {
-                    globalPelanggan = data.data; 
-                    grid.innerHTML = data.data.map(p => `
-                        <div onclick="bukaDetailPelanggan('${p.Username}')" class="bg-[#09090b] p-4 rounded-[24px] flex items-center gap-4 cursor-pointer hover:bg-zinc-800 border border-zinc-800 transition-colors">
-                            <img src="${p['URL Foto Profil'] || 'https://via.placeholder.com/150'}" class="w-12 h-12 rounded-full object-cover border border-zinc-700">
-                            <div><h4 class="font-bold text-white text-sm">${p['Nama Lengkap']}</h4><p class="text-[10px] text-zinc-400">@${p.Username}</p></div>
-                        </div>
-                    `).join('');
-                } else { grid.innerHTML = `<div class="col-span-full py-12 text-center text-zinc-500">Belum ada pelanggan.</div>`; }
+                if(data.status === 'success') { globalPelanggan = data.data; dataLoaded.pelanggan = true; renderGridPelanggan(); }
             } catch(e){} showLoading(false);
+        }
+
+        function renderGridPelanggan() {
+            const grid = document.getElementById('grid-pelanggan');
+            if(globalPelanggan.length > 0) {
+                grid.innerHTML = globalPelanggan.map(p => `
+                    <div onclick="bukaDetailPelanggan('${p.Username}')" class="bg-[#09090b] p-4 rounded-[24px] flex items-center gap-4 cursor-pointer hover:bg-zinc-800 border border-zinc-800 transition-colors">
+                        <img src="${p['URL Foto Profil'] || 'https://via.placeholder.com/150'}" class="w-12 h-12 rounded-full object-cover border border-zinc-700">
+                        <div><h4 class="font-bold text-white text-sm">${p['Nama Lengkap']}</h4><p class="text-[10px] text-zinc-400">@${p.Username}</p></div>
+                    </div>
+                `).join('');
+            } else { grid.innerHTML = `<div class="col-span-full py-12 text-center text-zinc-500">Belum ada pelanggan.</div>`; }
         }
 
         function toggleModalPelanggan() {
@@ -930,11 +895,13 @@
             reader.readAsDataURL(file);
         }
 
-        async function fetchPengaturanAdmin() {
+        async function fetchPengaturanAdmin(force = false) {
+            if(!force && dataLoaded.pengaturan) return;
             showLoading(true);
             try {
                 const res = await fetch(`${SCRIPT_URL}?action=getPengaturan`); const data = await res.json();
                 if(data.status === 'success' && data.data) {
+                    dataLoaded.pengaturan = true;
                     data.data.forEach(item => {
                         if(item.Key === 'logo' && item.Value) { document.getElementById('preview-logo').src = item.Value; document.getElementById('preview-logo').classList.remove('hidden'); }
                         if(item.Key === 'login_bg' && item.Value) { document.getElementById('preview-loginbg').src = item.Value; document.getElementById('preview-loginbg').classList.remove('hidden'); }
