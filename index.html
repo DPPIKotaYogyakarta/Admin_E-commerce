@@ -9,21 +9,22 @@
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: #F2F2F7;
+            background-color: #09090b; /* zinc-950 */
             -webkit-font-smoothing: antialiased;
+            color: #f4f4f5; /* zinc-50 */
         }
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .glass-panel {
-            background: rgba(255, 255, 255, 0.85);
+            background: rgba(24, 24, 27, 0.85); /* zinc-900 */
             backdrop-filter: blur(24px);
             -webkit-backdrop-filter: blur(24px);
-            border: 1px solid rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
         .scroll-touch { -webkit-overflow-scrolling: touch; }
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #D1D1D6; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: #AEAEB2; }
+        ::-webkit-scrollbar-thumb { background: #3f3f46; border-radius: 10px; } /* zinc-700 */
+        ::-webkit-scrollbar-thumb:hover { background: #52525b; } /* zinc-600 */
 
         .modal { transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
         .modal-sheet { transform: translateY(100%) scale(0.95); opacity: 0; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
@@ -32,43 +33,52 @@
 
         .safe-pt { padding-top: max(env(safe-area-inset-top), 24px); }
         .safe-pb-nav { padding-bottom: env(safe-area-inset-bottom); }
+        
+        /* Ubah input autofill background */
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover, 
+        input:-webkit-autofill:focus, 
+        input:-webkit-autofill:active{
+            -webkit-box-shadow: 0 0 0 30px #18181b inset !important;
+            -webkit-text-fill-color: white !important;
+        }
     </style>
 </head>
-<body class="text-[#1C1C1E] h-screen flex overflow-hidden selection:bg-blue-200 relative">
+<body class="text-zinc-100 h-screen flex overflow-hidden selection:bg-blue-500/30 relative">
 
     <script>
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwPHoyf-hGR5_oYdnc3Fz6NIxcGicwV2Q63_6UntL6Xex8WtFv3-wlAZp01zica1keN/exec'; 
     </script>
 
     <!-- Sidebar Admin Desktop -->
-    <aside class="w-72 m-4 mr-0 bg-white rounded-[32px] shadow-[0_8px_32px_rgba(0,0,0,0.04)] flex flex-col transition-all duration-300 overflow-hidden border border-slate-100 z-20 shrink-0 hidden md:flex">
+    <aside class="w-72 m-4 mr-0 bg-[#18181b] rounded-[32px] shadow-2xl flex flex-col transition-all duration-300 overflow-hidden border border-zinc-800 z-20 shrink-0 hidden md:flex">
         <div class="p-8 pb-4 flex items-center gap-3">
-            <div class="w-10 h-10 rounded-full bg-blue-50 text-blue-500 flex items-center justify-center shadow-md shadow-blue-500/30">
+            <div class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center shadow-lg shadow-blue-900/50">
                 <i class="fa-solid fa-user-shield text-xl"></i>
             </div>
-            <h1 class="text-xl font-bold tracking-tight text-black">Admin Panel</h1>
+            <h1 class="text-xl font-bold tracking-tight text-white">Admin Panel</h1>
         </div>
         
         <nav class="flex-1 p-4 space-y-1.5 overflow-y-auto hide-scrollbar">
-            <button onclick="switchTab('dashboard')" id="nav-dashboard" class="w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl bg-blue-500 text-white font-semibold transition-all shadow-md shadow-blue-500/20 active:scale-95">
+            <button onclick="switchTab('dashboard')" id="nav-dashboard" class="w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl bg-blue-600 text-white font-semibold transition-all shadow-md shadow-blue-900/20 active:scale-95">
                 <i class="fa-solid fa-chart-pie w-5 text-lg"></i> Dashboard
             </button>
-            <button onclick="switchTab('produk')" id="nav-produk" class="w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl text-slate-500 hover:bg-slate-100 hover:text-black font-semibold transition-all active:scale-95">
+            <button onclick="switchTab('produk')" id="nav-produk" class="w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl text-zinc-400 hover:bg-zinc-800 hover:text-white font-semibold transition-all active:scale-95">
                 <i class="fa-solid fa-tags w-5 text-lg"></i> Kelola Produk
             </button>
-            <button onclick="switchTab('penjualan')" id="nav-penjualan" class="w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl text-slate-500 hover:bg-slate-100 hover:text-black font-semibold transition-all active:scale-95">
+            <button onclick="switchTab('penjualan')" id="nav-penjualan" class="w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl text-zinc-400 hover:bg-zinc-800 hover:text-white font-semibold transition-all active:scale-95">
                 <i class="fa-solid fa-file-invoice-dollar w-5 text-lg"></i> Pesanan
             </button>
-            <button onclick="switchTab('transkrip')" id="nav-transkrip" class="w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl text-slate-500 hover:bg-slate-100 hover:text-black font-semibold transition-all active:scale-95">
+            <button onclick="switchTab('transkrip')" id="nav-transkrip" class="w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl text-zinc-400 hover:bg-zinc-800 hover:text-white font-semibold transition-all active:scale-95">
                 <i class="fa-solid fa-book w-5 text-lg"></i> Transkrip Penjualan
             </button>
-            <button onclick="switchTab('pelanggan')" id="nav-pelanggan" class="w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl text-slate-500 hover:bg-slate-100 hover:text-black font-semibold transition-all active:scale-95">
+            <button onclick="switchTab('pelanggan')" id="nav-pelanggan" class="w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl text-zinc-400 hover:bg-zinc-800 hover:text-white font-semibold transition-all active:scale-95">
                 <i class="fa-solid fa-users w-5 text-lg"></i> Data Pelanggan
             </button>
             
-            <div class="pt-4 mt-4 border-t border-slate-100">
-                <p class="px-4 text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">Sistem</p>
-                <button onclick="switchTab('pengaturan')" id="nav-pengaturan" class="w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl text-slate-500 hover:bg-slate-100 hover:text-black font-semibold transition-all active:scale-95">
+            <div class="pt-4 mt-4 border-t border-zinc-800">
+                <p class="px-4 text-[11px] font-bold text-zinc-500 uppercase tracking-wider mb-2">Sistem</p>
+                <button onclick="switchTab('pengaturan')" id="nav-pengaturan" class="w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl text-zinc-400 hover:bg-zinc-800 hover:text-white font-semibold transition-all active:scale-95">
                     <i class="fa-solid fa-paint-roller w-5 text-lg"></i> Pengaturan Web
                 </button>
             </div>
@@ -76,30 +86,30 @@
     </aside>
 
     <!-- FAB: Mobile -->
-    <button id="fab-menu" onclick="toggleMobileNav()" class="md:hidden fixed bottom-6 right-6 z-[60] w-14 h-14 rounded-full bg-blue-500 text-white shadow-lg shadow-blue-500/40 flex items-center justify-center transition-transform active:scale-90 pb-safe">
+    <button id="fab-menu" onclick="toggleMobileNav()" class="md:hidden fixed bottom-6 right-6 z-[60] w-14 h-14 rounded-full bg-blue-600 text-white shadow-lg shadow-blue-900/50 flex items-center justify-center transition-transform active:scale-90 pb-safe border border-blue-500">
         <i id="fab-icon" class="fa-solid fa-bars text-xl"></i>
     </button>
 
     <!-- Mobile Nav -->
-    <div id="mobile-nav-container" class="md:hidden fixed bottom-0 inset-x-0 glass-panel z-50 rounded-t-[32px] shadow-[0_-8px_32px_rgba(0,0,0,0.08)] safe-pb-nav transform translate-y-full transition-transform duration-400 ease-in-out">
-        <div class="flex justify-start p-2 pt-4 px-4 overflow-x-auto hide-scrollbar scroll-touch gap-2">
+    <div id="mobile-nav-container" class="md:hidden fixed bottom-0 inset-x-0 glass-panel z-50 rounded-t-[32px] shadow-[0_-8px_32px_rgba(0,0,0,0.5)] safe-pb-nav transform translate-y-full transition-transform duration-400 ease-in-out">
+        <div class="flex justify-start p-2 pt-4 pl-4 pr-24 overflow-x-auto hide-scrollbar scroll-touch gap-2">
             <button onclick="switchTab('dashboard')" id="nav-mob-dashboard" class="flex flex-col items-center gap-1 p-2 text-blue-500 min-w-[72px] shrink-0 active:scale-90 transition-transform"><i class="fa-solid fa-chart-pie text-xl"></i><span class="text-[10px] font-bold">Dash</span></button>
-            <button onclick="switchTab('produk')" id="nav-mob-produk" class="flex flex-col items-center gap-1 p-2 text-slate-400 min-w-[72px] shrink-0 active:scale-90 transition-transform"><i class="fa-solid fa-tags text-xl"></i><span class="text-[10px] font-bold">Produk</span></button>
-            <button onclick="switchTab('penjualan')" id="nav-mob-penjualan" class="flex flex-col items-center gap-1 p-2 text-slate-400 min-w-[72px] shrink-0 active:scale-90 transition-transform"><i class="fa-solid fa-file-invoice text-xl"></i><span class="text-[10px] font-bold">Pesanan</span></button>
-            <button onclick="switchTab('transkrip')" id="nav-mob-transkrip" class="flex flex-col items-center gap-1 p-2 text-slate-400 min-w-[72px] shrink-0 active:scale-90 transition-transform"><i class="fa-solid fa-book text-xl"></i><span class="text-[10px] font-bold">Transkrip</span></button>
-            <button onclick="switchTab('pelanggan')" id="nav-mob-pelanggan" class="flex flex-col items-center gap-1 p-2 text-slate-400 min-w-[72px] shrink-0 active:scale-90 transition-transform"><i class="fa-solid fa-users text-xl"></i><span class="text-[10px] font-bold">Member</span></button>
-            <button onclick="switchTab('pengaturan')" id="nav-mob-pengaturan" class="flex flex-col items-center gap-1 p-2 text-slate-400 min-w-[72px] shrink-0 active:scale-90 transition-transform"><i class="fa-solid fa-cog text-xl"></i><span class="text-[10px] font-bold">Setting</span></button>
+            <button onclick="switchTab('produk')" id="nav-mob-produk" class="flex flex-col items-center gap-1 p-2 text-zinc-500 min-w-[72px] shrink-0 active:scale-90 transition-transform"><i class="fa-solid fa-tags text-xl"></i><span class="text-[10px] font-bold">Produk</span></button>
+            <button onclick="switchTab('penjualan')" id="nav-mob-penjualan" class="flex flex-col items-center gap-1 p-2 text-zinc-500 min-w-[72px] shrink-0 active:scale-90 transition-transform"><i class="fa-solid fa-file-invoice text-xl"></i><span class="text-[10px] font-bold">Pesanan</span></button>
+            <button onclick="switchTab('transkrip')" id="nav-mob-transkrip" class="flex flex-col items-center gap-1 p-2 text-zinc-500 min-w-[72px] shrink-0 active:scale-90 transition-transform"><i class="fa-solid fa-book text-xl"></i><span class="text-[10px] font-bold">Transkrip</span></button>
+            <button onclick="switchTab('pelanggan')" id="nav-mob-pelanggan" class="flex flex-col items-center gap-1 p-2 text-zinc-500 min-w-[72px] shrink-0 active:scale-90 transition-transform"><i class="fa-solid fa-users text-xl"></i><span class="text-[10px] font-bold">Member</span></button>
+            <button onclick="switchTab('pengaturan')" id="nav-mob-pengaturan" class="flex flex-col items-center gap-1 p-2 text-zinc-500 min-w-[72px] shrink-0 active:scale-90 transition-transform"><i class="fa-solid fa-cog text-xl"></i><span class="text-[10px] font-bold">Setting</span></button>
         </div>
     </div>
 
     <!-- Main Content Area -->
     <main class="flex-1 flex flex-col h-screen overflow-hidden relative" id="main-content-area">
-        <header class="px-5 md:px-8 safe-pt pb-4 flex justify-between items-end shrink-0 bg-[#F2F2F7]/90 backdrop-blur-md z-10 border-b border-transparent">
+        <header class="px-5 md:px-8 safe-pt pb-4 flex justify-between items-end shrink-0 bg-[#09090b]/90 backdrop-blur-md z-10 border-b border-transparent">
             <div>
-                <p class="text-slate-500 font-semibold text-xs md:text-sm mb-1 uppercase tracking-wider">Ringkasan</p>
-                <h2 id="page-title" class="text-3xl md:text-4xl font-extrabold text-black tracking-tight">Dashboard</h2>
+                <p class="text-zinc-500 font-semibold text-xs md:text-sm mb-1 uppercase tracking-wider">Ringkasan</p>
+                <h2 id="page-title" class="text-3xl md:text-4xl font-extrabold text-white tracking-tight">Dashboard</h2>
             </div>
-            <div id="loading-indicator" class="hidden flex items-center gap-2 bg-white px-3 md:px-4 py-1.5 md:py-2 rounded-full shadow-sm border border-slate-100 text-blue-500 font-semibold text-xs md:text-sm">
+            <div id="loading-indicator" class="hidden flex items-center gap-2 bg-[#18181b] px-3 md:px-4 py-1.5 md:py-2 rounded-full shadow-sm border border-zinc-800 text-blue-400 font-semibold text-xs md:text-sm">
                 <i class="fa-solid fa-circle-notch fa-spin"></i> <span class="hidden sm:inline">Memproses...</span>
             </div>
         </header>
@@ -109,76 +119,84 @@
             <!-- DASHBOARD SECTION -->
             <section id="sec-dashboard" class="space-y-4 md:space-y-6">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
-                    <div class="bg-white p-5 md:p-6 rounded-[32px] shadow-[0_8px_24px_rgba(0,0,0,0.04)] border border-slate-100 flex flex-col justify-between h-40">
-                        <div class="w-12 h-12 rounded-2xl bg-blue-50 text-blue-500 flex items-center justify-center text-xl"><i class="fa-solid fa-boxes-stacked"></i></div>
-                        <div><p class="text-sm text-slate-500 font-semibold">Total Produk Baju</p><h3 id="dash-produk" class="text-3xl font-extrabold text-black">0</h3></div>
+                    <div class="bg-[#18181b] p-5 md:p-6 rounded-[32px] shadow-lg border border-zinc-800 flex flex-col justify-between h-40">
+                        <div class="w-12 h-12 rounded-2xl bg-blue-500/10 text-blue-400 flex items-center justify-center text-xl"><i class="fa-solid fa-boxes-stacked"></i></div>
+                        <div><p class="text-sm text-zinc-400 font-semibold">Total Produk Baju</p><h3 id="dash-produk" class="text-3xl font-extrabold text-white">0</h3></div>
                     </div>
-                    <div class="bg-white p-5 md:p-6 rounded-[32px] shadow-[0_8px_24px_rgba(0,0,0,0.04)] border border-slate-100 flex flex-col justify-between h-40">
-                        <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-500 flex items-center justify-center text-xl"><i class="fa-solid fa-cart-arrow-down"></i></div>
-                        <div><p class="text-sm text-slate-500 font-semibold">Baju Terjual</p><h3 id="dash-terjual" class="text-3xl font-extrabold text-black">0</h3></div>
+                    <div class="bg-[#18181b] p-5 md:p-6 rounded-[32px] shadow-lg border border-zinc-800 flex flex-col justify-between h-40">
+                        <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-xl"><i class="fa-solid fa-cart-arrow-down"></i></div>
+                        <div><p class="text-sm text-zinc-400 font-semibold">Baju Terjual</p><h3 id="dash-terjual" class="text-3xl font-extrabold text-white">0</h3></div>
                     </div>
-                    <div class="bg-white p-5 md:p-6 rounded-[32px] shadow-[0_8px_24px_rgba(0,0,0,0.04)] border border-slate-100 flex flex-col justify-between h-40">
-                        <div class="w-12 h-12 rounded-2xl bg-purple-50 text-purple-500 flex items-center justify-center text-xl"><i class="fa-solid fa-wallet"></i></div>
-                        <div><p class="text-sm text-slate-500 font-semibold">Total Pendapatan</p><h3 id="dash-pendapatan" class="text-3xl font-extrabold text-black">Rp 0</h3></div>
+                    <div class="bg-[#18181b] p-5 md:p-6 rounded-[32px] shadow-lg border border-zinc-800 flex flex-col justify-between h-40">
+                        <div class="w-12 h-12 rounded-2xl bg-purple-500/10 text-purple-400 flex items-center justify-center text-xl"><i class="fa-solid fa-wallet"></i></div>
+                        <div><p class="text-sm text-zinc-400 font-semibold">Total Pendapatan</p><h3 id="dash-pendapatan" class="text-3xl font-extrabold text-white">Rp 0</h3></div>
                     </div>
                 </div>
             </section>
 
             <!-- PRODUK SECTION -->
             <section id="sec-produk" class="hidden space-y-6 md:space-y-8">
-                <div class="bg-white p-5 md:p-8 rounded-[40px] shadow-[0_8px_24px_rgba(0,0,0,0.04)] border border-slate-100 transition-all" id="form-produk-container">
+                
+                <!-- KONTINER FORM TAMBAH/EDIT PRODUK (Dibuat Hidden Secara Default) -->
+                <div class="bg-[#18181b] p-5 md:p-8 rounded-[40px] shadow-lg border border-zinc-800 transition-all hidden" id="form-produk-container">
                     <div class="flex justify-between items-center mb-5 md:mb-6">
-                        <h3 class="text-lg md:text-xl font-bold text-black tracking-tight flex items-center gap-2" id="title-form-produk">
-                            <div class="w-7 h-7 rounded-full bg-blue-50 text-blue-500 flex items-center justify-center text-xs"><i class="fa-solid fa-plus" id="icon-form-produk"></i></div>
+                        <h3 class="text-lg md:text-xl font-bold text-white tracking-tight flex items-center gap-2" id="title-form-produk">
+                            <div class="w-7 h-7 rounded-full bg-blue-500/10 text-blue-400 flex items-center justify-center text-xs"><i class="fa-solid fa-plus" id="icon-form-produk"></i></div>
                             <span>Tambah Produk Baru</span>
                         </h3>
-                        <button type="button" onclick="batalEditProduk()" id="btn-batal-edit" class="hidden text-xs bg-slate-100 text-slate-500 font-bold px-3 py-1.5 rounded-full hover:bg-slate-200">Batal Edit</button>
+                        <div class="flex gap-2">
+                            <button type="button" onclick="batalEditProduk()" id="btn-batal-edit" class="hidden text-xs bg-zinc-800 text-zinc-300 font-bold px-3 py-1.5 rounded-full hover:bg-zinc-700 border border-zinc-700">Batal Edit</button>
+                            <button type="button" onclick="toggleFormProduk()" class="text-xs bg-zinc-800 text-zinc-300 font-bold px-3 py-1.5 rounded-full hover:bg-zinc-700 border border-zinc-700"><i class="fa-solid fa-times"></i> Tutup</button>
+                        </div>
                     </div>
                     
                     <form id="form-produk" onsubmit="handleSaveProduk(event)" class="grid grid-cols-1 md:grid-cols-6 gap-4 md:gap-5">
-                        <div class="col-span-1 md:col-span-2"><label class="block text-[12px] font-bold text-slate-500 uppercase mb-2 ml-1">ID Baju</label><input type="text" id="p-id" required class="w-full bg-[#F2F2F7] border-0 rounded-2xl px-4 py-3.5 focus:ring-2 focus:ring-blue-500 outline-none font-semibold text-black placeholder-slate-400"></div>
-                        <div class="col-span-1 md:col-span-4"><label class="block text-[12px] font-bold text-slate-500 uppercase mb-2 ml-1">Nama Baju</label><input type="text" id="p-nama" required class="w-full bg-[#F2F2F7] border-0 rounded-2xl px-4 py-3.5 focus:ring-2 focus:ring-blue-500 outline-none font-semibold text-black placeholder-slate-400"></div>
+                        <div class="col-span-1 md:col-span-2"><label class="block text-[12px] font-bold text-zinc-400 uppercase mb-2 ml-1">ID Baju</label><input type="text" id="p-id" required class="w-full bg-[#09090b] border border-zinc-800 rounded-2xl px-4 py-3.5 focus:ring-2 focus:ring-blue-500 outline-none font-semibold text-white placeholder-zinc-600"></div>
+                        <div class="col-span-1 md:col-span-4"><label class="block text-[12px] font-bold text-zinc-400 uppercase mb-2 ml-1">Nama Baju</label><input type="text" id="p-nama" required class="w-full bg-[#09090b] border border-zinc-800 rounded-2xl px-4 py-3.5 focus:ring-2 focus:ring-blue-500 outline-none font-semibold text-white placeholder-zinc-600"></div>
                         
                         <div class="col-span-1 md:col-span-2">
-                            <label class="block text-[12px] font-bold text-slate-500 uppercase mb-2 ml-1">Kategori</label>
-                            <input list="list-kategori" id="p-kategori" required placeholder="Pilih / Ketik..." class="w-full bg-[#F2F2F7] border-0 rounded-2xl px-4 py-3.5 focus:ring-2 focus:ring-blue-500 outline-none font-semibold text-black placeholder-slate-400">
+                            <label class="block text-[12px] font-bold text-zinc-400 uppercase mb-2 ml-1">Kategori</label>
+                            <input list="list-kategori" id="p-kategori" required placeholder="Pilih / Ketik..." class="w-full bg-[#09090b] border border-zinc-800 rounded-2xl px-4 py-3.5 focus:ring-2 focus:ring-blue-500 outline-none font-semibold text-white placeholder-zinc-600">
                             <datalist id="list-kategori"></datalist>
                         </div>
-                        <div class="col-span-1 md:col-span-2"><label class="block text-[12px] font-bold text-slate-500 uppercase mb-2 ml-1">Harga (Rp)</label><input type="number" id="p-harga" required class="w-full bg-[#F2F2F7] border-0 rounded-2xl px-4 py-3.5 focus:ring-2 focus:ring-blue-500 outline-none font-semibold text-black placeholder-slate-400"></div>
-                        <div class="col-span-1 md:col-span-2"><label class="block text-[12px] font-bold text-slate-500 uppercase mb-2 ml-1">Stok</label><input type="number" id="p-stok" required class="w-full bg-[#F2F2F7] border-0 rounded-2xl px-4 py-3.5 focus:ring-2 focus:ring-blue-500 outline-none font-semibold text-black placeholder-slate-400"></div>
+                        <div class="col-span-1 md:col-span-2"><label class="block text-[12px] font-bold text-zinc-400 uppercase mb-2 ml-1">Harga (Rp)</label><input type="number" id="p-harga" required class="w-full bg-[#09090b] border border-zinc-800 rounded-2xl px-4 py-3.5 focus:ring-2 focus:ring-blue-500 outline-none font-semibold text-white placeholder-zinc-600"></div>
+                        <div class="col-span-1 md:col-span-2"><label class="block text-[12px] font-bold text-zinc-400 uppercase mb-2 ml-1">Stok</label><input type="number" id="p-stok" required class="w-full bg-[#09090b] border border-zinc-800 rounded-2xl px-4 py-3.5 focus:ring-2 focus:ring-blue-500 outline-none font-semibold text-white placeholder-zinc-600"></div>
                         
-                        <!-- [UPDATE] Deskripsi Produk -->
+                        <!-- Deskripsi Produk -->
                         <div class="col-span-1 md:col-span-6">
-                            <label class="block text-[12px] font-bold text-slate-500 uppercase mb-2 ml-1">Deskripsi Produk <span class="text-[10px] normal-case font-normal">(Opsional)</span></label>
-                            <textarea id="p-deskripsi" rows="3" placeholder="Tuliskan bahan, detail ukuran, keunggulan..." class="w-full bg-[#F2F2F7] border-0 rounded-2xl px-4 py-3.5 focus:ring-2 focus:ring-blue-500 outline-none font-semibold text-black placeholder-slate-400"></textarea>
+                            <label class="block text-[12px] font-bold text-zinc-400 uppercase mb-2 ml-1">Deskripsi Produk <span class="text-[10px] normal-case font-normal">(Opsional)</span></label>
+                            <textarea id="p-deskripsi" rows="3" placeholder="Tuliskan bahan, detail ukuran, keunggulan..." class="w-full bg-[#09090b] border border-zinc-800 rounded-2xl px-4 py-3.5 focus:ring-2 focus:ring-blue-500 outline-none font-semibold text-white placeholder-zinc-600"></textarea>
                         </div>
 
                         <div class="col-span-1 md:col-span-6 mt-1">
-                            <label class="block text-[12px] md:text-[13px] font-bold text-slate-500 uppercase tracking-wider mb-2 ml-1">Upload Foto Produk <span class="text-[10px] lowercase italic font-normal text-blue-500">(Bisa pilih lebih dari 1 foto sekaligus)</span></label>
-                            <div onclick="document.getElementById('p-gambar-file').click()" class="relative w-full min-h-[12rem] rounded-[24px] bg-[#F2F2F7] hover:bg-[#E5E5EA] flex flex-col justify-center cursor-pointer overflow-hidden transition-colors p-4">
+                            <label class="block text-[12px] md:text-[13px] font-bold text-zinc-400 uppercase tracking-wider mb-2 ml-1">Upload Foto Produk <span class="text-[10px] lowercase italic font-normal text-blue-400">(Bisa pilih lebih dari 1 foto sekaligus)</span></label>
+                            <div onclick="document.getElementById('p-gambar-file').click()" class="relative w-full min-h-[12rem] rounded-[24px] bg-[#09090b] border border-zinc-800 hover:border-zinc-700 flex flex-col justify-center cursor-pointer overflow-hidden transition-colors p-4">
                                 <input type="file" id="p-gambar-file" accept="image/*" multiple class="hidden" onchange="previewImageMultiple(event)">
                                 <div id="upload-placeholder" class="text-center flex flex-col items-center py-6 w-full">
-                                    <div class="w-14 h-14 bg-white rounded-full flex items-center justify-center shadow-sm mb-3 text-blue-500"><i class="fa-solid fa-camera text-xl"></i></div>
-                                    <span class="text-sm font-bold text-black">Ketuk untuk memilih foto-foto produk</span>
+                                    <div class="w-14 h-14 bg-zinc-900 border border-zinc-800 rounded-full flex items-center justify-center shadow-sm mb-3 text-blue-500"><i class="fa-solid fa-camera text-xl"></i></div>
+                                    <span class="text-sm font-bold text-zinc-300">Ketuk untuk memilih foto-foto produk</span>
                                 </div>
                                 <div id="p-gambar-preview-container" class="hidden flex flex-wrap gap-3 items-center justify-center sm:justify-start w-full"></div>
                             </div>
                         </div>
 
                         <div class="col-span-1 md:col-span-6 flex justify-end mt-4">
-                            <button type="submit" id="btn-submit-produk" class="bg-blue-500 hover:bg-blue-600 text-white px-8 py-4 rounded-full font-bold shadow-lg shadow-blue-500/30 flex items-center justify-center gap-2 active:scale-95 w-full md:w-auto transition-all"><i class="fa-solid fa-cloud-arrow-up"></i> Simpan ke Katalog</button>
+                            <button type="submit" id="btn-submit-produk" class="bg-blue-600 hover:bg-blue-500 text-white px-8 py-4 rounded-full font-bold shadow-lg shadow-blue-900/20 flex items-center justify-center gap-2 active:scale-95 w-full md:w-auto transition-all"><i class="fa-solid fa-cloud-arrow-up"></i> Simpan ke Katalog</button>
                         </div>
                     </form>
                 </div>
                 
-                <div class="bg-white rounded-[40px] shadow-[0_8px_24px_rgba(0,0,0,0.04)] border border-slate-100 overflow-hidden">
-                    <div class="flex justify-between items-center p-5 md:p-8 border-b border-slate-100">
-                        <h3 class="font-bold text-black text-lg md:text-xl tracking-tight">Daftar Produk</h3>
-                        <button onclick="fetchProduk()" class="bg-[#F2F2F7] hover:bg-[#E5E5EA] text-blue-500 w-10 h-10 rounded-full flex items-center justify-center transition active:scale-90"><i class="fa-solid fa-rotate-right"></i></button>
+                <div class="bg-[#18181b] rounded-[40px] shadow-lg border border-zinc-800 overflow-hidden">
+                    <div class="flex justify-between items-center p-5 md:p-8 border-b border-zinc-800">
+                        <h3 class="font-bold text-white text-lg md:text-xl tracking-tight">Daftar Produk</h3>
+                        <div class="flex gap-2">
+                            <button onclick="toggleFormProduk()" class="bg-blue-600 hover:bg-blue-500 text-white px-5 py-2 rounded-full text-xs md:text-sm font-bold transition-colors flex items-center gap-2 shadow-md"><i class="fa-solid fa-plus"></i> Tambah</button>
+                            <button onclick="fetchProduk()" class="bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-blue-400 w-10 h-10 rounded-full flex items-center justify-center transition active:scale-90"><i class="fa-solid fa-rotate-right"></i></button>
+                        </div>
                     </div>
                     <div class="overflow-x-auto scroll-touch pb-2">
                         <table class="w-full text-left text-sm whitespace-nowrap">
-                            <thead class="bg-white border-b border-slate-100 text-slate-400">
+                            <thead class="bg-[#18181b] border-b border-zinc-800 text-zinc-400">
                                 <tr>
                                     <th class="px-5 py-4 text-[11px] uppercase tracking-wider font-bold">Foto</th>
                                     <th class="px-5 py-4 text-[11px] uppercase tracking-wider font-bold">Detail</th>
@@ -187,7 +205,7 @@
                                     <th class="px-5 py-4 text-[11px] uppercase tracking-wider font-bold text-center">Aksi</th>
                                 </tr>
                             </thead>
-                            <tbody id="table-produk" class="divide-y divide-slate-50"></tbody>
+                            <tbody id="table-produk" class="divide-y divide-zinc-800/50"></tbody>
                         </table>
                     </div>
                 </div>
@@ -195,30 +213,29 @@
 
             <!-- PENJUALAN SECTION -->
             <section id="sec-penjualan" class="hidden space-y-6 md:space-y-8">
-                <div class="bg-white p-5 rounded-[24px] shadow-[0_8px_24px_rgba(0,0,0,0.04)] border border-slate-100">
-                    <h3 class="font-bold text-black text-sm tracking-tight mb-3">Filter Berdasarkan Bulan</h3>
+                <div class="bg-[#18181b] p-5 rounded-[24px] shadow-lg border border-zinc-800">
+                    <h3 class="font-bold text-white text-sm tracking-tight mb-3">Filter Berdasarkan Bulan</h3>
                     <div id="filter-bulan-container" class="flex gap-2 overflow-x-auto scroll-touch hide-scrollbar pb-1"></div>
                 </div>
 
-                <div class="bg-white rounded-[40px] shadow-[0_8px_24px_rgba(0,0,0,0.04)] border border-slate-100 overflow-hidden">
-                    <div class="flex justify-between items-center p-5 md:p-8 border-b border-slate-100">
-                        <h3 class="font-bold text-black text-lg md:text-xl tracking-tight">Pesanan: <span id="label-bulan-aktif" class="text-blue-500">Semua Waktu</span></h3>
-                        <button onclick="fetchPenjualan()" class="bg-blue-50 text-blue-500 px-4 py-2 rounded-full text-xs md:text-sm font-bold hover:bg-blue-100 transition active:scale-95 flex items-center gap-2"><i class="fa-solid fa-rotate-right"></i> Refresh</button>
+                <div class="bg-[#18181b] rounded-[40px] shadow-lg border border-zinc-800 overflow-hidden">
+                    <div class="flex justify-between items-center p-5 md:p-8 border-b border-zinc-800">
+                        <h3 class="font-bold text-white text-lg md:text-xl tracking-tight">Pesanan: <span id="label-bulan-aktif" class="text-blue-400">Semua Waktu</span></h3>
+                        <button onclick="fetchPenjualan()" class="bg-blue-500/10 text-blue-400 border border-blue-500/20 px-4 py-2 rounded-full text-xs md:text-sm font-bold hover:bg-blue-500/20 transition active:scale-95 flex items-center gap-2"><i class="fa-solid fa-rotate-right"></i> Refresh</button>
                     </div>
                     <div class="overflow-x-auto scroll-touch pb-2">
                         <table class="w-full text-left text-sm whitespace-nowrap">
-                            <thead class="bg-white border-b border-slate-100 text-slate-400">
+                            <thead class="bg-[#18181b] border-b border-zinc-800 text-zinc-400">
                                 <tr>
                                     <th class="px-5 py-4 text-[11px] uppercase tracking-wider font-bold">Trx & Pembeli</th>
                                     <th class="px-5 py-4 text-[11px] uppercase tracking-wider font-bold">Item & Harga</th>
-                                    <!-- [UPDATE] Kolom Tipe & Metode digabung, + Bukti2 -->
                                     <th class="px-5 py-4 text-[11px] uppercase tracking-wider font-bold text-center">Metode & Tipe</th>
                                     <th class="px-5 py-4 text-[11px] uppercase tracking-wider font-bold text-center">Bukti DP/Lunas</th>
                                     <th class="px-5 py-4 text-[11px] uppercase tracking-wider font-bold text-center">Bukti Pelunasan</th>
                                     <th class="px-5 py-4 text-[11px] uppercase tracking-wider font-bold text-center">Status & Aksi</th>
                                 </tr>
                             </thead>
-                            <tbody id="table-penjualan" class="divide-y divide-slate-50"></tbody>
+                            <tbody id="table-penjualan" class="divide-y divide-zinc-800/50"></tbody>
                         </table>
                     </div>
                 </div>
@@ -226,13 +243,13 @@
 
             <!-- TRANSKRIP PENJUALAN -->
             <section id="sec-transkrip" class="hidden space-y-6 md:space-y-8">
-                <div class="bg-white p-5 md:p-8 rounded-[40px] shadow-[0_8px_24px_rgba(0,0,0,0.04)] border border-slate-100">
+                <div class="bg-[#18181b] p-5 md:p-8 rounded-[40px] shadow-lg border border-zinc-800">
                     <div class="flex justify-between items-center mb-6">
                         <div>
-                            <h3 class="text-xl font-bold text-black tracking-tight">Transkrip Penjualan Produk</h3>
-                            <p class="text-xs text-slate-500 font-medium mt-1">Ketuk produk untuk melihat laporan.</p>
+                            <h3 class="text-xl font-bold text-white tracking-tight">Transkrip Penjualan Produk</h3>
+                            <p class="text-xs text-zinc-400 font-medium mt-1">Ketuk produk untuk melihat laporan.</p>
                         </div>
-                        <button onclick="fetchTranskrip()" class="bg-[#F2F2F7] hover:bg-[#E5E5EA] text-blue-500 w-10 h-10 rounded-full flex items-center justify-center"><i class="fa-solid fa-rotate-right"></i></button>
+                        <button onclick="fetchTranskrip()" class="bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-blue-400 w-10 h-10 rounded-full flex items-center justify-center"><i class="fa-solid fa-rotate-right"></i></button>
                     </div>
                     <div id="grid-transkrip" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
                 </div>
@@ -240,12 +257,12 @@
 
             <!-- PELANGGAN -->
             <section id="sec-pelanggan" class="hidden space-y-6 md:space-y-8">
-                <div class="bg-white p-5 md:p-8 rounded-[40px] shadow-[0_8px_24px_rgba(0,0,0,0.04)] border border-slate-100">
+                <div class="bg-[#18181b] p-5 md:p-8 rounded-[40px] shadow-lg border border-zinc-800">
                     <div class="flex justify-between items-center mb-6">
                         <div>
-                            <h3 class="text-xl font-bold text-black tracking-tight">Database Pelanggan</h3>
+                            <h3 class="text-xl font-bold text-white tracking-tight">Database Pelanggan</h3>
                         </div>
-                        <button onclick="fetchPelanggan()" class="bg-[#F2F2F7] hover:bg-[#E5E5EA] text-blue-500 w-10 h-10 rounded-full flex items-center justify-center"><i class="fa-solid fa-rotate-right"></i></button>
+                        <button onclick="fetchPelanggan()" class="bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-blue-400 w-10 h-10 rounded-full flex items-center justify-center"><i class="fa-solid fa-rotate-right"></i></button>
                     </div>
                     <div id="grid-pelanggan" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
                 </div>
@@ -253,70 +270,80 @@
 
             <!-- PENGATURAN -->
             <section id="sec-pengaturan" class="hidden space-y-6 md:space-y-8">
-                <div class="bg-white p-5 md:p-8 rounded-[40px] shadow-[0_8px_24px_rgba(0,0,0,0.04)] border border-slate-100">
-                    <h3 class="text-xl font-bold mb-2 text-black tracking-tight">Personalisasi Toko & Sistem</h3>
+                <div class="bg-[#18181b] p-5 md:p-8 rounded-[40px] shadow-lg border border-zinc-800">
+                    <h3 class="text-xl font-bold mb-2 text-white tracking-tight">Personalisasi Toko & Sistem</h3>
                     <form id="form-pengaturan" onsubmit="handleSavePengaturan(event)" class="space-y-6 mt-6">
                         
-                        <!-- [UPDATE] Info Admin WA & QRIS Name -->
-                        <div class="bg-blue-50 border border-blue-100 p-5 rounded-[24px] space-y-4">
-                            <h4 class="font-bold text-blue-700">Kontak & Pembayaran</h4>
+                        <!-- Info Admin WA & QRIS Name -->
+                        <div class="bg-blue-900/10 border border-blue-900/30 p-5 rounded-[24px] space-y-4">
+                            <h4 class="font-bold text-blue-400">Kontak & Pembayaran</h4>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
-                                    <label class="block font-bold text-sm text-blue-800 mb-1">Nomor WhatsApp Admin (Untuk Notif)</label>
-                                    <input type="text" id="set-admin-wa" placeholder="Contoh: 62812xxx, 62813xxx" class="w-full bg-white border border-blue-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none font-medium text-black">
-                                    <p class="text-[10px] text-blue-600 mt-1">Gunakan koma (,) jika lebih dari 1 admin. Gunakan format 62.</p>
+                                    <label class="block font-bold text-sm text-blue-300 mb-1">Nomor WhatsApp Admin (Untuk Notif)</label>
+                                    <input type="text" id="set-admin-wa" placeholder="Contoh: 62812xxx, 62813xxx" class="w-full bg-[#09090b] border border-blue-900/50 rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none font-medium text-white placeholder-blue-900/50">
+                                    <p class="text-[10px] text-blue-500 mt-1">Gunakan koma (,) jika lebih dari 1 admin. Gunakan format 62.</p>
                                 </div>
                                 <div>
-                                    <label class="block font-bold text-sm text-blue-800 mb-1">Nama Pemilik Rekening QRIS (A/N)</label>
-                                    <input type="text" id="set-qris-name" placeholder="Contoh: Toko Baju Maju Jaya" class="w-full bg-white border border-blue-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none font-medium text-black">
+                                    <label class="block font-bold text-sm text-blue-300 mb-1">Nama Pemilik Rekening QRIS (A/N)</label>
+                                    <input type="text" id="set-qris-name" placeholder="Contoh: Toko Baju Maju Jaya" class="w-full bg-[#09090b] border border-blue-900/50 rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none font-medium text-white placeholder-blue-900/50">
                                 </div>
                             </div>
                         </div>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div class="bg-[#F2F2F7] p-5 rounded-[24px]"><label class="block font-bold text-black mb-1">Logo Aplikasi</label><div onclick="document.getElementById('set-logo').click()" class="w-20 h-20 bg-white rounded-[20px] flex items-center justify-center cursor-pointer shadow-sm relative overflow-hidden"><input type="file" id="set-logo" accept="image/*" class="hidden" onchange="previewImageSingle(event, 'preview-logo', 'base64Logo')"><img id="preview-logo" src="" class="absolute inset-0 w-full h-full object-contain p-2 hidden bg-white"></div></div>
-                            <div class="bg-[#F2F2F7] p-5 rounded-[24px]"><label class="block font-bold text-black mb-1">Wallpaper Login</label><div onclick="document.getElementById('set-loginbg').click()" class="w-full h-20 bg-white rounded-[20px] flex items-center justify-center cursor-pointer shadow-sm relative overflow-hidden"><input type="file" id="set-loginbg" accept="image/*" class="hidden" onchange="previewImageSingle(event, 'preview-loginbg', 'base64LoginBg', true)"><img id="preview-loginbg" src="" class="absolute inset-0 w-full h-full object-cover hidden bg-white"></div></div>
+                            <div class="bg-[#09090b] border border-zinc-800 p-5 rounded-[24px]"><label class="block font-bold text-white mb-1">Logo Aplikasi</label><div onclick="document.getElementById('set-logo').click()" class="w-20 h-20 bg-zinc-800 rounded-[20px] flex items-center justify-center cursor-pointer shadow-sm relative overflow-hidden border border-zinc-700"><input type="file" id="set-logo" accept="image/*" class="hidden" onchange="previewImageSingle(event, 'preview-logo', 'base64Logo')"><i class="fa-solid fa-image text-zinc-500 text-xl"></i><img id="preview-logo" src="" class="absolute inset-0 w-full h-full object-contain p-2 hidden bg-zinc-800"></div></div>
+                            <div class="bg-[#09090b] border border-zinc-800 p-5 rounded-[24px]"><label class="block font-bold text-white mb-1">Wallpaper Login</label><div onclick="document.getElementById('set-loginbg').click()" class="w-full h-20 bg-zinc-800 rounded-[20px] flex items-center justify-center cursor-pointer shadow-sm relative overflow-hidden border border-zinc-700"><input type="file" id="set-loginbg" accept="image/*" class="hidden" onchange="previewImageSingle(event, 'preview-loginbg', 'base64LoginBg', true)"><i class="fa-solid fa-image text-zinc-500 text-xl"></i><img id="preview-loginbg" src="" class="absolute inset-0 w-full h-full object-cover hidden bg-zinc-800"></div></div>
                         </div>
                         
-                        <div class="bg-[#F2F2F7] p-5 rounded-[24px]">
-                            <label class="block font-bold text-black mb-2">Banner Promo</label>
+                        <div class="bg-[#09090b] border border-zinc-800 p-5 rounded-[24px]">
+                            <label class="block font-bold text-white mb-2">Banner Promo</label>
                             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                                <div onclick="document.getElementById('set-ban1').click()" class="h-28 bg-white rounded-[20px] flex flex-col items-center justify-center cursor-pointer shadow-sm relative overflow-hidden"><input type="file" id="set-ban1" accept="image/*" class="hidden" onchange="previewImageSingle(event, 'preview-ban1', 'base64Ban1', true)"><span class="text-[10px] font-bold text-slate-400">Slot 1</span><img id="preview-ban1" src="" class="absolute inset-0 w-full h-full object-cover hidden"></div>
-                                <div onclick="document.getElementById('set-ban2').click()" class="h-28 bg-white rounded-[20px] flex flex-col items-center justify-center cursor-pointer shadow-sm relative overflow-hidden"><input type="file" id="set-ban2" accept="image/*" class="hidden" onchange="previewImageSingle(event, 'preview-ban2', 'base64Ban2', true)"><span class="text-[10px] font-bold text-slate-400">Slot 2</span><img id="preview-ban2" src="" class="absolute inset-0 w-full h-full object-cover hidden"></div>
-                                <div onclick="document.getElementById('set-ban3').click()" class="h-28 bg-white rounded-[20px] flex flex-col items-center justify-center cursor-pointer shadow-sm relative overflow-hidden"><input type="file" id="set-ban3" accept="image/*" class="hidden" onchange="previewImageSingle(event, 'preview-ban3', 'base64Ban3', true)"><span class="text-[10px] font-bold text-slate-400">Slot 3</span><img id="preview-ban3" src="" class="absolute inset-0 w-full h-full object-cover hidden"></div>
+                                <div onclick="document.getElementById('set-ban1').click()" class="h-28 bg-zinc-800 rounded-[20px] flex flex-col items-center justify-center cursor-pointer shadow-sm relative overflow-hidden border border-zinc-700"><input type="file" id="set-ban1" accept="image/*" class="hidden" onchange="previewImageSingle(event, 'preview-ban1', 'base64Ban1', true)"><span class="text-[10px] font-bold text-zinc-400 mt-2">Slot 1</span><img id="preview-ban1" src="" class="absolute inset-0 w-full h-full object-cover hidden"></div>
+                                <div onclick="document.getElementById('set-ban2').click()" class="h-28 bg-zinc-800 rounded-[20px] flex flex-col items-center justify-center cursor-pointer shadow-sm relative overflow-hidden border border-zinc-700"><input type="file" id="set-ban2" accept="image/*" class="hidden" onchange="previewImageSingle(event, 'preview-ban2', 'base64Ban2', true)"><span class="text-[10px] font-bold text-zinc-400 mt-2">Slot 2</span><img id="preview-ban2" src="" class="absolute inset-0 w-full h-full object-cover hidden"></div>
+                                <div onclick="document.getElementById('set-ban3').click()" class="h-28 bg-zinc-800 rounded-[20px] flex flex-col items-center justify-center cursor-pointer shadow-sm relative overflow-hidden border border-zinc-700"><input type="file" id="set-ban3" accept="image/*" class="hidden" onchange="previewImageSingle(event, 'preview-ban3', 'base64Ban3', true)"><span class="text-[10px] font-bold text-zinc-400 mt-2">Slot 3</span><img id="preview-ban3" src="" class="absolute inset-0 w-full h-full object-cover hidden"></div>
                             </div>
                         </div>
                         
-                        <div class="bg-[#F2F2F7] p-5 rounded-[24px]">
-                            <label class="block font-bold text-black mb-2">Barcode Pembayaran (QRIS)</label>
+                        <div class="bg-[#09090b] border border-zinc-800 p-5 rounded-[24px]">
+                            <label class="block font-bold text-white mb-2">Barcode Pembayaran (QRIS)</label>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div class="bg-white p-3 rounded-[20px] flex flex-col items-center justify-center cursor-pointer relative overflow-hidden" onclick="document.getElementById('set-qris-lunas').click()">
-                                    <p class="text-[11px] font-bold text-slate-500 mb-2">QRIS Bayar Lunas</p>
+                                <div class="bg-zinc-900 p-3 rounded-[20px] border border-zinc-800 flex flex-col items-center justify-center cursor-pointer relative overflow-hidden hover:bg-zinc-800 transition" onclick="document.getElementById('set-qris-lunas').click()">
+                                    <p class="text-[11px] font-bold text-zinc-400 mb-2">QRIS Bayar Lunas</p>
                                     <input type="file" id="set-qris-lunas" accept="image/*" class="hidden" onchange="previewImageSingle(event, 'preview-qris-lunas', 'base64QrisLunas')">
-                                    <img id="preview-qris-lunas" src="" class="absolute inset-0 w-full h-full object-contain bg-white p-2 hidden">
+                                    <img id="preview-qris-lunas" src="" class="absolute inset-0 w-full h-full object-contain bg-zinc-900 p-2 hidden">
                                 </div>
-                                <div class="bg-white p-3 rounded-[20px] flex flex-col items-center justify-center cursor-pointer relative overflow-hidden" onclick="document.getElementById('set-qris-dp').click()">
-                                    <p class="text-[11px] font-bold text-slate-500 mb-2">QRIS Bayar DP</p>
+                                <div class="bg-zinc-900 p-3 rounded-[20px] border border-zinc-800 flex flex-col items-center justify-center cursor-pointer relative overflow-hidden hover:bg-zinc-800 transition" onclick="document.getElementById('set-qris-dp').click()">
+                                    <p class="text-[11px] font-bold text-zinc-400 mb-2">QRIS Bayar DP</p>
                                     <input type="file" id="set-qris-dp" accept="image/*" class="hidden" onchange="previewImageSingle(event, 'preview-qris-dp', 'base64QrisDp')">
-                                    <img id="preview-qris-dp" src="" class="absolute inset-0 w-full h-full object-contain bg-white p-2 hidden">
+                                    <img id="preview-qris-dp" src="" class="absolute inset-0 w-full h-full object-contain bg-zinc-900 p-2 hidden">
                                 </div>
                             </div>
                         </div>
 
-                        <div class="flex justify-end pt-2"><button type="submit" id="btn-save-pengaturan" class="w-full md:w-auto bg-blue-500 text-white px-8 py-4 rounded-full font-bold shadow-lg shadow-blue-500/30 active:scale-95 text-sm transition-all">Terapkan Perubahan</button></div>
+                        <div class="flex justify-end pt-2"><button type="submit" id="btn-save-pengaturan" class="w-full md:w-auto bg-blue-600 text-white px-8 py-4 rounded-full font-bold shadow-lg shadow-blue-900/20 active:scale-95 text-sm transition-all hover:bg-blue-500">Terapkan Perubahan</button></div>
                     </form>
                 </div>
             </section>
         </div>
     </main>
 
+    <!-- Modal Detail Produk -->
+    <div id="modal-detail-produk" class="modal opacity-0 pointer-events-none fixed w-full h-full top-0 left-0 flex items-end sm:items-center justify-center z-[80] transition-opacity duration-300">
+        <div class="absolute w-full h-full bg-black/60 backdrop-blur-sm" onclick="toggleModalDetailProduk()"></div>
+        <div class="modal-sheet bg-[#18181b] w-full sm:max-w-md mx-auto rounded-t-[40px] sm:rounded-[40px] shadow-2xl z-[80] flex flex-col relative p-6 pb-safe border border-zinc-800">
+            <button onclick="toggleModalDetailProduk()" class="absolute top-4 right-4 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 w-8 h-8 rounded-full flex items-center justify-center transition-colors"><i class="fa-solid fa-times"></i></button>
+            <h3 class="font-bold text-xl text-white border-b border-zinc-800 pb-3 mb-4 mt-2 sm:mt-0">Detail Produk</h3>
+            <div id="content-detail-produk" class="space-y-5 overflow-y-auto hide-scrollbar scroll-touch max-h-[70vh]"></div>
+        </div>
+    </div>
+
     <!-- Modal Bukti -->
     <div id="modal-bukti" class="modal opacity-0 pointer-events-none fixed w-full h-full top-0 left-0 flex items-center justify-center z-[90] transition-opacity duration-300">
         <div class="absolute w-full h-full bg-black/80 backdrop-blur-md" onclick="toggleModalBukti()"></div>
         <div class="modal-sheet bg-transparent w-full sm:max-w-xl mx-auto rounded-[40px] z-[90] flex flex-col items-center relative p-4">
-            <div class="bg-white p-2 rounded-[32px] w-full max-w-sm mx-auto shadow-2xl relative">
-                <button onclick="toggleModalBukti()" class="absolute -top-4 -right-4 bg-white text-black w-10 h-10 rounded-full flex items-center justify-center shadow-lg"><i class="fa-solid fa-times"></i></button>
-                <img id="img-bukti-detail" src="" class="w-full h-auto max-h-[70vh] object-contain rounded-[24px] bg-slate-100">
+            <div class="bg-[#18181b] p-2 rounded-[32px] w-full max-w-sm mx-auto shadow-2xl relative border border-zinc-800">
+                <button onclick="toggleModalBukti()" class="absolute -top-4 -right-4 bg-zinc-800 text-white w-10 h-10 rounded-full flex items-center justify-center shadow-lg border border-zinc-700 hover:bg-zinc-700"><i class="fa-solid fa-times"></i></button>
+                <img id="img-bukti-detail" src="" class="w-full h-auto max-h-[70vh] object-contain rounded-[24px] bg-[#09090b]">
             </div>
         </div>
     </div>
@@ -324,26 +351,26 @@
     <!-- Modal Transkrip Detail -->
     <div id="modal-transkrip" class="modal opacity-0 pointer-events-none fixed w-full h-full top-0 left-0 flex items-end justify-center z-[70] transition-opacity duration-300">
         <div class="absolute w-full h-full bg-black/50 backdrop-blur-sm" onclick="toggleModalTranskrip()"></div>
-        <div class="modal-sheet bg-[#F2F2F7] w-full sm:max-w-4xl mx-auto rounded-t-[40px] shadow-2xl z-[70] max-h-[90vh] flex flex-col relative pb-safe">
+        <div class="modal-sheet bg-[#09090b] w-full sm:max-w-4xl mx-auto rounded-t-[40px] shadow-2xl z-[70] max-h-[90vh] flex flex-col relative pb-safe border-t border-zinc-800">
             <div class="px-5 py-4 flex justify-between items-start shrink-0">
-                <div><h3 id="transkrip-nama-produk" class="font-bold text-xl text-black">Nama Baju</h3></div>
-                <button onclick="toggleModalTranskrip()" class="bg-slate-200/50 w-8 h-8 rounded-full"><i class="fa-solid fa-times"></i></button>
+                <div><h3 id="transkrip-nama-produk" class="font-bold text-xl text-white">Nama Baju</h3></div>
+                <button onclick="toggleModalTranskrip()" class="bg-zinc-800 w-8 h-8 rounded-full text-zinc-300 hover:bg-zinc-700"><i class="fa-solid fa-times"></i></button>
             </div>
             <div class="px-5 mb-3"><div id="transkrip-filter-bulan" class="flex gap-2 overflow-x-auto hide-scrollbar pb-2"></div></div>
-            <div class="flex-1 overflow-y-auto px-5 pb-8 bg-white rounded-t-[32px] pt-4"><div class="overflow-x-auto"><table class="w-full text-left text-sm whitespace-nowrap"><thead class="border-b text-slate-400"><tr><th class="px-4 py-3">Trx</th><th class="px-4 py-3">Pembeli</th><th class="px-4 py-3">Item</th><th class="px-4 py-3 text-center">Status</th></tr></thead><tbody id="transkrip-table-body"></tbody></table></div></div>
+            <div class="flex-1 overflow-y-auto px-5 pb-8 bg-[#18181b] rounded-t-[32px] pt-4"><div class="overflow-x-auto"><table class="w-full text-left text-sm whitespace-nowrap"><thead class="border-b border-zinc-800 text-zinc-400"><tr><th class="px-4 py-3">Trx</th><th class="px-4 py-3">Pembeli</th><th class="px-4 py-3">Item</th><th class="px-4 py-3 text-center">Status</th></tr></thead><tbody id="transkrip-table-body" class="divide-y divide-zinc-800/50"></tbody></table></div></div>
         </div>
     </div>
 
     <!-- Modal Detail Pelanggan -->
     <div id="modal-pelanggan" class="modal opacity-0 pointer-events-none fixed w-full h-full top-0 left-0 flex items-end justify-center z-[70] transition-opacity duration-300">
         <div class="absolute w-full h-full bg-black/50 backdrop-blur-sm" onclick="toggleModalPelanggan()"></div>
-        <div class="modal-sheet bg-[#F2F2F7] w-full sm:max-w-2xl mx-auto rounded-t-[40px] shadow-2xl z-[70] max-h-[90vh] flex flex-col relative pb-safe">
+        <div class="modal-sheet bg-[#09090b] w-full sm:max-w-2xl mx-auto rounded-t-[40px] shadow-2xl z-[70] max-h-[90vh] flex flex-col relative pb-safe border-t border-zinc-800">
             <div class="px-5 py-4 flex justify-between items-start shrink-0">
                 <div class="flex gap-4 items-center">
-                    <img id="dtl-foto" src="" class="w-16 h-16 rounded-full object-cover border-4 border-white shadow-md">
-                    <div><h3 id="dtl-nama" class="font-bold text-xl text-black">Nama</h3><p id="dtl-user" class="text-blue-500 font-semibold text-sm">@user</p></div>
+                    <img id="dtl-foto" src="" class="w-16 h-16 rounded-full object-cover border-4 border-zinc-800 shadow-md bg-zinc-900">
+                    <div><h3 id="dtl-nama" class="font-bold text-xl text-white">Nama</h3><p id="dtl-user" class="text-blue-400 font-semibold text-sm">@user</p></div>
                 </div>
-                <button onclick="toggleModalPelanggan()" class="bg-slate-200/50 w-8 h-8 rounded-full"><i class="fa-solid fa-times"></i></button>
+                <button onclick="toggleModalPelanggan()" class="bg-zinc-800 w-8 h-8 rounded-full text-zinc-300 hover:bg-zinc-700"><i class="fa-solid fa-times"></i></button>
             </div>
             <div class="flex-1 overflow-y-auto px-5 pb-8 mt-2"><div id="list-pesanan-pelanggan" class="space-y-3"></div></div>
         </div>
@@ -352,10 +379,10 @@
     <!-- Modal Detail Pesanan -->
     <div id="modal-detail-pesanan" class="modal opacity-0 pointer-events-none fixed w-full h-full top-0 left-0 flex items-end sm:items-center justify-center z-[80] transition-opacity duration-300">
         <div class="absolute w-full h-full bg-black/60 backdrop-blur-sm" onclick="toggleModalDetailPesanan()"></div>
-        <div class="modal-sheet bg-white w-full sm:max-w-md mx-auto rounded-t-[40px] sm:rounded-[40px] shadow-2xl z-[80] flex flex-col relative p-6 pb-safe">
-            <button onclick="toggleModalDetailPesanan()" class="absolute top-4 right-4 bg-slate-100 w-8 h-8 rounded-full"><i class="fa-solid fa-times"></i></button>
-            <h3 class="font-bold text-xl text-black border-b border-slate-100 pb-3 mb-4">Informasi Pesanan</h3>
-            <div id="content-detail-pesanan" class="space-y-5 overflow-y-auto max-h-[70vh]"></div>
+        <div class="modal-sheet bg-[#18181b] w-full sm:max-w-md mx-auto rounded-t-[40px] sm:rounded-[40px] shadow-2xl z-[80] flex flex-col relative p-6 pb-safe border border-zinc-800">
+            <button onclick="toggleModalDetailPesanan()" class="absolute top-4 right-4 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 w-8 h-8 rounded-full flex items-center justify-center"><i class="fa-solid fa-times"></i></button>
+            <h3 class="font-bold text-xl text-white border-b border-zinc-800 pb-3 mb-4 mt-2 sm:mt-0">Informasi Pesanan</h3>
+            <div id="content-detail-pesanan" class="space-y-5 overflow-y-auto hide-scrollbar scroll-touch max-h-[70vh]"></div>
         </div>
     </div>
 
@@ -383,12 +410,12 @@
         function switchTab(tab) {
             ['dashboard', 'produk', 'penjualan', 'transkrip', 'pelanggan', 'pengaturan'].forEach(n => {
                 document.getElementById(`sec-${n}`).classList.add('hidden');
-                document.getElementById(`nav-${n}`).className = "w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl text-slate-500 hover:bg-slate-100 hover:text-black font-semibold transition-all active:scale-95";
+                document.getElementById(`nav-${n}`).className = "w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl text-zinc-400 hover:bg-zinc-800 hover:text-white font-semibold transition-all active:scale-95";
                 const mobEl = document.getElementById(`nav-mob-${n}`);
-                if(mobEl) mobEl.className = "flex flex-col items-center gap-1 p-2 text-slate-400 min-w-[72px] shrink-0 active:scale-90 transition-transform";
+                if(mobEl) mobEl.className = "flex flex-col items-center gap-1 p-2 text-zinc-500 min-w-[72px] shrink-0 active:scale-90 transition-transform";
             });
             document.getElementById(`sec-${tab}`).classList.remove('hidden');
-            document.getElementById(`nav-${tab}`).className = "w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl bg-blue-500 text-white font-semibold transition-all shadow-md shadow-blue-500/20 active:scale-95";
+            document.getElementById(`nav-${tab}`).className = "w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl bg-blue-600 text-white font-semibold transition-all shadow-md shadow-blue-900/20 active:scale-95";
             const mobActive = document.getElementById(`nav-mob-${tab}`);
             if(mobActive) mobActive.className = "flex flex-col items-center gap-1 p-2 text-blue-500 min-w-[72px] shrink-0 active:scale-90 transition-transform drop-shadow-sm";
             
@@ -421,6 +448,69 @@
             datalist.innerHTML = listKat.map(k => `<option value="${k}">`).join('');
         }
 
+        function toggleFormProduk() {
+            const formContainer = document.getElementById('form-produk-container');
+            if (formContainer.classList.contains('hidden')) {
+                formContainer.classList.remove('hidden');
+                formContainer.scrollIntoView({behavior: "smooth"});
+            } else {
+                batalEditProduk(); 
+                formContainer.classList.add('hidden');
+            }
+        }
+
+        function toggleModalDetailProduk() {
+            const modal = document.getElementById('modal-detail-produk');
+            if(modal.classList.contains('opacity-0')) { modal.classList.remove('opacity-0', 'pointer-events-none'); setTimeout(() => modal.classList.add('show'), 10); } 
+            else { modal.classList.remove('show'); setTimeout(() => { modal.classList.add('opacity-0', 'pointer-events-none'); }, 300); }
+        }
+
+        function bukaDetailProdukModal(id) {
+            const p = globalProduk.find(x => x.ID == id || x.id == id);
+            if(!p) return;
+            const content = document.getElementById('content-detail-produk');
+            
+            const nm = p['Nama Baju'] || p.nama; 
+            const kat = p.Kategori || p.kategori; 
+            const hrg = p.Harga || p.harga; 
+            const stk = p.Stok || p.stok; 
+            const dsc = p.Deskripsi || 'Tidak ada deskripsi.';
+            const gbrRaw = p['URL Gambar'] || '';
+            const imgs = gbrRaw.split(',').filter(u => u.trim() !== "");
+            const safeGbr = imgs[0] || 'https://via.placeholder.com/400';
+            
+            let imgHtml = `<img src="${safeGbr}" class="w-full h-48 object-cover rounded-2xl mb-4 border border-zinc-800">`;
+            if(imgs.length > 1) {
+                imgHtml += `<div class="flex gap-2 overflow-x-auto hide-scrollbar mb-4">` + imgs.map(u => `<img src="${u}" class="w-16 h-16 object-cover rounded-lg border border-zinc-700">`).join('') + `</div>`;
+            }
+
+            content.innerHTML = `
+                ${imgHtml}
+                <div class="flex justify-between items-start mb-2">
+                    <div>
+                        <h4 class="font-bold text-lg text-white">${nm}</h4>
+                        <p class="font-mono text-xs text-zinc-500">${id}</p>
+                    </div>
+                    <span class="bg-zinc-800 text-zinc-300 text-[10px] font-bold px-2 py-1 rounded border border-zinc-700">${kat}</span>
+                </div>
+                <div class="flex justify-between items-center bg-[#09090b] border border-zinc-800 p-3 rounded-xl mb-4">
+                    <div>
+                        <p class="text-[10px] text-zinc-500 font-bold uppercase">Harga</p>
+                        <p class="text-blue-400 font-bold text-sm">${formatRp(hrg)}</p>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-[10px] text-zinc-500 font-bold uppercase">Stok</p>
+                        <p class="font-bold ${stk <= 5 ? 'text-red-400' : 'text-zinc-200'} text-sm">${stk} Pcs</p>
+                    </div>
+                </div>
+                <div>
+                    <p class="text-[10px] text-zinc-500 font-bold uppercase mb-1">Deskripsi</p>
+                    <p class="text-sm text-zinc-300 whitespace-pre-wrap leading-relaxed">${dsc}</p>
+                </div>
+            `;
+            toggleModalDetailProduk();
+        }
+
         async function fetchProduk() {
             showLoading(true); const tbody = document.getElementById('table-produk');
             try {
@@ -431,28 +521,27 @@
                         tbody.innerHTML = globalProduk.map(p => {
                             const id = p.ID || p.id; const nm = p['Nama Baju'] || p.nama; const kat = p.Kategori || p.kategori; 
                             const hrg = p.Harga || p.harga; const stk = p.Stok || p.stok; const gbr = p['URL Gambar'] || '';
-                            const dsc = p.Deskripsi || ''; // [UPDATE]
+                            const dsc = p.Deskripsi || ''; 
                             const safeGbr = (gbr.split(',')[0]) || 'https://via.placeholder.com/50'; 
-                            // Escaping the description for javascript function call
                             const safeDesc = dsc.replace(/"/g, '&quot;').replace(/'/g, "\\'").replace(/\n/g, '\\n');
                             return `
-                            <tr class="hover:bg-[#F2F2F7]/50 border-b border-slate-50">
-                                <td class="px-5 py-3"><img src="${safeGbr}" class="w-10 h-10 object-cover rounded-[10px] shadow-sm"></td>
+                            <tr class="hover:bg-zinc-800/30 border-b border-zinc-800/50 cursor-pointer" onclick="bukaDetailProdukModal('${id}')">
+                                <td class="px-5 py-3"><img src="${safeGbr}" class="w-10 h-10 object-cover rounded-[10px] shadow-sm border border-zinc-700"></td>
                                 <td class="px-5 py-4">
-                                    <span class="font-bold text-black text-sm block">${nm}</span>
-                                    <span class="font-mono text-slate-500 text-[10px]">${id} &bull; ${kat}</span>
+                                    <span class="font-bold text-white text-sm block">${nm}</span>
+                                    <span class="font-mono text-zinc-400 text-[10px]">${id} &bull; ${kat}</span>
                                 </td>
-                                <td class="px-5 py-4 font-bold text-blue-500 text-sm">${formatRp(hrg)}</td>
-                                <td class="px-5 py-4 font-bold text-sm ${stk <= 5 ? 'text-red-500' : 'text-black'}">${stk}</td>
-                                <td class="px-5 py-4 text-center">
+                                <td class="px-5 py-4 font-bold text-blue-400 text-sm">${formatRp(hrg)}</td>
+                                <td class="px-5 py-4 font-bold text-sm ${stk <= 5 ? 'text-red-400' : 'text-zinc-200'}">${stk}</td>
+                                <td class="px-5 py-4 text-center" onclick="event.stopPropagation()">
                                     <div class="flex gap-2 justify-center">
-                                        <button onclick="mulaiEditProduk('${id}', '${nm.replace(/'/g, "\\'")}', '${kat}', ${hrg}, ${stk}, '${gbr}', '${safeDesc}')" class="w-8 h-8 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100"><i class="fa-solid fa-pen text-xs"></i></button>
-                                        <button onclick="hapusProduk('${id}')" class="w-8 h-8 rounded-full bg-red-50 text-red-600 hover:bg-red-100"><i class="fa-solid fa-trash text-xs"></i></button>
+                                        <button onclick="mulaiEditProduk('${id}', '${nm.replace(/'/g, "\\'")}', '${kat}', ${hrg}, ${stk}, '${gbr}', '${safeDesc}')" class="w-8 h-8 rounded-full bg-blue-500/10 text-blue-400 hover:bg-blue-500/20 transition-colors"><i class="fa-solid fa-pen text-xs"></i></button>
+                                        <button onclick="hapusProduk('${id}')" class="w-8 h-8 rounded-full bg-red-500/10 text-red-400 hover:bg-red-500/20 transition-colors"><i class="fa-solid fa-trash text-xs"></i></button>
                                     </div>
                                 </td>
                             </tr>`
                         }).join('');
-                    } else tbody.innerHTML = `<tr><td colspan="5" class="text-center py-12 text-slate-400 font-medium">Belum ada produk.</td></tr>`;
+                    } else tbody.innerHTML = `<tr><td colspan="5" class="text-center py-12 text-zinc-500 font-medium">Belum ada produk.</td></tr>`;
                 }
             } catch (err) {}
             showLoading(false);
@@ -475,7 +564,7 @@
                         canvas.width = w; canvas.height = h; canvas.getContext('2d').drawImage(img, 0, 0, w, h);
                         const b64 = canvas.toDataURL('image/jpeg', 0.8);
                         base64GambarArray.push(b64);
-                        container.innerHTML += `<img src="${b64}" class="w-20 h-20 object-cover rounded-xl shadow-sm shrink-0">`;
+                        container.innerHTML += `<img src="${b64}" class="w-20 h-20 object-cover rounded-xl shadow-sm shrink-0 border border-zinc-700">`;
                     }
                     img.src = e.target.result;
                 }
@@ -483,38 +572,38 @@
             });
         }
 
-        // [UPDATE] Edit produk termasuk deskripsi
         function mulaiEditProduk(id, nama, kategori, harga, stok, urlGambar, deskripsi) {
             isEditingProduk = true; produkIdToEdit = id;
-            document.getElementById('title-form-produk').innerHTML = `<div class="w-7 h-7 rounded-full bg-orange-50 text-orange-500 flex items-center justify-center text-xs"><i class="fa-solid fa-pen"></i></div><span>Edit Produk: ${id}</span>`;
+            document.getElementById('title-form-produk').innerHTML = `<div class="w-7 h-7 rounded-full bg-orange-500/10 text-orange-400 flex items-center justify-center text-xs"><i class="fa-solid fa-pen"></i></div><span>Edit Produk: ${id}</span>`;
             document.getElementById('btn-batal-edit').classList.remove('hidden');
+            document.getElementById('form-produk-container').classList.remove('hidden');
             
             document.getElementById('p-id').value = id; document.getElementById('p-id').disabled = true; document.getElementById('p-id').classList.add('opacity-50', 'cursor-not-allowed');
             document.getElementById('p-nama').value = nama; document.getElementById('p-kategori').value = kategori; document.getElementById('p-harga').value = harga; document.getElementById('p-stok').value = stok;
-            // set deskripsi
             document.getElementById('p-deskripsi').value = deskripsi ? deskripsi.replace(/\\n/g, '\n') : "";
             
             base64GambarArray = urlGambar ? urlGambar.split(',') : [];
             const container = document.getElementById('p-gambar-preview-container');
             if(base64GambarArray.length > 0 && base64GambarArray[0] !== "") { 
                 document.getElementById('upload-placeholder').classList.add('hidden'); container.classList.remove('hidden');
-                container.innerHTML = base64GambarArray.map(url => `<img src="${url}" class="w-20 h-20 object-cover rounded-xl shadow-sm shrink-0">`).join('');
+                container.innerHTML = base64GambarArray.map(url => `<img src="${url}" class="w-20 h-20 object-cover rounded-xl shadow-sm shrink-0 border border-zinc-700">`).join('');
             } else { 
                 container.classList.add('hidden'); container.innerHTML = ''; document.getElementById('upload-placeholder').classList.remove('hidden'); 
             }
             const btnSubmit = document.getElementById('btn-submit-produk');
-            btnSubmit.innerHTML = `<i class="fa-solid fa-pen-to-square"></i> Update Produk`; btnSubmit.className = "bg-orange-500 text-white px-8 py-4 rounded-full font-bold";
+            btnSubmit.innerHTML = `<i class="fa-solid fa-pen-to-square"></i> Update Produk`; btnSubmit.className = "bg-orange-600 text-white hover:bg-orange-500 px-8 py-4 rounded-full font-bold transition-colors";
             document.getElementById('form-produk-container').scrollIntoView({behavior: "smooth"});
         }
 
         function batalEditProduk() {
             isEditingProduk = false; produkIdToEdit = null;
-            document.getElementById('title-form-produk').innerHTML = `<div class="w-7 h-7 rounded-full bg-blue-50 text-blue-500 flex items-center justify-center text-xs"><i class="fa-solid fa-plus"></i></div><span>Tambah Produk Baru</span>`;
+            document.getElementById('title-form-produk').innerHTML = `<div class="w-7 h-7 rounded-full bg-blue-500/10 text-blue-400 flex items-center justify-center text-xs"><i class="fa-solid fa-plus"></i></div><span>Tambah Produk Baru</span>`;
             document.getElementById('btn-batal-edit').classList.add('hidden');
             document.getElementById('p-id').disabled = false; document.getElementById('p-id').classList.remove('opacity-50', 'cursor-not-allowed');
             document.getElementById('form-produk').reset();
             base64GambarArray = []; document.getElementById('p-gambar-preview-container').classList.add('hidden'); document.getElementById('p-gambar-preview-container').innerHTML = ''; document.getElementById('upload-placeholder').classList.remove('hidden');
-            const btnSubmit = document.getElementById('btn-submit-produk'); btnSubmit.innerHTML = `<i class="fa-solid fa-cloud-arrow-up"></i> Simpan ke Katalog`; btnSubmit.className = "bg-blue-500 text-white px-8 py-4 rounded-full font-bold";
+            const btnSubmit = document.getElementById('btn-submit-produk'); btnSubmit.innerHTML = `<i class="fa-solid fa-cloud-arrow-up"></i> Simpan ke Katalog`; btnSubmit.className = "bg-blue-600 hover:bg-blue-500 text-white px-8 py-4 rounded-full font-bold transition-colors";
+            document.getElementById('form-produk-container').classList.add('hidden');
         }
 
         async function handleSaveProduk(e) {
@@ -524,12 +613,16 @@
                 action: isEditingProduk ? "editProduk" : "addProduk", id: document.getElementById('p-id').value, nama: document.getElementById('p-nama').value,
                 kategori: document.getElementById('p-kategori').value, harga: document.getElementById('p-harga').value, stok: document.getElementById('p-stok').value, 
                 gambar: base64GambarArray,
-                deskripsi: document.getElementById('p-deskripsi').value // [UPDATE] Payload deskripsi
+                deskripsi: document.getElementById('p-deskripsi').value 
             };
             try {
                 const res = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload), headers: { 'Content-Type': 'text/plain' } });
                 const data = await res.json();
-                if(data.status === 'success') { alert(data.message); batalEditProduk(); fetchProduk(); } else alert('Gagal: ' + data.message);
+                if(data.status === 'success') { 
+                    alert(data.message); 
+                    batalEditProduk(); 
+                    fetchProduk(); 
+                } else alert('Gagal: ' + data.message);
             } catch (err) {}
             btn.innerHTML = ogText; btn.disabled = false;
         }
@@ -571,10 +664,10 @@
             const container = document.getElementById('filter-bulan-container');
             let listBulan = [...new Set(globalPenjualan.map(p => getBulanTahun(p.Tanggal)))];
             if(!listBulan.includes(activeBulanFilter) && activeBulanFilter !== 'Semua Waktu') activeBulanFilter = 'Semua Waktu';
-            let html = `<button onclick="setBulanFilter('Semua Waktu')" class="shrink-0 px-4 py-2 rounded-full text-xs font-bold transition-all ${activeBulanFilter === 'Semua Waktu' ? 'bg-blue-500 text-white shadow-md' : 'bg-[#F2F2F7] text-slate-500'}">Semua Waktu</button>`;
+            let html = `<button onclick="setBulanFilter('Semua Waktu')" class="shrink-0 px-4 py-2 rounded-full text-xs font-bold transition-all border ${activeBulanFilter === 'Semua Waktu' ? 'bg-blue-600 text-white border-blue-600 shadow-md' : 'bg-[#09090b] text-zinc-400 border-zinc-800 hover:bg-zinc-800'}">Semua Waktu</button>`;
             listBulan.forEach(bln => {
-                const activeClass = (activeBulanFilter === bln) ? 'bg-blue-500 text-white shadow-md' : 'bg-[#F2F2F7] text-slate-500';
-                html += `<button onclick="setBulanFilter('${bln}')" class="shrink-0 px-4 py-2 rounded-full text-xs font-bold transition-all ${activeClass}">${bln}</button>`;
+                const activeClass = (activeBulanFilter === bln) ? 'bg-blue-600 text-white border-blue-600 shadow-md' : 'bg-[#09090b] text-zinc-400 border-zinc-800 hover:bg-zinc-800';
+                html += `<button onclick="setBulanFilter('${bln}')" class="shrink-0 px-4 py-2 rounded-full text-xs font-bold transition-all border ${activeClass}">${bln}</button>`;
             });
             container.innerHTML = html;
         }
@@ -587,57 +680,54 @@
             if(bulanFilter !== 'Semua Waktu') { dataTampil = globalPenjualan.filter(p => getBulanTahun(p.Tanggal) === bulanFilter); }
 
             if(dataTampil.length > 0) {
-                // [UPDATE] Tampilan tabel digabungkan menjadi lebih padat
                 tbody.innerHTML = dataTampil.map(p => {
                     const idTrx = p['ID Transaksi']; const status = p.Status || "Menunggu Konfirmasi";
                     const isCash = p['Metode Bayar'] === 'Cash';
                     const isDP = p['Tipe Pembayaran'] === 'DP';
 
-                    let badgeColor = status === 'Diproses' ? "bg-blue-50 text-blue-600" : (status === 'Selesai' ? "bg-emerald-50 text-emerald-600" : (status === 'Dibatalkan' ? "bg-red-50 text-red-600" : "bg-orange-50 text-orange-600"));
-                    const bayarBadge = isDP ? "bg-purple-50 text-purple-600" : "bg-emerald-50 text-emerald-600";
+                    let badgeColor = status === 'Diproses' ? "bg-blue-500/10 text-blue-400" : (status === 'Selesai' ? "bg-emerald-500/10 text-emerald-400" : (status === 'Dibatalkan' ? "bg-red-500/10 text-red-400" : "bg-orange-500/10 text-orange-400"));
+                    const bayarBadge = isDP ? "bg-purple-500/10 text-purple-400" : "bg-emerald-500/10 text-emerald-400";
                     
-                    // Bukti 1 (Bisa DP atau Lunas)
-                    let bukti1 = `<span class="text-[10px] text-slate-400 font-medium italic">Cash</span>`;
+                    let bukti1 = `<span class="text-[10px] text-zinc-500 font-medium italic">Cash</span>`;
                     if(!isCash && p['Bukti Pembayaran'] && p['Bukti Pembayaran'] !== "Bayar Cash") {
-                        bukti1 = `<button onclick="bukaBuktiModal('${p['Bukti Pembayaran']}')" class="bg-blue-50 text-blue-600 px-3 py-1.5 rounded-xl text-[10px] font-bold"><i class="fa-solid fa-image"></i> Cek Struk</button>`;
+                        bukti1 = `<button onclick="bukaBuktiModal('${p['Bukti Pembayaran']}')" class="bg-blue-500/10 text-blue-400 hover:bg-blue-500/20 px-3 py-1.5 rounded-xl text-[10px] font-bold transition-colors"><i class="fa-solid fa-image"></i> Cek Struk</button>`;
                     }
                     
-                    // Bukti 2 (Pelunasan)
-                    let bukti2 = `<span class="text-[10px] text-slate-400">-</span>`;
+                    let bukti2 = `<span class="text-[10px] text-zinc-600">-</span>`;
                     if(isDP) {
                        if (p['Bukti Pelunasan'] && p['Bukti Pelunasan'].startsWith('http')) {
-                          bukti2 = `<button onclick="bukaBuktiModal('${p['Bukti Pelunasan']}')" class="bg-emerald-50 text-emerald-600 px-3 py-1.5 rounded-xl text-[10px] font-bold"><i class="fa-solid fa-image"></i> Cek Lunas</button>`;
+                          bukti2 = `<button onclick="bukaBuktiModal('${p['Bukti Pelunasan']}')" class="bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 px-3 py-1.5 rounded-xl text-[10px] font-bold transition-colors"><i class="fa-solid fa-image"></i> Cek Lunas</button>`;
                        } else {
-                          bukti2 = `<span class="text-[10px] text-orange-500 font-bold bg-orange-50 px-2 py-1 rounded">Belum Lunas</span>`;
+                          bukti2 = `<span class="text-[10px] text-orange-400 font-bold bg-orange-500/10 px-2 py-1 rounded">Belum Lunas</span>`;
                        }
                     }
 
                     return `
-                    <tr class="hover:bg-[#F2F2F7]/50 border-b border-slate-50">
+                    <tr class="hover:bg-zinc-800/30 border-b border-zinc-800/50">
                         <td class="px-5 py-3">
-                            <span class="font-mono font-bold text-slate-700 block text-[11px]">${idTrx}</span>
-                            <span class="text-[10px] text-slate-500 block mt-1"><i class="fa-regular fa-user"></i> ${p['Username Pembeli'] || '-'}</span>
-                            <span class="text-[9px] text-slate-400 block mt-1">${p.Tanggal.split(' ')[0]}</span>
+                            <span class="font-mono font-bold text-white block text-[11px]">${idTrx}</span>
+                            <span class="text-[10px] text-zinc-400 block mt-1"><i class="fa-regular fa-user"></i> ${p['Username Pembeli'] || '-'}</span>
+                            <span class="text-[9px] text-zinc-500 block mt-1">${p.Tanggal.split(' ')[0]}</span>
                         </td>
                         <td class="px-5 py-3">
-                            <p class="font-bold text-slate-700 text-[11px] w-40 truncate" title="${p['Nama Baju']}">${p['Nama Baju']}</p>
-                            <p class="text-blue-500 font-extrabold text-[11px] mt-1">${formatRp(p['Total Harga'])} <span class="text-[9px] text-slate-400 font-normal ml-1">(${p.Jumlah}x)</span></p>
+                            <p class="font-bold text-white text-[11px] w-40 truncate" title="${p['Nama Baju']}">${p['Nama Baju']}</p>
+                            <p class="text-blue-400 font-extrabold text-[11px] mt-1">${formatRp(p['Total Harga'])} <span class="text-[9px] text-zinc-500 font-normal ml-1">(${p.Jumlah}x)</span></p>
                         </td>
                         <td class="px-5 py-3 text-center">
-                            <span class="px-2 py-1 rounded text-[9px] font-bold uppercase bg-slate-100 text-slate-600 block mb-1">${p['Metode Bayar']||'Transfer'}</span>
-                            <span class="px-2 py-1 rounded text-[9px] font-bold uppercase ${bayarBadge} block" title="${p['Detail DP']||''}">${p['Tipe Pembayaran']}</span>
+                            <span class="px-2 py-1 rounded text-[9px] font-bold uppercase bg-zinc-800 text-zinc-300 block mb-1 border border-zinc-700">${p['Metode Bayar']||'Transfer'}</span>
+                            <span class="px-2 py-1 rounded text-[9px] font-bold uppercase ${bayarBadge} block border border-transparent" title="${p['Detail DP']||''}">${p['Tipe Pembayaran']}</span>
                         </td>
                         <td class="px-5 py-3 text-center">${bukti1}</td>
                         <td class="px-5 py-3 text-center">${bukti2}</td>
                         <td class="px-5 py-3 text-center">
                             <span class="px-2 py-1 rounded text-[9px] font-bold w-full max-w-[90px] text-center inline-block mb-1 ${badgeColor}">${status}</span>
-                            <select onchange="updateStatusPesanan('${idTrx}', this)" class="w-full max-w-[90px] bg-slate-100 text-black text-[9px] font-bold rounded px-1 py-1 outline-none text-center">
+                            <select onchange="updateStatusPesanan('${idTrx}', this)" class="w-full max-w-[90px] bg-zinc-800 border border-zinc-700 text-white text-[9px] font-bold rounded px-1 py-1.5 outline-none text-center cursor-pointer">
                                 <option value="" disabled selected>Ubah</option><option value="Menunggu Konfirmasi">Menunggu</option><option value="Diproses">Diproses</option><option value="Selesai">Selesai</option><option value="Dibatalkan">Dibatalkan</option>
                             </select>
                         </td>
                     </tr>`
                 }).join('');
-            } else { tbody.innerHTML = `<tr><td colspan="6" class="py-12 text-center text-slate-400 font-medium">Belum ada pesanan di bulan ini.</td></tr>`; }
+            } else { tbody.innerHTML = `<tr><td colspan="6" class="py-12 text-center text-zinc-500 font-medium">Belum ada pesanan di bulan ini.</td></tr>`; }
         }
 
         async function updateStatusPesanan(idTransaksi, selectElement) {
@@ -665,15 +755,15 @@
             const arrProduk = Object.values(produkTerjual);
             if(arrProduk.length > 0) {
                 grid.innerHTML = arrProduk.map(p => `
-                    <div onclick="bukaTranskripDetail('${p.id}')" class="bg-[#F2F2F7] p-5 rounded-[24px] cursor-pointer hover:bg-blue-50">
-                        <div><h4 class="font-bold text-black text-sm truncate">${p.nama}</h4><p class="text-[10px] font-mono text-slate-400 mb-4">${p.id}</p></div>
+                    <div onclick="bukaTranskripDetail('${p.id}')" class="bg-[#09090b] p-5 rounded-[24px] cursor-pointer hover:bg-zinc-800/50 border border-zinc-800 transition-colors">
+                        <div><h4 class="font-bold text-white text-sm truncate">${p.nama}</h4><p class="text-[10px] font-mono text-zinc-500 mb-4">${p.id}</p></div>
                         <div class="flex justify-between items-end">
-                            <div><p class="text-[9px] uppercase font-bold text-slate-400">Total Terjual</p><p class="font-bold text-blue-500 text-lg">${p.qty} Pcs</p></div>
-                            <div class="text-right"><p class="text-[9px] uppercase font-bold text-slate-400">Pendapatan</p><p class="font-extrabold text-emerald-600">${formatRp(p.total)}</p></div>
+                            <div><p class="text-[9px] uppercase font-bold text-zinc-500">Total Terjual</p><p class="font-bold text-blue-400 text-lg">${p.qty} Pcs</p></div>
+                            <div class="text-right"><p class="text-[9px] uppercase font-bold text-zinc-500">Pendapatan</p><p class="font-extrabold text-emerald-400">${formatRp(p.total)}</p></div>
                         </div>
                     </div>
                 `).join('');
-            } else { grid.innerHTML = `<div class="col-span-full text-center py-12 text-slate-400">Belum ada rekaman.</div>`; }
+            } else { grid.innerHTML = `<div class="col-span-full text-center py-12 text-zinc-500">Belum ada rekaman.</div>`; }
             showLoading(false);
         }
 
@@ -688,10 +778,10 @@
             const container = document.getElementById('transkrip-filter-bulan');
             const dataProduk = globalPenjualan.filter(p => p['ID Baju'] === activeTranskripId);
             let listBulan = [...new Set(dataProduk.map(p => getBulanTahun(p.Tanggal)))];
-            let html = `<button onclick="setTranskripBulan('Semua Waktu')" class="shrink-0 px-4 py-2 rounded-full text-xs font-bold transition-all ${activeTranskripBulan === 'Semua Waktu' ? 'bg-blue-500 text-white shadow-md' : 'bg-white text-slate-500'}">Semua Waktu</button>`;
+            let html = `<button onclick="setTranskripBulan('Semua Waktu')" class="shrink-0 px-4 py-2 rounded-full text-xs font-bold transition-all border ${activeTranskripBulan === 'Semua Waktu' ? 'bg-blue-600 text-white border-blue-600' : 'bg-zinc-800 text-zinc-400 border-zinc-700 hover:bg-zinc-700'}">Semua Waktu</button>`;
             listBulan.forEach(bln => {
-                const activeClass = (activeTranskripBulan === bln) ? 'bg-blue-500 text-white shadow-md' : 'bg-white text-slate-500';
-                html += `<button onclick="setTranskripBulan('${bln}')" class="shrink-0 px-4 py-2 rounded-full text-xs font-bold transition-all ${activeClass}">${bln}</button>`;
+                const activeClass = (activeTranskripBulan === bln) ? 'bg-blue-600 text-white border-blue-600' : 'bg-zinc-800 text-zinc-400 border-zinc-700 hover:bg-zinc-700';
+                html += `<button onclick="setTranskripBulan('${bln}')" class="shrink-0 px-4 py-2 rounded-full text-xs font-bold transition-all border ${activeClass}">${bln}</button>`;
             });
             container.innerHTML = html;
         }
@@ -702,13 +792,13 @@
             if(activeTranskripBulan !== 'Semua Waktu') { dataTampil = dataTampil.filter(p => getBulanTahun(p.Tanggal) === activeTranskripBulan); }
             if(dataTampil.length > 0) {
                 tbody.innerHTML = dataTampil.map(p => `
-                    <tr class="border-b border-slate-50">
-                        <td class="px-4 py-3"><span class="font-mono font-bold text-[10px]">${p['ID Transaksi']}</span><span class="text-[9px] text-slate-400 block">${p.Tanggal}</span></td>
-                        <td class="px-4 py-3 text-[11px] font-bold">@${p['Username Pembeli']}</td>
-                        <td class="px-4 py-3"><p class="text-blue-500 text-[11px] font-bold">${formatRp(p['Total Harga'])}</p><p class="text-[9px]">${p.Jumlah} Pcs</p></td>
-                        <td class="px-4 py-3 text-center"><span class="text-[9px] font-bold bg-slate-100 px-2 py-1 rounded">${p.Status||'Menunggu'}</span></td>
+                    <tr class="border-b border-zinc-800/50">
+                        <td class="px-4 py-3"><span class="font-mono font-bold text-[10px] text-white">${p['ID Transaksi']}</span><span class="text-[9px] text-zinc-500 block">${p.Tanggal}</span></td>
+                        <td class="px-4 py-3 text-[11px] font-bold text-white">@${p['Username Pembeli']}</td>
+                        <td class="px-4 py-3"><p class="text-blue-400 text-[11px] font-bold">${formatRp(p['Total Harga'])}</p><p class="text-[9px] text-zinc-400">${p.Jumlah} Pcs</p></td>
+                        <td class="px-4 py-3 text-center"><span class="text-[9px] font-bold bg-zinc-800 border border-zinc-700 px-2 py-1 rounded text-zinc-300">${p.Status||'Menunggu'}</span></td>
                     </tr>`).join('');
-            } else { tbody.innerHTML = `<tr><td colspan="4" class="py-8 text-center text-slate-400">Tidak ada.</td></tr>`; }
+            } else { tbody.innerHTML = `<tr><td colspan="4" class="py-8 text-center text-zinc-500">Tidak ada data.</td></tr>`; }
         }
 
         function toggleModalTranskrip() {
@@ -731,12 +821,12 @@
                 if(data.status === 'success' && data.data.length > 0) {
                     globalPelanggan = data.data; 
                     grid.innerHTML = data.data.map(p => `
-                        <div onclick="bukaDetailPelanggan('${p.Username}')" class="bg-[#F2F2F7] p-4 rounded-[24px] flex items-center gap-4 cursor-pointer hover:bg-blue-50">
-                            <img src="${p['URL Foto Profil'] || 'https://via.placeholder.com/150'}" class="w-12 h-12 rounded-full object-cover">
-                            <div><h4 class="font-bold text-black text-sm">${p['Nama Lengkap']}</h4><p class="text-[10px] text-slate-500">@${p.Username}</p></div>
+                        <div onclick="bukaDetailPelanggan('${p.Username}')" class="bg-[#09090b] p-4 rounded-[24px] flex items-center gap-4 cursor-pointer hover:bg-zinc-800 border border-zinc-800 transition-colors">
+                            <img src="${p['URL Foto Profil'] || 'https://via.placeholder.com/150'}" class="w-12 h-12 rounded-full object-cover border border-zinc-700">
+                            <div><h4 class="font-bold text-white text-sm">${p['Nama Lengkap']}</h4><p class="text-[10px] text-zinc-400">@${p.Username}</p></div>
                         </div>
                     `).join('');
-                } else { grid.innerHTML = `<div class="col-span-full py-12 text-center text-slate-400">Belum ada pelanggan.</div>`; }
+                } else { grid.innerHTML = `<div class="col-span-full py-12 text-center text-zinc-500">Belum ada pelanggan.</div>`; }
             } catch(e){} showLoading(false);
         }
 
@@ -753,18 +843,19 @@
             const listPesanan = document.getElementById('list-pesanan-pelanggan');
             if(pesananUser.length > 0) {
                 listPesanan.innerHTML = pesananUser.map(p => {
+                    let statusColor = p.Status === 'Diproses' ? 'text-blue-400' : (p.Status === 'Selesai' ? 'text-emerald-400' : (p.Status === 'Dibatalkan' ? 'text-red-400' : 'text-orange-400'));
                     return `
-                    <div onclick="bukaDetailPesananModal('${p['ID Transaksi']}')" class="bg-white p-3 rounded-xl shadow-sm border border-slate-100 flex justify-between items-center cursor-pointer">
+                    <div onclick="bukaDetailPesananModal('${p['ID Transaksi']}')" class="bg-[#18181b] p-3 rounded-xl shadow-sm border border-zinc-800 flex justify-between items-center cursor-pointer hover:border-zinc-600 transition-colors">
                         <div>
-                            <p class="font-bold text-black text-[11px]">${p['Nama Baju']}</p>
-                            <p class="text-[9px] text-slate-400 mt-0.5">${p['ID Transaksi']}</p>
+                            <p class="font-bold text-white text-[11px]">${p['Nama Baju']}</p>
+                            <p class="text-[9px] text-zinc-500 mt-0.5">${p['ID Transaksi']}</p>
                         </div>
                         <div class="text-right">
-                            <span class="block text-[9px] font-bold text-slate-500 uppercase">${p.Status||'Menunggu'}</span>
+                            <span class="block text-[9px] font-bold uppercase ${statusColor}">${p.Status||'Menunggu'}</span>
                         </div>
                     </div>`;
                 }).join('');
-            } else { listPesanan.innerHTML = `<div class="text-center text-slate-400 text-xs">Belum ada transaksi.</div>`; }
+            } else { listPesanan.innerHTML = `<div class="text-center text-zinc-500 text-xs">Belum ada transaksi.</div>`; }
             toggleModalPelanggan();
         }
 
@@ -779,33 +870,35 @@
             const content = document.getElementById('content-detail-pesanan');
             
             // Bukti
-            let bukti1HTML = `<div class="text-center text-[10px] text-slate-500 bg-slate-100 py-2 rounded-lg mb-2">Cash (Tanpa Struk Utama)</div>`;
+            let bukti1HTML = `<div class="text-center text-[10px] text-zinc-400 bg-zinc-800 border border-zinc-700 py-2 rounded-lg mb-2">Cash (Tanpa Struk Utama)</div>`;
             if(trx['Bukti Pembayaran'] && trx['Bukti Pembayaran'] !== "Bayar Cash") {
-               bukti1HTML = `<button onclick="bukaBuktiModal('${trx['Bukti Pembayaran']}')" class="w-full bg-blue-50 text-blue-600 font-bold py-2 rounded-lg text-[11px] mb-2"><i class="fa-solid fa-image"></i> Struk Utama/DP</button>`;
+               bukti1HTML = `<button onclick="bukaBuktiModal('${trx['Bukti Pembayaran']}')" class="w-full bg-blue-500/10 text-blue-400 font-bold py-2 rounded-lg text-[11px] mb-2 hover:bg-blue-500/20 transition-colors"><i class="fa-solid fa-image"></i> Struk Utama/DP</button>`;
             }
             
             let bukti2HTML = "";
             if(trx['Tipe Pembayaran'] === 'DP') {
                if(trx['Bukti Pelunasan'] && trx['Bukti Pelunasan'].startsWith("http")) {
-                  bukti2HTML = `<button onclick="bukaBuktiModal('${trx['Bukti Pelunasan']}')" class="w-full bg-emerald-50 text-emerald-600 font-bold py-2 rounded-lg text-[11px]"><i class="fa-solid fa-image"></i> Struk Pelunasan</button>`;
+                  bukti2HTML = `<button onclick="bukaBuktiModal('${trx['Bukti Pelunasan']}')" class="w-full bg-emerald-500/10 text-emerald-400 font-bold py-2 rounded-lg text-[11px] hover:bg-emerald-500/20 transition-colors"><i class="fa-solid fa-image"></i> Struk Pelunasan</button>`;
                } else {
-                  bukti2HTML = `<div class="text-center text-[10px] text-orange-500 bg-orange-50 py-2 rounded-lg font-bold">Belum ada struk pelunasan</div>`;
+                  bukti2HTML = `<div class="text-center text-[10px] text-orange-400 bg-orange-500/10 py-2 rounded-lg font-bold border border-orange-500/20">Belum ada struk pelunasan</div>`;
                }
             }
+            
+            let statusColor = trx.Status === 'Diproses' ? 'bg-blue-500/10 text-blue-400' : (trx.Status === 'Selesai' ? 'bg-emerald-500/10 text-emerald-400' : (trx.Status === 'Dibatalkan' ? 'bg-red-500/10 text-red-400' : 'bg-orange-500/10 text-orange-400'));
 
             content.innerHTML = `
                 <div class="flex justify-between items-center mb-3">
-                    <span class="font-mono text-[10px] font-bold text-slate-400">${trx['ID Transaksi']}</span>
-                    <span class="px-2 py-1 rounded bg-slate-100 text-[10px] font-bold uppercase">${trx.Status||'Menunggu'}</span>
+                    <span class="font-mono text-[10px] font-bold text-zinc-400">${trx['ID Transaksi']}</span>
+                    <span class="px-2 py-1 rounded text-[10px] font-bold uppercase ${statusColor}">${trx.Status||'Menunggu'}</span>
                 </div>
                 <div class="mb-3">
-                    <p class="font-bold text-black text-sm">${trx['Nama Baju']}</p>
-                    <p class="text-[10px] font-bold text-slate-500">${trx.Jumlah} Pcs x ${formatRp(trx['Total Harga']/trx.Jumlah)}</p>
+                    <p class="font-bold text-white text-sm">${trx['Nama Baju']}</p>
+                    <p class="text-[10px] font-bold text-zinc-400">${trx.Jumlah} Pcs x ${formatRp(trx['Total Harga']/trx.Jumlah)}</p>
                 </div>
-                <div class="bg-[#F2F2F7] p-3 rounded-xl mb-3">
-                    <div class="flex justify-between mb-1"><span class="text-[10px] text-slate-500">Tipe / Metode</span><span class="text-[10px] font-bold">${trx['Tipe Pembayaran']} - ${trx['Metode Bayar']||'-'}</span></div>
-                    ${trx['Tipe Pembayaran'] === 'DP' ? `<div class="flex justify-between mb-1"><span class="text-[10px] text-slate-500">Detail DP</span><span class="text-[10px] font-bold text-purple-600">${trx['Detail DP']}</span></div>` : ''}
-                    <div class="flex justify-between mt-2 pt-2 border-t border-slate-200"><span class="text-[10px] text-slate-500 font-bold">Total Harga</span><span class="text-xs font-bold text-black">${formatRp(trx['Total Harga'])}</span></div>
+                <div class="bg-[#09090b] border border-zinc-800 p-3 rounded-xl mb-3">
+                    <div class="flex justify-between mb-1"><span class="text-[10px] text-zinc-500">Tipe / Metode</span><span class="text-[10px] font-bold text-zinc-200">${trx['Tipe Pembayaran']} - ${trx['Metode Bayar']||'-'}</span></div>
+                    ${trx['Tipe Pembayaran'] === 'DP' ? `<div class="flex justify-between mb-1"><span class="text-[10px] text-zinc-500">Detail DP</span><span class="text-[10px] font-bold text-purple-400">${trx['Detail DP']}</span></div>` : ''}
+                    <div class="flex justify-between mt-2 pt-2 border-t border-zinc-800"><span class="text-[10px] text-zinc-400 font-bold">Total Harga</span><span class="text-xs font-bold text-white">${formatRp(trx['Total Harga'])}</span></div>
                 </div>
                 ${bukti1HTML}
                 ${bukti2HTML}
@@ -851,7 +944,6 @@
                         if(item.Key === 'qris_lunas' && item.Value) { document.getElementById('preview-qris-lunas').src = item.Value; document.getElementById('preview-qris-lunas').classList.remove('hidden'); }
                         if(item.Key === 'qris_dp' && item.Value) { document.getElementById('preview-qris-dp').src = item.Value; document.getElementById('preview-qris-dp').classList.remove('hidden'); }
                         
-                        // [UPDATE] Set Values text
                         if(item.Key === 'admin_wa') document.getElementById('set-admin-wa').value = item.Value || "";
                         if(item.Key === 'qris_name') document.getElementById('set-qris-name').value = item.Value || "";
                     });
@@ -868,8 +960,8 @@
                 action: "savePengaturan", logo: base64Logo, login_bg: base64LoginBg, 
                 banner_1: base64Ban1, banner_2: base64Ban2, banner_3: base64Ban3, 
                 qris_lunas: base64QrisLunas, qris_dp: base64QrisDp,
-                admin_wa: document.getElementById('set-admin-wa').value, // [UPDATE]
-                qris_name: document.getElementById('set-qris-name').value // [UPDATE]
+                admin_wa: document.getElementById('set-admin-wa').value,
+                qris_name: document.getElementById('set-qris-name').value
             };
             try {
                 const res = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload), headers: { 'Content-Type': 'text/plain' } });
