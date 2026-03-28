@@ -437,16 +437,11 @@
             if (!force && dataLoaded.dashboard) { renderDashboard(); return; }
             showLoading(true);
             try {
-                const res = await fetch(`${SCRIPT_URL}?action=getDashboard`); const data = await res.json();
+                const res = await fetch(`${SCRIPT_URL}?action=getDashboard&t=${new Date().getTime()}`); const data = await res.json();
                 if(data.status === 'success') {
                     dashData = data.data; dataLoaded.dashboard = true; renderDashboard();
                 }
             } catch (err) {} showLoading(false);
-        }
-        function renderDashboard() {
-            document.getElementById('dash-produk').textContent = dashData.totalProduk;
-            document.getElementById('dash-terjual').textContent = dashData.totalTerjual;
-            document.getElementById('dash-pendapatan').textContent = formatRp(dashData.totalPendapatan);
         }
 
         function updateDatalistKategori() {
@@ -502,7 +497,7 @@
             if(!force && dataLoaded.produk && globalProduk.length > 0) { renderTableProduk(); return; }
             showLoading(true); 
             try {
-                const res = await fetch(`${SCRIPT_URL}?action=getProduk`); const data = await res.json();
+                const res = await fetch(`${SCRIPT_URL}?action=getProduk&t=${new Date().getTime()}`); const data = await res.json();
                 if(data.status === 'success') { globalProduk = data.data; dataLoaded.produk = true; updateDatalistKategori(); renderTableProduk(); }
             } catch (err) {} showLoading(false);
         }
@@ -630,7 +625,7 @@
             if(!force && dataLoaded.penjualan && globalPenjualan.length > 0) { renderFilterBulan(); renderTabelPenjualan(activeBulanFilter); return; }
             showLoading(true);
             try {
-                const res = await fetch(`${SCRIPT_URL}?action=getPenjualan`); const data = await res.json();
+                const res = await fetch(`${SCRIPT_URL}?action=getPenjualan&t=${new Date().getTime()}`); const data = await res.json();
                 if(data.status === 'success') { globalPenjualan = data.data.reverse(); dataLoaded.penjualan = true; renderFilterBulan(); renderTabelPenjualan(activeBulanFilter); }
             } catch (err) {} showLoading(false);
         }
@@ -696,16 +691,28 @@
             try {
                 const res = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: "updateStatus", id_transaksi: idTransaksi, status_baru: statusBaru }), headers: { 'Content-Type': 'text/plain' } });
                 const data = await res.json();
-                if(data.status === 'success') { fetchPenjualan(true); fetchDashboard(true); fetchTranskrip(true); } else alert('Gagal: ' + data.message);
-            } catch (err) {}
-            selectElement.disabled = false; selectElement.value = ""; showLoading(false);
+                if(data.status === 'success') { 
+                    // Update tampilan lokal seketika agar tidak nge-freeze (Optimistic UI)
+                    const trx = globalPenjualan.find(p => p['ID Transaksi'] === idTransaksi);
+                    if(trx) trx.Status = statusBaru;
+                    renderTabelPenjualan(activeBulanFilter);
+                    
+                    // Sinkronisasi data di background
+                    fetchPenjualan(true); fetchDashboard(true); fetchTranskrip(true); 
+                } else {
+                    alert('Gagal: ' + data.message);
+                }
+            } catch (err) {
+                alert('Terjadi kesalahan jaringan.');
+            }
+            showLoading(false);
         }
 
         async function fetchTranskrip(force = false) {
             if(!force && dataLoaded.penjualan) { renderGridTranskrip(); return; }
             showLoading(true);
             try {
-                const res = await fetch(`${SCRIPT_URL}?action=getPenjualan`); const data = await res.json();
+                const res = await fetch(`${SCRIPT_URL}?action=getPenjualan&t=${new Date().getTime()}`); const data = await res.json();
                 if(data.status === 'success') { globalPenjualan = data.data.reverse(); dataLoaded.penjualan = true; renderGridTranskrip(); }
             } catch(e) {} showLoading(false);
         }
@@ -778,7 +785,7 @@
             if(!force && dataLoaded.pelanggan && globalPelanggan.length > 0) { renderGridPelanggan(); return; }
             showLoading(true); 
             try {
-                const res = await fetch(`${SCRIPT_URL}?action=getPelanggan`); const data = await res.json();
+                const res = await fetch(`${SCRIPT_URL}?action=getPelanggan&t=${new Date().getTime()}`); const data = await res.json();
                 if(data.status === 'success') { globalPelanggan = data.data; dataLoaded.pelanggan = true; renderGridPelanggan(); }
             } catch(e){} showLoading(false);
         }
@@ -899,7 +906,7 @@
             if(!force && dataLoaded.pengaturan) return;
             showLoading(true);
             try {
-                const res = await fetch(`${SCRIPT_URL}?action=getPengaturan`); const data = await res.json();
+                const res = await fetch(`${SCRIPT_URL}?action=getPengaturan&t=${new Date().getTime()}`); const data = await res.json();
                 if(data.status === 'success' && data.data) {
                     dataLoaded.pengaturan = true;
                     data.data.forEach(item => {
