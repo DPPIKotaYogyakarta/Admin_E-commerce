@@ -119,16 +119,28 @@
             <!-- DASHBOARD SECTION -->
             <section id="sec-dashboard" class="space-y-4 md:space-y-6">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
-                    <div class="bg-[#18181b] p-5 md:p-6 rounded-[32px] shadow-lg border border-zinc-800 flex flex-col justify-between h-40">
-                        <div class="w-12 h-12 rounded-2xl bg-blue-500/10 text-blue-400 flex items-center justify-center text-xl"><i class="fa-solid fa-boxes-stacked"></i></div>
+                    <!-- Modifikasi Card 1 -->
+                    <div onclick="showDashDetail('produk')" class="bg-[#18181b] p-5 md:p-6 rounded-[32px] shadow-lg border border-zinc-800 flex flex-col justify-between h-40 cursor-pointer hover:bg-zinc-800/80 hover:border-zinc-700 transition-all group relative overflow-hidden">
+                        <div class="flex justify-between items-start">
+                            <div class="w-12 h-12 rounded-2xl bg-blue-500/10 text-blue-400 flex items-center justify-center text-xl"><i class="fa-solid fa-boxes-stacked"></i></div>
+                            <span class="text-[10px] font-bold text-blue-400 opacity-0 group-hover:opacity-100 transition-opacity bg-blue-500/10 px-2.5 py-1.5 rounded-xl flex items-center gap-1">Detail <i class="fa-solid fa-arrow-right"></i></span>
+                        </div>
                         <div><p class="text-sm text-zinc-400 font-semibold">Total Produk Baju</p><h3 id="dash-produk" class="text-3xl font-extrabold text-white">0</h3></div>
                     </div>
-                    <div class="bg-[#18181b] p-5 md:p-6 rounded-[32px] shadow-lg border border-zinc-800 flex flex-col justify-between h-40">
-                        <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-xl"><i class="fa-solid fa-cart-arrow-down"></i></div>
+                    <!-- Modifikasi Card 2 -->
+                    <div onclick="showDashDetail('terjual')" class="bg-[#18181b] p-5 md:p-6 rounded-[32px] shadow-lg border border-zinc-800 flex flex-col justify-between h-40 cursor-pointer hover:bg-zinc-800/80 hover:border-zinc-700 transition-all group relative overflow-hidden">
+                        <div class="flex justify-between items-start">
+                            <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-xl"><i class="fa-solid fa-cart-arrow-down"></i></div>
+                            <span class="text-[10px] font-bold text-emerald-400 opacity-0 group-hover:opacity-100 transition-opacity bg-emerald-500/10 px-2.5 py-1.5 rounded-xl flex items-center gap-1">Detail <i class="fa-solid fa-arrow-right"></i></span>
+                        </div>
                         <div><p class="text-sm text-zinc-400 font-semibold">Baju Terjual</p><h3 id="dash-terjual" class="text-3xl font-extrabold text-white">0</h3></div>
                     </div>
-                    <div class="bg-[#18181b] p-5 md:p-6 rounded-[32px] shadow-lg border border-zinc-800 flex flex-col justify-between h-40">
-                        <div class="w-12 h-12 rounded-2xl bg-purple-500/10 text-purple-400 flex items-center justify-center text-xl"><i class="fa-solid fa-wallet"></i></div>
+                    <!-- Modifikasi Card 3 -->
+                    <div onclick="showDashDetail('pendapatan')" class="bg-[#18181b] p-5 md:p-6 rounded-[32px] shadow-lg border border-zinc-800 flex flex-col justify-between h-40 cursor-pointer hover:bg-zinc-800/80 hover:border-zinc-700 transition-all group relative overflow-hidden">
+                        <div class="flex justify-between items-start">
+                            <div class="w-12 h-12 rounded-2xl bg-purple-500/10 text-purple-400 flex items-center justify-center text-xl"><i class="fa-solid fa-wallet"></i></div>
+                            <span class="text-[10px] font-bold text-purple-400 opacity-0 group-hover:opacity-100 transition-opacity bg-purple-500/10 px-2.5 py-1.5 rounded-xl flex items-center gap-1">Detail <i class="fa-solid fa-arrow-right"></i></span>
+                        </div>
                         <div><p class="text-sm text-zinc-400 font-semibold">Total Pendapatan</p><h3 id="dash-pendapatan" class="text-3xl font-extrabold text-white">Rp 0</h3></div>
                     </div>
                 </div>
@@ -327,13 +339,27 @@
         </div>
     </main>
 
-    <!-- Modal Detail Produk -->
+    <!-- Modal Detail Produk (untuk list) -->
     <div id="modal-detail-produk" class="modal opacity-0 pointer-events-none fixed w-full h-full top-0 left-0 flex items-end sm:items-center justify-center z-[80] transition-opacity duration-300">
         <div class="absolute w-full h-full bg-black/60 backdrop-blur-sm" onclick="toggleModalDetailProduk()"></div>
         <div class="modal-sheet bg-[#18181b] w-full sm:max-w-md mx-auto rounded-t-[40px] sm:rounded-[40px] shadow-2xl z-[80] flex flex-col relative p-6 pb-safe border border-zinc-800">
             <button onclick="toggleModalDetailProduk()" class="absolute top-4 right-4 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 w-8 h-8 rounded-full flex items-center justify-center transition-colors"><i class="fa-solid fa-times"></i></button>
             <h3 class="font-bold text-xl text-white border-b border-zinc-800 pb-3 mb-4 mt-2 sm:mt-0">Detail Produk</h3>
             <div id="content-detail-produk" class="space-y-5 overflow-y-auto hide-scrollbar scroll-touch max-h-[70vh]"></div>
+        </div>
+    </div>
+
+    <!-- Modal Dashboard Detail -->
+    <div id="modal-dash-detail" class="modal opacity-0 pointer-events-none fixed w-full h-full top-0 left-0 flex items-end sm:items-center justify-center z-[85] transition-opacity duration-300">
+        <div class="absolute w-full h-full bg-black/60 backdrop-blur-sm" onclick="toggleModalDashDetail()"></div>
+        <div class="modal-sheet bg-[#18181b] w-full sm:max-w-2xl mx-auto rounded-t-[40px] sm:rounded-[40px] shadow-2xl z-[85] flex flex-col relative pb-safe border border-zinc-800 max-h-[85vh]">
+            <div class="px-6 py-5 border-b border-zinc-800 flex justify-between items-center sticky top-0 bg-[#18181b] rounded-t-[40px] z-10">
+                <h3 id="dash-detail-title" class="font-bold text-xl text-white">Detail</h3>
+                <button onclick="toggleModalDashDetail()" class="bg-zinc-800 hover:bg-zinc-700 text-zinc-300 w-8 h-8 rounded-full flex items-center justify-center transition-colors"><i class="fa-solid fa-times"></i></button>
+            </div>
+            <div id="dash-detail-content" class="p-6 overflow-y-auto hide-scrollbar scroll-touch flex-1">
+                <!-- Content goes here -->
+            </div>
         </div>
     </div>
 
@@ -391,7 +417,7 @@
         const formatRp = (angka) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka);
         const showLoading = (show) => document.getElementById('loading-indicator').style.display = show ? 'flex' : 'none';
 
-        // VARIABEL CACHING (Menyimpan data agar tidak reload berulang)
+        // VARIABEL CACHING
         let dataLoaded = { dashboard: false, produk: false, penjualan: false, pelanggan: false, pengaturan: false };
         let dashData = { totalProduk: 0, totalTerjual: 0, totalPendapatan: 0 };
         
@@ -424,13 +450,20 @@
             if(mobActive) mobActive.className = "flex flex-col items-center gap-1 p-2 text-blue-500 min-w-[72px] shrink-0 active:scale-90 transition-transform drop-shadow-sm";
             
             updateNavTitles(tab);
-            // Panggil API HANYA JIKA cache belum ada (ditangani oleh masing-masing fungsi)
             if (tab === 'dashboard') fetchDashboard();
             if (tab === 'produk') fetchProduk();
             if (tab === 'penjualan') fetchPenjualan();
             if (tab === 'transkrip') fetchTranskrip();
             if (tab === 'pelanggan') { fetchPelanggan(); fetchPenjualan(); }
             if (tab === 'pengaturan') fetchPengaturanAdmin();
+        }
+
+        function renderDashboard() {
+            if(dashData) {
+                document.getElementById('dash-produk').textContent = dashData.totalProduk || 0;
+                document.getElementById('dash-terjual').textContent = dashData.totalTerjual || 0;
+                document.getElementById('dash-pendapatan').textContent = formatRp(dashData.totalPendapatan || 0);
+            }
         }
 
         async function fetchDashboard(force = false) {
@@ -443,6 +476,134 @@
                 }
             } catch (err) {} showLoading(false);
         }
+
+        // --- DASHBOARD DETAILS MODAL LOGIC ---
+        function toggleModalDashDetail() {
+            const modal = document.getElementById('modal-dash-detail');
+            if(modal.classList.contains('opacity-0')) {
+                modal.classList.remove('opacity-0', 'pointer-events-none');
+                setTimeout(() => modal.classList.add('show'), 10);
+            } else {
+                modal.classList.remove('show');
+                setTimeout(() => modal.classList.add('opacity-0', 'pointer-events-none'), 300);
+            }
+        }
+
+        async function showDashDetail(type) {
+            showLoading(true);
+            // Ensure raw data is loaded before displaying details
+            if (type === 'produk' && (!dataLoaded.produk || globalProduk.length === 0)) {
+                await fetchProduk(true);
+            } else if ((type === 'terjual' || type === 'pendapatan') && (!dataLoaded.penjualan || globalPenjualan.length === 0)) {
+                await fetchPenjualan(true);
+            }
+            showLoading(false);
+
+            const titleEl = document.getElementById('dash-detail-title');
+            const contentEl = document.getElementById('dash-detail-content');
+            let contentHTML = '';
+
+            if (type === 'produk') {
+                titleEl.innerHTML = '<i class="fa-solid fa-boxes-stacked text-blue-400 mr-2"></i> Detail Produk per Kategori';
+                const grouped = {};
+                globalProduk.forEach(p => {
+                    const kat = p.Kategori || p.kategori || 'Lainnya';
+                    if (!grouped[kat]) grouped[kat] = [];
+                    grouped[kat].push(p);
+                });
+
+                if (Object.keys(grouped).length === 0) contentHTML = '<p class="text-zinc-500 text-center py-8">Belum ada data produk.</p>';
+                else {
+                    for (const [kat, items] of Object.entries(grouped)) {
+                        contentHTML += `
+                        <div class="mb-6 last:mb-0 bg-[#09090b] p-4 rounded-2xl border border-zinc-800">
+                            <h4 class="font-bold text-white mb-3 border-b border-zinc-800/50 pb-2 flex justify-between items-center">
+                                <span>${kat}</span> 
+                                <span class="bg-blue-500/10 text-blue-400 px-2 py-1 rounded text-xs">${items.length} Item</span>
+                            </h4>
+                            <div class="space-y-2">`;
+                        items.forEach(p => {
+                            contentHTML += `
+                                <div class="bg-[#18181b] p-3 rounded-xl border border-zinc-800/50 flex justify-between items-center hover:border-zinc-700 transition-colors">
+                                    <div>
+                                        <p class="text-sm font-bold text-zinc-200">${p['Nama Baju'] || p.nama}</p>
+                                        <p class="text-[10px] text-zinc-500 font-mono mt-0.5">${p.ID || p.id}</p>
+                                    </div>
+                                    <div class="text-right">
+                                        <p class="text-xs text-zinc-400 mb-0.5">Stok: <span class="font-bold ${p.Stok <= 5 ? 'text-red-400' : 'text-zinc-200'}">${p.Stok || p.stok}</span></p>
+                                        <p class="text-xs font-bold text-emerald-400">${formatRp(p.Harga || p.harga)}</p>
+                                    </div>
+                                </div>`;
+                        });
+                        contentHTML += `</div></div>`;
+                    }
+                }
+            } else if (type === 'terjual') {
+                titleEl.innerHTML = '<i class="fa-solid fa-cart-arrow-down text-emerald-400 mr-2"></i> Detail Penjualan per Jenis';
+                const terjual = {};
+                globalPenjualan.forEach(p => {
+                    if (p.Status === 'Dibatalkan') return; // Exclude cancelled orders
+                    const nama = p['Nama Baju'];
+                    if (!terjual[nama]) terjual[nama] = { qty: 0, total: 0 };
+                    terjual[nama].qty += parseInt(p.Jumlah || 0);
+                    terjual[nama].total += parseInt(p['Total Harga'] || 0);
+                });
+
+                const sorted = Object.entries(terjual).sort((a, b) => b[1].qty - a[1].qty);
+
+                if (sorted.length === 0) contentHTML = '<p class="text-zinc-500 text-center py-8">Belum ada data penjualan valid.</p>';
+                else {
+                    contentHTML = '<div class="space-y-3">';
+                    sorted.forEach(([nama, data]) => {
+                        contentHTML += `
+                        <div class="bg-[#09090b] p-4 rounded-2xl border border-zinc-800 flex justify-between items-center hover:bg-zinc-900 transition-colors">
+                            <div class="flex-1">
+                                <p class="text-sm font-bold text-white mb-1">${nama}</p>
+                                <p class="text-xs text-emerald-400 font-medium">Nilai: ${formatRp(data.total)}</p>
+                            </div>
+                            <div class="text-right ml-4">
+                                <p class="text-xl font-black text-blue-400">${data.qty} <span class="text-[10px] font-normal text-zinc-500 uppercase">Pcs Terjual</span></p>
+                            </div>
+                        </div>`;
+                    });
+                    contentHTML += '</div>';
+                }
+            } else if (type === 'pendapatan') {
+                titleEl.innerHTML = '<i class="fa-solid fa-wallet text-purple-400 mr-2"></i> Rincian Sumber Pendapatan';
+                // Filter transactions that bring in revenue (not cancelled)
+                const validTrx = globalPenjualan
+                    .filter(p => p.Status !== 'Dibatalkan')
+                    .sort((a, b) => new Date(b.Tanggal) - new Date(a.Tanggal));
+
+                if (validTrx.length === 0) contentHTML = '<p class="text-zinc-500 text-center py-8">Belum ada transaksi yang menghasilkan pendapatan.</p>';
+                else {
+                    contentHTML = '<div class="space-y-3">';
+                    validTrx.forEach(p => {
+                        let statusColor = p.Status === 'Diproses' ? 'bg-blue-500/10 text-blue-400' : 'bg-emerald-500/10 text-emerald-400';
+                        if(p.Status === 'Menunggu Konfirmasi') statusColor = 'bg-orange-500/10 text-orange-400';
+
+                        contentHTML += `
+                        <div class="bg-[#09090b] p-4 rounded-2xl border border-zinc-800 flex justify-between items-center hover:bg-zinc-900 transition-colors">
+                            <div class="w-2/3 pr-2">
+                                <p class="text-[10px] font-mono text-zinc-500 mb-1"><i class="fa-regular fa-clock mr-1"></i> ${p.Tanggal}</p>
+                                <p class="text-sm font-bold text-white truncate" title="${p['Nama Baju']}">${p['Nama Baju']}</p>
+                                <p class="text-[11px] text-zinc-400 mt-0.5">@${p['Username Pembeli']} &bull; <span class="text-purple-400 font-medium">${p['Metode Bayar'] || 'Transfer'}</span></p>
+                            </div>
+                            <div class="text-right w-1/3">
+                                <p class="text-sm md:text-base font-black text-emerald-400">+ ${formatRp(p['Total Harga'])}</p>
+                                <p class="text-[9px] px-2 py-1 rounded inline-block mt-1.5 font-bold ${statusColor}">${p.Status}</p>
+                            </div>
+                        </div>`;
+                    });
+                    contentHTML += '</div>';
+                }
+            }
+
+            contentEl.innerHTML = contentHTML;
+            toggleModalDashDetail();
+        }
+        // ---------------------------------------------
+
 
         function updateDatalistKategori() {
             const datalist = document.getElementById('list-kategori');
@@ -844,7 +1005,7 @@
             // Bukti
             let bukti1HTML = `<div class="text-center text-[10px] text-zinc-400 bg-zinc-800 border border-zinc-700 py-2 rounded-lg mb-2">Cash (Tanpa Struk Utama)</div>`;
             if(trx['Bukti Pembayaran'] && trx['Bukti Pembayaran'] !== "Bayar Cash") {
-               bukti1HTML = `<button onclick="bukaBuktiModal('${trx['Bukti Pembayaran']}')" class="w-full bg-blue-500/10 text-blue-400 font-bold py-2 rounded-lg text-[11px] mb-2 hover:bg-blue-500/20 transition-colors"><i class="fa-solid fa-image"></i> Struk Utama/DP</button>`;
+                bukti1HTML = `<button onclick="bukaBuktiModal('${trx['Bukti Pembayaran']}')" class="w-full bg-blue-500/10 text-blue-400 font-bold py-2 rounded-lg text-[11px] mb-2 hover:bg-blue-500/20 transition-colors"><i class="fa-solid fa-image"></i> Struk Utama/DP</button>`;
             }
             
             let bukti2HTML = "";
