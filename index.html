@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     
-    <!-- [UPDATE] TAMBAHAN LIBRARY CROPPER JS UNTUK FITUR SESUAIKAN GAMBAR -->
+    <!-- TAMBAHAN LIBRARY CROPPER JS UNTUK FITUR SESUAIKAN GAMBAR -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
 
@@ -97,7 +97,7 @@
     </div>
 
     <script>
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyhtWWC2kPlt8CI1sL8axe9NysjIlIW3N9fLJOyTDN6lsQ_JVM6Ig88qfb3ov1z7d2r/exec'; 
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzBmHwiEWYM1Z46dOPX4SQF7ER9IcrWcwP6A40vXij5vGQToSAXirO7PZZR6Xu4tgSj/exec'; 
     </script>
 
     <!-- Sidebar Admin Desktop -->
@@ -353,7 +353,7 @@
             <section id="sec-pengaturan" class="hidden space-y-4 md:space-y-8">
                 <div class="bg-[#18181b]/90 backdrop-blur-xl p-4 md:p-8 rounded-[32px] md:rounded-[40px] shadow-lg border border-zinc-800">
                     <h3 class="text-base md:text-xl font-bold mb-1 md:mb-2 text-white tracking-tight">Personalisasi & Sistem</h3>
-                    <p class="text-[10px] md:text-xs text-zinc-400 mb-4 md:mb-6">Data di bawah ini disinkron dari server. Klik foto untuk upload/memotong (crop) gambar.</p>
+                    <p class="text-[10px] md:text-xs text-zinc-400 mb-4 md:mb-6">Klik kotak gambar untuk ganti file, atau klik icon biru untuk mengedit gambar yang sudah ada.</p>
                     <form id="form-pengaturan" onsubmit="handleSavePengaturan(event)" class="space-y-4 md:space-y-6 mt-4">
                         
                         <!-- Info Admin WA & QRIS Name -->
@@ -372,15 +372,38 @@
                             </div>
                         </div>
 
-                        <!-- [UPDATE] FITUR PREVIEW GAMBAR + TOMBOL HAPUS -->
+                        <!-- FITUR PREVIEW GAMBAR + TOMBOL HAPUS -->
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                             <div class="bg-[#09090b] border border-zinc-800 p-4 md:p-5 rounded-[20px] md:rounded-[24px]">
-                                <label class="block font-bold text-white text-xs md:text-sm mb-2">Logo Aplikasi</label>
-                                <div onclick="document.getElementById('set-logo').click()" class="w-16 h-16 md:w-20 md:h-20 bg-zinc-800 rounded-[16px] md:rounded-[20px] flex items-center justify-center cursor-pointer shadow-sm relative overflow-hidden border border-zinc-700 hover:border-zinc-500 transition group">
-                                    <input type="file" id="set-logo" accept="image/*" class="hidden" onchange="openCropperSingle(event, 'preview-logo', 'base64Logo')">
-                                    <i class="fa-solid fa-image text-zinc-500 text-lg md:text-xl"></i>
-                                    <img id="preview-logo" src="" class="absolute inset-0 w-full h-full object-contain p-2 hidden bg-zinc-800">
-                                    <button onclick="hapusGambarPreview(event, 'preview-logo', 'base64Logo', 'del-preview-logo')" id="del-preview-logo" class="absolute top-1 right-1 bg-red-600 hover:bg-red-500 text-white w-6 h-6 rounded-full hidden items-center justify-center z-20 shadow-lg"><i class="fa-solid fa-trash text-[10px]"></i></button>
+                                <label class="block font-bold text-white text-xs md:text-sm mb-3">Logo Aplikasi</label>
+                                <div class="grid grid-cols-2 gap-3 md:gap-4">
+                                    <div class="flex flex-col items-center gap-2">
+                                        <div onclick="document.getElementById('set-logo-light').click()" class="w-16 h-16 md:w-20 md:h-20 bg-zinc-200 rounded-[16px] md:rounded-[20px] flex items-center justify-center cursor-pointer shadow-sm relative overflow-hidden border border-zinc-400 hover:border-zinc-500 transition group">
+                                            <input type="file" id="set-logo-light" accept="image/*" class="hidden" onchange="openCropperSingle(event, 'preview-logo-light', 'base64LogoLight')">
+                                            <i class="fa-solid fa-image text-zinc-500 text-lg md:text-xl"></i>
+                                            <img id="preview-logo-light" src="" class="absolute inset-0 w-full h-full object-contain p-2 hidden bg-zinc-100">
+                                            
+                                            <!-- ACTIONS OVERLAY -->
+                                            <div id="actions-preview-logo-light" class="absolute top-1 right-1 flex gap-1 z-20 hidden">
+                                                <button type="button" onclick="openCropperFromUrl(event, 'preview-logo-light', 'base64LogoLight', false)" class="bg-blue-600 hover:bg-blue-500 text-white w-5 h-5 md:w-6 md:h-6 rounded-full flex items-center justify-center shadow-lg"><i class="fa-solid fa-crop-simple text-[8px] md:text-[10px]"></i></button>
+                                                <button type="button" onclick="hapusGambarPreview(event, 'preview-logo-light', 'base64LogoLight')" class="bg-red-600 hover:bg-red-500 text-white w-5 h-5 md:w-6 md:h-6 rounded-full flex items-center justify-center shadow-lg"><i class="fa-solid fa-trash text-[8px] md:text-[10px]"></i></button>
+                                            </div>
+                                        </div>
+                                        <span class="text-[9px] md:text-[10px] font-bold text-zinc-400 text-center">Mode Terang</span>
+                                    </div>
+                                    <div class="flex flex-col items-center gap-2">
+                                        <div onclick="document.getElementById('set-logo-dark').click()" class="w-16 h-16 md:w-20 md:h-20 bg-zinc-800 rounded-[16px] md:rounded-[20px] flex items-center justify-center cursor-pointer shadow-sm relative overflow-hidden border border-zinc-700 hover:border-zinc-500 transition group">
+                                            <input type="file" id="set-logo-dark" accept="image/*" class="hidden" onchange="openCropperSingle(event, 'preview-logo-dark', 'base64LogoDark')">
+                                            <i class="fa-solid fa-image text-zinc-500 text-lg md:text-xl"></i>
+                                            <img id="preview-logo-dark" src="" class="absolute inset-0 w-full h-full object-contain p-2 hidden bg-zinc-800">
+                                            
+                                            <div id="actions-preview-logo-dark" class="absolute top-1 right-1 flex gap-1 z-20 hidden">
+                                                <button type="button" onclick="openCropperFromUrl(event, 'preview-logo-dark', 'base64LogoDark', false)" class="bg-blue-600 hover:bg-blue-500 text-white w-5 h-5 md:w-6 md:h-6 rounded-full flex items-center justify-center shadow-lg"><i class="fa-solid fa-crop-simple text-[8px] md:text-[10px]"></i></button>
+                                                <button type="button" onclick="hapusGambarPreview(event, 'preview-logo-dark', 'base64LogoDark')" class="bg-red-600 hover:bg-red-500 text-white w-5 h-5 md:w-6 md:h-6 rounded-full flex items-center justify-center shadow-lg"><i class="fa-solid fa-trash text-[8px] md:text-[10px]"></i></button>
+                                            </div>
+                                        </div>
+                                        <span class="text-[9px] md:text-[10px] font-bold text-zinc-400 text-center">Mode Gelap</span>
+                                    </div>
                                 </div>
                             </div>
                             <div class="bg-[#09090b] border border-zinc-800 p-4 md:p-5 rounded-[20px] md:rounded-[24px]">
@@ -389,7 +412,11 @@
                                     <input type="file" id="set-loginbg" accept="image/*" class="hidden" onchange="openCropperSingle(event, 'preview-loginbg', 'base64LoginBg', true)">
                                     <i class="fa-solid fa-image text-zinc-500 text-lg md:text-xl"></i>
                                     <img id="preview-loginbg" src="" class="absolute inset-0 w-full h-full object-cover hidden bg-zinc-800">
-                                    <button onclick="hapusGambarPreview(event, 'preview-loginbg', 'base64LoginBg', 'del-preview-loginbg')" id="del-preview-loginbg" class="absolute top-1 right-1 bg-red-600 hover:bg-red-500 text-white w-6 h-6 rounded-full hidden items-center justify-center z-20 shadow-lg"><i class="fa-solid fa-trash text-[10px]"></i></button>
+                                    
+                                    <div id="actions-preview-loginbg" class="absolute top-1 right-1 flex gap-1 z-20 hidden">
+                                        <button type="button" onclick="openCropperFromUrl(event, 'preview-loginbg', 'base64LoginBg', true)" class="bg-blue-600 hover:bg-blue-500 text-white w-5 h-5 md:w-6 md:h-6 rounded-full flex items-center justify-center shadow-lg"><i class="fa-solid fa-crop-simple text-[8px] md:text-[10px]"></i></button>
+                                        <button type="button" onclick="hapusGambarPreview(event, 'preview-loginbg', 'base64LoginBg')" class="bg-red-600 hover:bg-red-500 text-white w-5 h-5 md:w-6 md:h-6 rounded-full flex items-center justify-center shadow-lg"><i class="fa-solid fa-trash text-[8px] md:text-[10px]"></i></button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -401,19 +428,31 @@
                                     <input type="file" id="set-ban1" accept="image/*" class="hidden" onchange="openCropperSingle(event, 'preview-ban1', 'base64Ban1', true)">
                                     <span class="text-[9px] md:text-[10px] font-bold text-zinc-400 mt-1 md:mt-2">Slot 1</span>
                                     <img id="preview-ban1" src="" class="absolute inset-0 w-full h-full object-cover hidden">
-                                    <button onclick="hapusGambarPreview(event, 'preview-ban1', 'base64Ban1', 'del-preview-ban1')" id="del-preview-ban1" class="absolute top-1 right-1 bg-red-600 hover:bg-red-500 text-white w-5 h-5 md:w-6 md:h-6 rounded-full hidden items-center justify-center z-20 shadow-lg"><i class="fa-solid fa-trash text-[8px] md:text-[10px]"></i></button>
+                                    
+                                    <div id="actions-preview-ban1" class="absolute top-1 right-1 flex gap-1 z-20 hidden">
+                                        <button type="button" onclick="openCropperFromUrl(event, 'preview-ban1', 'base64Ban1', true)" class="bg-blue-600 hover:bg-blue-500 text-white w-5 h-5 md:w-6 md:h-6 rounded-full flex items-center justify-center shadow-lg"><i class="fa-solid fa-crop-simple text-[8px] md:text-[10px]"></i></button>
+                                        <button type="button" onclick="hapusGambarPreview(event, 'preview-ban1', 'base64Ban1')" class="bg-red-600 hover:bg-red-500 text-white w-5 h-5 md:w-6 md:h-6 rounded-full flex items-center justify-center shadow-lg"><i class="fa-solid fa-trash text-[8px] md:text-[10px]"></i></button>
+                                    </div>
                                 </div>
                                 <div onclick="document.getElementById('set-ban2').click()" class="h-20 md:h-28 bg-zinc-800 rounded-xl md:rounded-[20px] flex flex-col items-center justify-center cursor-pointer shadow-sm relative overflow-hidden border border-zinc-700 hover:border-zinc-500 transition group">
                                     <input type="file" id="set-ban2" accept="image/*" class="hidden" onchange="openCropperSingle(event, 'preview-ban2', 'base64Ban2', true)">
                                     <span class="text-[9px] md:text-[10px] font-bold text-zinc-400 mt-1 md:mt-2">Slot 2</span>
                                     <img id="preview-ban2" src="" class="absolute inset-0 w-full h-full object-cover hidden">
-                                    <button onclick="hapusGambarPreview(event, 'preview-ban2', 'base64Ban2', 'del-preview-ban2')" id="del-preview-ban2" class="absolute top-1 right-1 bg-red-600 hover:bg-red-500 text-white w-5 h-5 md:w-6 md:h-6 rounded-full hidden items-center justify-center z-20 shadow-lg"><i class="fa-solid fa-trash text-[8px] md:text-[10px]"></i></button>
+                                    
+                                    <div id="actions-preview-ban2" class="absolute top-1 right-1 flex gap-1 z-20 hidden">
+                                        <button type="button" onclick="openCropperFromUrl(event, 'preview-ban2', 'base64Ban2', true)" class="bg-blue-600 hover:bg-blue-500 text-white w-5 h-5 md:w-6 md:h-6 rounded-full flex items-center justify-center shadow-lg"><i class="fa-solid fa-crop-simple text-[8px] md:text-[10px]"></i></button>
+                                        <button type="button" onclick="hapusGambarPreview(event, 'preview-ban2', 'base64Ban2')" class="bg-red-600 hover:bg-red-500 text-white w-5 h-5 md:w-6 md:h-6 rounded-full flex items-center justify-center shadow-lg"><i class="fa-solid fa-trash text-[8px] md:text-[10px]"></i></button>
+                                    </div>
                                 </div>
                                 <div onclick="document.getElementById('set-ban3').click()" class="h-20 md:h-28 bg-zinc-800 rounded-xl md:rounded-[20px] flex flex-col items-center justify-center cursor-pointer shadow-sm relative overflow-hidden border border-zinc-700 hover:border-zinc-500 transition group">
                                     <input type="file" id="set-ban3" accept="image/*" class="hidden" onchange="openCropperSingle(event, 'preview-ban3', 'base64Ban3', true)">
                                     <span class="text-[9px] md:text-[10px] font-bold text-zinc-400 mt-1 md:mt-2">Slot 3</span>
                                     <img id="preview-ban3" src="" class="absolute inset-0 w-full h-full object-cover hidden">
-                                    <button onclick="hapusGambarPreview(event, 'preview-ban3', 'base64Ban3', 'del-preview-ban3')" id="del-preview-ban3" class="absolute top-1 right-1 bg-red-600 hover:bg-red-500 text-white w-5 h-5 md:w-6 md:h-6 rounded-full hidden items-center justify-center z-20 shadow-lg"><i class="fa-solid fa-trash text-[8px] md:text-[10px]"></i></button>
+                                    
+                                    <div id="actions-preview-ban3" class="absolute top-1 right-1 flex gap-1 z-20 hidden">
+                                        <button type="button" onclick="openCropperFromUrl(event, 'preview-ban3', 'base64Ban3', true)" class="bg-blue-600 hover:bg-blue-500 text-white w-5 h-5 md:w-6 md:h-6 rounded-full flex items-center justify-center shadow-lg"><i class="fa-solid fa-crop-simple text-[8px] md:text-[10px]"></i></button>
+                                        <button type="button" onclick="hapusGambarPreview(event, 'preview-ban3', 'base64Ban3')" class="bg-red-600 hover:bg-red-500 text-white w-5 h-5 md:w-6 md:h-6 rounded-full flex items-center justify-center shadow-lg"><i class="fa-solid fa-trash text-[8px] md:text-[10px]"></i></button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -426,14 +465,22 @@
                                     <i class="fa-solid fa-qrcode text-zinc-600 mb-1"></i>
                                     <input type="file" id="set-qris-lunas" accept="image/*" class="hidden" onchange="openCropperSingle(event, 'preview-qris-lunas', 'base64QrisLunas', true)">
                                     <img id="preview-qris-lunas" src="" class="absolute inset-0 w-full h-full object-contain bg-zinc-900 p-2 hidden">
-                                    <button onclick="hapusGambarPreview(event, 'preview-qris-lunas', 'base64QrisLunas', 'del-preview-qris-lunas')" id="del-preview-qris-lunas" class="absolute top-2 right-2 bg-red-600 hover:bg-red-500 text-white w-6 h-6 md:w-7 md:h-7 rounded-full hidden items-center justify-center z-20 shadow-lg"><i class="fa-solid fa-trash text-[10px] md:text-xs"></i></button>
+                                    
+                                    <div id="actions-preview-qris-lunas" class="absolute top-1 right-1 flex gap-1 z-20 hidden">
+                                        <button type="button" onclick="openCropperFromUrl(event, 'preview-qris-lunas', 'base64QrisLunas', true)" class="bg-blue-600 hover:bg-blue-500 text-white w-5 h-5 md:w-6 md:h-6 rounded-full flex items-center justify-center shadow-lg"><i class="fa-solid fa-crop-simple text-[8px] md:text-[10px]"></i></button>
+                                        <button type="button" onclick="hapusGambarPreview(event, 'preview-qris-lunas', 'base64QrisLunas')" class="bg-red-600 hover:bg-red-500 text-white w-5 h-5 md:w-6 md:h-6 rounded-full flex items-center justify-center shadow-lg"><i class="fa-solid fa-trash text-[8px] md:text-[10px]"></i></button>
+                                    </div>
                                 </div>
                                 <div class="bg-zinc-900 p-2 md:p-3 rounded-xl md:rounded-[20px] border border-zinc-800 flex flex-col items-center justify-center cursor-pointer relative overflow-hidden hover:bg-zinc-800 transition group" onclick="document.getElementById('set-qris-dp').click()">
                                     <p class="text-[9px] md:text-[11px] font-bold text-zinc-400 mb-1 md:mb-2 text-center">QRIS Bayar DP</p>
                                     <i class="fa-solid fa-qrcode text-zinc-600 mb-1"></i>
                                     <input type="file" id="set-qris-dp" accept="image/*" class="hidden" onchange="openCropperSingle(event, 'preview-qris-dp', 'base64QrisDp', true)">
                                     <img id="preview-qris-dp" src="" class="absolute inset-0 w-full h-full object-contain bg-zinc-900 p-2 hidden">
-                                    <button onclick="hapusGambarPreview(event, 'preview-qris-dp', 'base64QrisDp', 'del-preview-qris-dp')" id="del-preview-qris-dp" class="absolute top-2 right-2 bg-red-600 hover:bg-red-500 text-white w-6 h-6 md:w-7 md:h-7 rounded-full hidden items-center justify-center z-20 shadow-lg"><i class="fa-solid fa-trash text-[10px] md:text-xs"></i></button>
+                                    
+                                    <div id="actions-preview-qris-dp" class="absolute top-1 right-1 flex gap-1 z-20 hidden">
+                                        <button type="button" onclick="openCropperFromUrl(event, 'preview-qris-dp', 'base64QrisDp', true)" class="bg-blue-600 hover:bg-blue-500 text-white w-5 h-5 md:w-6 md:h-6 rounded-full flex items-center justify-center shadow-lg"><i class="fa-solid fa-crop-simple text-[8px] md:text-[10px]"></i></button>
+                                        <button type="button" onclick="hapusGambarPreview(event, 'preview-qris-dp', 'base64QrisDp')" class="bg-red-600 hover:bg-red-500 text-white w-5 h-5 md:w-6 md:h-6 rounded-full flex items-center justify-center shadow-lg"><i class="fa-solid fa-trash text-[8px] md:text-[10px]"></i></button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -454,7 +501,7 @@
             <!-- Drag Indicator untuk Mobile -->
             <div class="w-12 h-1.5 bg-zinc-700 mx-auto rounded-full mt-1 mb-3 sm:hidden"></div>
             
-            <button onclick="toggleModalDetailProduk()" class="absolute top-4 right-4 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 w-8 h-8 rounded-full flex items-center justify-center transition-colors"><i class="fa-solid fa-times"></i></button>
+            <button type="button" onclick="toggleModalDetailProduk()" class="absolute top-4 right-4 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 w-8 h-8 rounded-full flex items-center justify-center transition-colors"><i class="fa-solid fa-times"></i></button>
             <h3 class="font-bold text-lg sm:text-xl text-white border-b border-zinc-800 pb-3 mb-3 sm:mb-4">Detail Baju</h3>
             <div id="content-detail-produk" class="space-y-4 sm:space-y-5 overflow-y-auto hide-scrollbar scroll-touch max-h-[75vh] pb-8"></div>
         </div>
@@ -466,7 +513,7 @@
         <div class="modal-sheet bg-[#18181b] w-full sm:max-w-2xl mx-auto rounded-t-[32px] sm:rounded-[40px] shadow-2xl z-[85] flex flex-col relative pb-safe border border-zinc-800 max-h-[90vh]">
             <div class="px-5 sm:px-6 py-4 sm:py-5 border-b border-zinc-800 flex justify-between items-center sticky top-0 bg-[#18181b] rounded-t-[32px] sm:rounded-t-[40px] z-10 pt-safe-or-4">
                 <h3 id="dash-detail-title" class="font-bold text-lg sm:text-xl text-white truncate pr-4">Detail</h3>
-                <button onclick="toggleModalDashDetail()" class="bg-zinc-800 hover:bg-zinc-700 text-zinc-300 w-8 h-8 rounded-full flex items-center justify-center transition-colors shrink-0"><i class="fa-solid fa-times"></i></button>
+                <button type="button" onclick="toggleModalDashDetail()" class="bg-zinc-800 hover:bg-zinc-700 text-zinc-300 w-8 h-8 rounded-full flex items-center justify-center transition-colors shrink-0"><i class="fa-solid fa-times"></i></button>
             </div>
             <!-- Drag Indicator Khusus HP di dalam header -->
             <div class="absolute top-2 left-1/2 -translate-x-1/2 w-12 h-1.5 bg-zinc-700 rounded-full sm:hidden z-20"></div>
@@ -481,7 +528,7 @@
         <div class="absolute w-full h-full bg-black/80 backdrop-blur-md" onclick="toggleModalBukti()"></div>
         <div class="modal-sheet bg-transparent w-full sm:max-w-xl mx-auto rounded-[32px] sm:rounded-[40px] z-[90] flex flex-col items-center relative p-4">
             <div class="bg-[#18181b] p-2 rounded-[24px] sm:rounded-[32px] w-full max-w-sm mx-auto shadow-2xl relative border border-zinc-800">
-                <button onclick="toggleModalBukti()" class="absolute -top-4 -right-4 bg-zinc-800 text-white w-10 h-10 rounded-full flex items-center justify-center shadow-lg border border-zinc-700 hover:bg-zinc-700"><i class="fa-solid fa-times"></i></button>
+                <button type="button" onclick="toggleModalBukti()" class="absolute -top-4 -right-4 bg-zinc-800 text-white w-10 h-10 rounded-full flex items-center justify-center shadow-lg border border-zinc-700 hover:bg-zinc-700"><i class="fa-solid fa-times"></i></button>
                 <img id="img-bukti-detail" src="" class="w-full h-auto max-h-[75vh] object-contain rounded-[20px] sm:rounded-[24px] bg-[#09090b]">
             </div>
         </div>
@@ -496,7 +543,7 @@
             
             <div class="px-5 py-3 sm:py-4 flex justify-between items-start shrink-0">
                 <div class="pr-4"><h3 id="transkrip-nama-produk" class="font-bold text-lg sm:text-xl text-white truncate">Nama Baju</h3></div>
-                <button onclick="toggleModalTranskrip()" class="bg-zinc-800 w-8 h-8 rounded-full text-zinc-300 hover:bg-zinc-700 shrink-0"><i class="fa-solid fa-times"></i></button>
+                <button type="button" onclick="toggleModalTranskrip()" class="bg-zinc-800 w-8 h-8 rounded-full text-zinc-300 hover:bg-zinc-700 shrink-0"><i class="fa-solid fa-times"></i></button>
             </div>
             <div class="px-4 sm:px-5 mb-3"><div id="transkrip-filter-bulan" class="flex gap-2 overflow-x-auto hide-scrollbar pb-2"></div></div>
             <div class="flex-1 overflow-y-auto px-4 sm:px-5 pb-8 bg-[#18181b] rounded-t-[24px] sm:rounded-t-[32px] pt-4"><div class="overflow-x-auto"><table class="w-full text-left text-sm whitespace-nowrap min-w-[400px]"><thead class="border-b border-zinc-800 text-zinc-400"><tr><th class="px-3 py-2 sm:py-3 text-[10px] sm:text-xs">Trx</th><th class="px-3 py-2 sm:py-3 text-[10px] sm:text-xs">Pembeli</th><th class="px-3 py-2 sm:py-3 text-[10px] sm:text-xs">Item</th><th class="px-3 py-2 sm:py-3 text-center text-[10px] sm:text-xs">Status</th></tr></thead><tbody id="transkrip-table-body" class="divide-y divide-zinc-800/50"></tbody></table></div></div>
@@ -515,7 +562,7 @@
                     <img id="dtl-foto" src="" class="w-12 h-12 sm:w-16 sm:h-16 rounded-full object-cover border-2 sm:border-4 border-zinc-800 shadow-md bg-zinc-900">
                     <div class="overflow-hidden"><h3 id="dtl-nama" class="font-bold text-base sm:text-xl text-white truncate">Nama</h3><p id="dtl-user" class="text-blue-400 font-semibold text-xs sm:text-sm truncate">@user</p></div>
                 </div>
-                <button onclick="toggleModalPelanggan()" class="bg-zinc-800 w-8 h-8 rounded-full text-zinc-300 hover:bg-zinc-700 shrink-0"><i class="fa-solid fa-times"></i></button>
+                <button type="button" onclick="toggleModalPelanggan()" class="bg-zinc-800 w-8 h-8 rounded-full text-zinc-300 hover:bg-zinc-700 shrink-0"><i class="fa-solid fa-times"></i></button>
             </div>
             <div class="flex-1 overflow-y-auto px-4 sm:px-5 pb-8 mt-2"><div id="list-pesanan-pelanggan" class="space-y-2 sm:space-y-3"></div></div>
         </div>
@@ -528,27 +575,43 @@
             <!-- Drag Indicator -->
             <div class="w-12 h-1.5 bg-zinc-700 mx-auto rounded-full mt-1 mb-3 sm:hidden"></div>
             
-            <button onclick="toggleModalDetailPesanan()" class="absolute top-4 right-4 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 w-8 h-8 rounded-full flex items-center justify-center"><i class="fa-solid fa-times"></i></button>
+            <button type="button" onclick="toggleModalDetailPesanan()" class="absolute top-4 right-4 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 w-8 h-8 rounded-full flex items-center justify-center"><i class="fa-solid fa-times"></i></button>
             <h3 class="font-bold text-lg sm:text-xl text-white border-b border-zinc-800 pb-3 mb-3 sm:mb-4">Info Pesanan</h3>
             <div id="content-detail-pesanan" class="space-y-4 sm:space-y-5 overflow-y-auto hide-scrollbar scroll-touch max-h-[75vh] pb-6"></div>
         </div>
     </div>
 
-    <!-- [UPDATE] MODAL CROPPER (UNTUK MENYESUAIKAN GAMBAR) -->
+    <!-- MODAL CROPPER (UNTUK MENYESUAIKAN GAMBAR) -->
     <div id="modal-cropper" class="modal opacity-0 pointer-events-none fixed w-full h-full top-0 left-0 flex items-center justify-center z-[100] transition-opacity duration-300">
         <div class="absolute w-full h-full bg-black/90 backdrop-blur-sm" onclick="closeCropper()"></div>
         <div class="modal-sheet bg-[#18181b] w-full sm:max-w-xl mx-auto rounded-[32px] shadow-2xl z-[100] flex flex-col relative p-4 border border-zinc-800">
             <h3 class="text-white font-bold text-base md:text-lg mb-3 px-2">Sesuaikan Gambar (Geser & Zoom)</h3>
+            
+            <!-- Container Gambar Cropper -->
             <div class="w-full h-[50vh] md:h-[60vh] bg-black rounded-xl overflow-hidden relative">
-                <img id="cropper-image" src="" class="max-w-full block">
+                <img id="cropper-image" src="" crossorigin="anonymous" class="max-w-full block">
             </div>
-            <div class="flex justify-end gap-3 mt-4 px-2">
-                <button onclick="closeCropper()" class="bg-zinc-800 hover:bg-zinc-700 text-white px-5 py-2.5 rounded-xl font-bold text-sm transition-colors">Batal</button>
-                <button onclick="applyCrop()" class="bg-blue-600 hover:bg-blue-500 text-white px-6 py-2.5 rounded-xl font-bold text-sm shadow-lg shadow-blue-900/50 transition-colors">Gunakan Gambar</button>
+            
+            <!-- Kontrol Zoom & Rotate -->
+            <div class="flex justify-between items-center mt-4 px-1">
+                <div class="flex gap-2">
+                    <button type="button" onclick="cropperInstance.zoom(0.1)" class="bg-zinc-800 hover:bg-zinc-700 text-white w-10 h-10 rounded-full flex items-center justify-center transition-colors shadow-md border border-zinc-700" title="Zoom In">
+                        <i class="fa-solid fa-magnifying-glass-plus text-sm"></i>
+                    </button>
+                    <button type="button" onclick="cropperInstance.zoom(-0.1)" class="bg-zinc-800 hover:bg-zinc-700 text-white w-10 h-10 rounded-full flex items-center justify-center transition-colors shadow-md border border-zinc-700" title="Zoom Out">
+                        <i class="fa-solid fa-magnifying-glass-minus text-sm"></i>
+                    </button>
+                    <button type="button" onclick="cropperInstance.rotate(90)" class="bg-zinc-800 hover:bg-zinc-700 text-white w-10 h-10 rounded-full flex items-center justify-center transition-colors shadow-md border border-zinc-700" title="Putar">
+                        <i class="fa-solid fa-rotate-right text-sm"></i>
+                    </button>
+                </div>
+                <div class="flex gap-2 sm:gap-3">
+                    <button type="button" onclick="closeCropper()" class="bg-zinc-800 hover:bg-zinc-700 text-white px-4 sm:px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-colors">Batal</button>
+                    <button type="button" onclick="applyCrop()" class="bg-blue-600 hover:bg-blue-500 text-white px-4 sm:px-6 py-2.5 rounded-xl font-bold text-xs sm:text-sm shadow-lg shadow-blue-900/50 transition-colors">Gunakan</button>
+                </div>
             </div>
         </div>
     </div>
-
 
     <script>
         const formatRp = (angka) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka);
@@ -579,9 +642,13 @@
                 updateProgress(10, 'Memeriksa Pengaturan Sistem...');
                 await fetchPengaturanAdmin(true, true);
                 
-                // Menampilkan logo di loading screen jika ada
-                if(base64Logo && base64Logo.trim() !== "") {
-                    document.getElementById('loader-logo-img').src = base64Logo;
+                // Menampilkan logo di loading screen jika ada (prioritaskan logo dark mode)
+                if(base64LogoDark && base64LogoDark.trim() !== "") {
+                    document.getElementById('loader-logo-img').src = base64LogoDark;
+                    document.getElementById('loader-logo-img').classList.remove('hidden');
+                    document.getElementById('loader-default-icon').classList.add('hidden');
+                } else if(base64LogoLight && base64LogoLight.trim() !== "") {
+                    document.getElementById('loader-logo-img').src = base64LogoLight;
                     document.getElementById('loader-logo-img').classList.remove('hidden');
                     document.getElementById('loader-default-icon').classList.add('hidden');
                 }
@@ -834,7 +901,6 @@
             toggleModalDashDetail();
         }
 
-
         function updateDatalistKategori() {
             const datalist = document.getElementById('list-kategori');
             let listKat = ["Kaos", "Kemeja", "Jaket", "Celana", "Aksesoris"];
@@ -910,8 +976,8 @@
                         <td class="px-3 md:px-5 py-2.5 md:py-3 text-center font-bold text-xs md:text-sm ${stk <= 5 ? 'text-red-400' : 'text-zinc-200'}">${stk}</td>
                         <td class="px-3 md:px-5 py-2.5 md:py-3 text-center" onclick="event.stopPropagation()">
                             <div class="flex gap-1 md:gap-2 justify-center">
-                                <button onclick="mulaiEditProduk('${id}', '${nm.replace(/'/g, "\\'")}', '${kat}', ${hrg}, ${stk}, '${gbr}', '${safeDesc}')" class="w-7 h-7 md:w-8 md:h-8 rounded-full bg-blue-500/10 text-blue-400 hover:bg-blue-500/20 transition-colors"><i class="fa-solid fa-pen text-[10px] md:text-xs"></i></button>
-                                <button onclick="hapusProduk('${id}')" class="w-7 h-7 md:w-8 md:h-8 rounded-full bg-red-500/10 text-red-400 hover:bg-red-500/20 transition-colors"><i class="fa-solid fa-trash text-[10px] md:text-xs"></i></button>
+                                <button type="button" onclick="mulaiEditProduk('${id}', '${nm.replace(/'/g, "\\'")}', '${kat}', ${hrg}, ${stk}, '${gbr}', '${safeDesc}')" class="w-7 h-7 md:w-8 md:h-8 rounded-full bg-blue-500/10 text-blue-400 hover:bg-blue-500/20 transition-colors"><i class="fa-solid fa-pen text-[10px] md:text-xs"></i></button>
+                                <button type="button" onclick="hapusProduk('${id}')" class="w-7 h-7 md:w-8 md:h-8 rounded-full bg-red-500/10 text-red-400 hover:bg-red-500/20 transition-colors"><i class="fa-solid fa-trash text-[10px] md:text-xs"></i></button>
                             </div>
                         </td>
                     </tr>`
@@ -919,7 +985,6 @@
             } else tbody.innerHTML = `<tr><td colspan="5" class="text-center py-10 md:py-12 text-zinc-500 font-medium text-xs md:text-sm">Belum ada produk.</td></tr>`;
         }
 
-        // FUNGSI KOMPRESI UNTUK MULTIPLE GAMBAR (PRODUK)
         let base64GambarArray = [];
         function previewImageMultiple(event) {
             const files = event.target.files; if (!files || files.length === 0) return;
@@ -1110,7 +1175,6 @@
             showLoading(false);
         }
 
-        // Transkrip is derived from globalPenjualan, no need to fetch if loaded
         function renderGridTranskrip() {
             const grid = document.getElementById('grid-transkrip'); const produkTerjual = {};
             globalPenjualan.forEach(p => {
@@ -1241,13 +1305,13 @@
             
             let bukti1HTML = `<div class="text-center text-[9px] md:text-[10px] text-zinc-400 bg-zinc-800 border border-zinc-700 py-1.5 md:py-2 rounded-lg mb-2">Cash (Tanpa Struk)</div>`;
             if(trx['Bukti Pembayaran'] && trx['Bukti Pembayaran'] !== "Bayar Cash") {
-                bukti1HTML = `<button onclick="bukaBuktiModal('${trx['Bukti Pembayaran']}')" class="w-full bg-blue-500/10 text-blue-400 font-bold py-2 md:py-2.5 rounded-lg text-[10px] md:text-[11px] mb-2 hover:bg-blue-500/20 transition-colors"><i class="fa-solid fa-image"></i> Struk Utama/DP</button>`;
+                bukti1HTML = `<button type="button" onclick="bukaBuktiModal('${trx['Bukti Pembayaran']}')" class="w-full bg-blue-500/10 text-blue-400 font-bold py-2 md:py-2.5 rounded-lg text-[10px] md:text-[11px] mb-2 hover:bg-blue-500/20 transition-colors"><i class="fa-solid fa-image"></i> Struk Utama/DP</button>`;
             }
             
             let bukti2HTML = "";
             if(trx['Tipe Pembayaran'] === 'DP') {
                if(trx['Bukti Pelunasan'] && trx['Bukti Pelunasan'].startsWith("http")) {
-                  bukti2HTML = `<button onclick="bukaBuktiModal('${trx['Bukti Pelunasan']}')" class="w-full bg-emerald-500/10 text-emerald-400 font-bold py-2 md:py-2.5 rounded-lg text-[10px] md:text-[11px] hover:bg-emerald-500/20 transition-colors"><i class="fa-solid fa-image"></i> Struk Pelunasan</button>`;
+                  bukti2HTML = `<button type="button" onclick="bukaBuktiModal('${trx['Bukti Pelunasan']}')" class="w-full bg-emerald-500/10 text-emerald-400 font-bold py-2 md:py-2.5 rounded-lg text-[10px] md:text-[11px] hover:bg-emerald-500/20 transition-colors"><i class="fa-solid fa-image"></i> Struk Pelunasan</button>`;
                } else {
                   bukti2HTML = `<div class="text-center text-[9px] md:text-[10px] text-orange-400 bg-orange-500/10 py-1.5 md:py-2 rounded-lg font-bold border border-orange-500/20">Belum ada struk pelunasan</div>`;
                }
@@ -1276,16 +1340,17 @@
         }
 
        // DEKLARASI VAR WAJIB
-       var base64Logo = ""; var base64LoginBg = ""; 
+       var base64LogoLight = ""; var base64LogoDark = ""; var base64LoginBg = ""; 
        var base64Ban1 = ""; var base64Ban2 = ""; var base64Ban3 = "";
        var base64QrisLunas = ""; var base64QrisDp = "";
 
-       // --- [UPDATE] LOGIKA CROPPER JS ---
+       // --- LOGIKA CROPPER JS TERBARU ---
        let cropperInstance = null;
        let targetPreview = '';
        let targetVarBase64 = '';
        let isLargeSize = false;
 
+       // 1. Buka cropper dari input file upload
        function openCropperSingle(event, previewId, targetVar, isLarge = false) {
            const file = event.target.files[0];
            if (!file) return;
@@ -1297,33 +1362,61 @@
            const reader = new FileReader();
            reader.onload = function(e) {
                const cropperImage = document.getElementById('cropper-image');
+               cropperImage.removeAttribute('crossOrigin'); // Hilangkan crossOrigin untuk file lokal
                cropperImage.src = e.target.result;
                
-               // Tampilkan Modal
                const modal = document.getElementById('modal-cropper');
                modal.classList.remove('opacity-0', 'pointer-events-none');
                
-               // Destroy instance lama jika ada
-               if (cropperInstance) { cropperInstance.destroy(); }
+               if (cropperInstance) { cropperInstance.destroy(); cropperInstance = null; }
                
-               // Inisialisasi Cropper JS
-               cropperInstance = new Cropper(cropperImage, {
-                   viewMode: 1, // Batasi cropping box tidak lewat dari canvas gambar
-                   dragMode: 'move', // Default user bisa geser gambar
-                   autoCropArea: 0.9,
-                   restore: false,
-                   guides: true,
-                   center: true,
-                   highlight: false,
-                   cropBoxMovable: true,
-                   cropBoxResizable: true,
-                   toggleDragModeOnDblclick: false,
-               });
+               setTimeout(() => {
+                   cropperInstance = new Cropper(cropperImage, {
+                       viewMode: 1, dragMode: 'move', autoCropArea: 0.9, restore: false, guides: true,
+                       center: true, highlight: false, cropBoxMovable: true, cropBoxResizable: true, toggleDragModeOnDblclick: false,
+                   });
+               }, 150);
            }
            reader.readAsDataURL(file);
-           
-           // Reset input file agar gambar yg sama bisa diklik lagi jika batal
            event.target.value = ""; 
+       }
+
+       // 2. Buka cropper untuk mengedit gambar yang SUDAH ADA tanpa harus re-upload
+       function openCropperFromUrl(event, previewId, targetVar, isLarge = false) {
+           event.stopPropagation(); // Mencegah window file dialog terbuka
+           
+           const previewEl = document.getElementById(previewId);
+           if (!previewEl || !previewEl.src) return;
+
+           targetPreview = previewId;
+           targetVarBase64 = targetVar;
+           isLargeSize = isLarge;
+           
+           const cropperImage = document.getElementById('cropper-image');
+           
+           // Bypass Cache & Atasi potensi CORS jika gambar berasal dari Google Drive
+           let finalUrl = previewEl.src;
+           if (finalUrl.startsWith('http') && !finalUrl.includes('data:image')) {
+               finalUrl += (finalUrl.includes('?') ? '&' : '?') + 'cb=' + new Date().getTime();
+               cropperImage.crossOrigin = "anonymous";
+           } else {
+               cropperImage.removeAttribute('crossOrigin');
+           }
+           
+           cropperImage.src = finalUrl;
+           
+           const modal = document.getElementById('modal-cropper');
+           modal.classList.remove('opacity-0', 'pointer-events-none');
+           
+           if (cropperInstance) { cropperInstance.destroy(); cropperInstance = null; }
+           
+           setTimeout(() => {
+               cropperInstance = new Cropper(cropperImage, {
+                   viewMode: 1, dragMode: 'move', autoCropArea: 0.9, restore: false, guides: true,
+                   center: true, highlight: false, cropBoxMovable: true, cropBoxResizable: true, toggleDragModeOnDblclick: false,
+                   checkCrossOrigin: true,
+               });
+           }, 150);
        }
 
        function closeCropper() {
@@ -1337,41 +1430,37 @@
            
            const MAX_SIZE = isLargeSize ? 1600 : 800;
            const canvas = cropperInstance.getCroppedCanvas({
-               maxWidth: MAX_SIZE,
-               maxHeight: MAX_SIZE,
-               imageSmoothingEnabled: true,
-               imageSmoothingQuality: 'high',
+               maxWidth: MAX_SIZE, maxHeight: MAX_SIZE,
+               imageSmoothingEnabled: true, imageSmoothingQuality: 'high',
            });
            
            const b64 = canvas.toDataURL('image/webp', 0.85); 
            
-           // Simpan ke Variabel
            window[targetVarBase64] = b64;
            
-           // Tampilkan ke Preview
            const previewEl = document.getElementById(targetPreview);
-           previewEl.src = b64;
-           previewEl.classList.remove('hidden');
+           if(previewEl) {
+               previewEl.src = b64;
+               previewEl.classList.remove('hidden');
+           }
            
-           // Munculkan tombol hapus/tong sampah
-           const delBtn = document.getElementById('del-' + targetPreview);
-           if(delBtn) { delBtn.classList.remove('hidden'); delBtn.classList.add('flex'); }
+           // Munculkan overlay tombol hapus/crop
+           const actionEl = document.getElementById('actions-' + targetPreview);
+           if(actionEl) { actionEl.classList.remove('hidden'); actionEl.classList.add('flex'); }
 
            closeCropper();
        }
 
-       // --- [UPDATE] LOGIKA HAPUS GAMBAR ---
-       function hapusGambarPreview(event, previewId, targetVar, delBtnId) {
-           event.stopPropagation(); // Mencegah trigger input file di baliknya
-           
-           window[targetVar] = "DELETE"; // Beri penanda DELETE untuk dikirim ke Backend
+       // --- LOGIKA HAPUS GAMBAR ---
+       function hapusGambarPreview(event, previewId, targetVar) {
+           event.stopPropagation(); 
+           window[targetVar] = "DELETE"; 
            
            const preview = document.getElementById(previewId);
-           preview.src = "";
-           preview.classList.add('hidden');
+           if(preview) { preview.src = ""; preview.classList.add('hidden'); }
            
-           const delBtn = document.getElementById(delBtnId);
-           if(delBtn) { delBtn.classList.add('hidden'); delBtn.classList.remove('flex'); }
+           const actionEl = document.getElementById('actions-' + previewId);
+           if(actionEl) { actionEl.classList.add('hidden'); actionEl.classList.remove('flex'); }
        }
 
         async function fetchPengaturanAdmin(force = false, silent = false) {
@@ -1384,33 +1473,34 @@
                     
                     // Peta mapping ID html vs Key Google Sheet
                     const configMap = {
-                        'logo': { prev: 'preview-logo', btn: 'del-preview-logo', b64: 'base64Logo' },
-                        'login_bg': { prev: 'preview-loginbg', btn: 'del-preview-loginbg', b64: 'base64LoginBg' },
-                        'banner_1': { prev: 'preview-ban1', btn: 'del-preview-ban1', b64: 'base64Ban1' },
-                        'banner_2': { prev: 'preview-ban2', btn: 'del-preview-ban2', b64: 'base64Ban2' },
-                        'banner_3': { prev: 'preview-ban3', btn: 'del-preview-ban3', b64: 'base64Ban3' },
-                        'qris_lunas': { prev: 'preview-qris-lunas', btn: 'del-preview-qris-lunas', b64: 'base64QrisLunas' },
-                        'qris_dp': { prev: 'preview-qris-dp', btn: 'del-preview-qris-dp', b64: 'base64QrisDp' }
+                        'logo_light': { prev: 'preview-logo-light', btn: 'actions-preview-logo-light', b64: 'base64LogoLight' },
+                        'logo_dark': { prev: 'preview-logo-dark', btn: 'actions-preview-logo-dark', b64: 'base64LogoDark' },
+                        'login_bg': { prev: 'preview-loginbg', btn: 'actions-preview-loginbg', b64: 'base64LoginBg' },
+                        'banner_1': { prev: 'preview-ban1', btn: 'actions-preview-ban1', b64: 'base64Ban1' },
+                        'banner_2': { prev: 'preview-ban2', btn: 'actions-preview-ban2', b64: 'base64Ban2' },
+                        'banner_3': { prev: 'preview-ban3', btn: 'actions-preview-ban3', b64: 'base64Ban3' },
+                        'qris_lunas': { prev: 'preview-qris-lunas', btn: 'actions-preview-qris-lunas', b64: 'base64QrisLunas' },
+                        'qris_dp': { prev: 'preview-qris-dp', btn: 'actions-preview-qris-dp', b64: 'base64QrisDp' }
                     };
 
                     data.data.forEach(item => {
                         if (configMap[item.Key]) {
                             const map = configMap[item.Key];
                             const prevEl = document.getElementById(map.prev);
-                            const btnEl = document.getElementById(map.btn);
+                            const actionEl = document.getElementById(map.btn);
                             
                             // Jika ada link gambar dari server
                             if (item.Value && item.Value.trim() !== "") {
                                 prevEl.src = item.Value;
                                 prevEl.classList.remove('hidden');
                                 window[map.b64] = item.Value; 
-                                if(btnEl) { btnEl.classList.remove('hidden'); btnEl.classList.add('flex'); }
+                                if(actionEl) { actionEl.classList.remove('hidden'); actionEl.classList.add('flex'); }
                             } else {
                                 // Kosongkan tampilan jika tidak ada link
                                 prevEl.src = "";
                                 prevEl.classList.add('hidden');
                                 window[map.b64] = "";
-                                if(btnEl) { btnEl.classList.add('hidden'); btnEl.classList.remove('flex'); }
+                                if(actionEl) { actionEl.classList.add('hidden'); actionEl.classList.remove('flex'); }
                             }
                         }
                         
@@ -1429,7 +1519,9 @@
             
             const payload = { 
                 action: "savePengaturan", 
-                logo: base64Logo, login_bg: base64LoginBg, 
+                logo_light: base64LogoLight,
+                logo_dark: base64LogoDark, 
+                login_bg: base64LoginBg, 
                 banner_1: base64Ban1, banner_2: base64Ban2, banner_3: base64Ban3, 
                 qris_lunas: base64QrisLunas, qris_dp: base64QrisDp,
                 admin_wa: document.getElementById('set-admin-wa').value,
