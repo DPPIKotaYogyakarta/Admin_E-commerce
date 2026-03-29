@@ -59,7 +59,7 @@
 
     <script>
         // GANTI DENGAN URL WEB APP DEPLOY ANDA
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxdYMxLM_DqIfdOhC_uHKctWa8EfrxzrRFP-yIfCwYaRk5ir3DNi-TQ-lOpMbmtsnpw/exec'; 
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxaD064omgY9Q63nJShA4WAFsIRVcUnt2IK5Av5GeqErt79wAstPOVs7QLEH-gvUoVQ/exec'; 
     </script>
 
     <aside id="desktop-sidebar" class="w-72 m-4 mr-0 bg-[#18181b]/80 backdrop-blur-xl rounded-[32px] shadow-2xl flex flex-col transition-all duration-300 overflow-hidden border border-zinc-800 z-20 shrink-0 hidden md:flex relative">
@@ -589,8 +589,8 @@
         let activeBulanFilter = 'Semua Waktu'; let isEditingProduk = false; let produkIdToEdit = null;
         let navVisible = false; let desktopSidebarVisible = true; let syncInterval = null;
 
-        let appSettings = {}; // Cached for print logo
-        let currentTrxPrint = null; // Cached for printing
+        let appSettings = {}; 
+        let currentTrxPrint = null; 
 
         // LOGIC KALKULATOR DP CUSTOM
         function toggleMHDpUI() {
@@ -1054,9 +1054,19 @@
             if(dataTampil.length > 0) {
                 tbody.innerHTML = dataTampil.map(p => {
                     const idTrx = p['ID Transaksi']; const status = p.Status || "Menunggu Konfirmasi";
-                    const isCash = p['Metode Bayar'] === 'Cash'; const isDP = p['Tipe Pembayaran'] === 'DP';
+                    const isDP = p['Tipe Pembayaran'] === 'DP';
                     const isCustomUnpriced = p['ID Baju'] === 'CUSTOM' && parseInt(p['Total Harga']) === 0;
                     
+                    let statBayarList = p['Status Pembayaran'] || '';
+                    let isLunas = statBayarList.includes('Lunas');
+                    
+                    let metodeBayarAwalList = p['Metode Bayar'] || 'Transfer';
+                    let metodeDisplay1List = metodeBayarAwalList;
+                    if (statBayarList.includes('Belum DP (Cash)') || statBayarList.includes('Sudah DP (Cash)')) metodeDisplay1List = 'Cash';
+                    else if (statBayarList.includes('Sudah DP (QRIS)')) metodeDisplay1List = 'QRIS';
+                    else if (statBayarList.includes('Lunas (QRIS)') && !isDP) metodeDisplay1List = 'QRIS';
+                    else if (statBayarList.includes('Lunas (Cash)') && !isDP) metodeDisplay1List = 'Cash';
+
                     let badgeColor = status === 'Diproses' ? "bg-blue-500/10 text-blue-400" : (status === 'Selesai' ? "bg-emerald-500/10 text-emerald-400" : (status === 'Dibatalkan' ? "bg-red-500/10 text-red-400" : "bg-orange-500/10 text-orange-400"));
                     const bayarBadge = isDP ? "bg-purple-500/10 text-purple-400" : "bg-emerald-500/10 text-emerald-400";
                     
@@ -1073,7 +1083,7 @@
                     const fileDesign = p['File Desain'] ? `<a href="${p['File Desain']}" target="_blank" class="bg-indigo-500/10 text-indigo-400 hover:bg-indigo-500/20 px-2 py-1 rounded-lg text-[9px] md:text-[10px] font-bold border border-indigo-500/20 active:scale-95 transition-transform mt-1 inline-block"><i class="fa-solid fa-file-pdf"></i> Desain Custom</a>` : '';
 
                     let bukti1 = `<span class="text-[9px] md:text-[10px] text-zinc-500 font-medium italic">Cash</span>`;
-                    if(!isCash && p['Bukti Pembayaran'] && p['Bukti Pembayaran'] !== "Bayar Cash" && p['Bukti Pembayaran'] !== "-") {
+                    if(p['Bukti Pembayaran'] && p['Bukti Pembayaran'] !== "Bayar Cash" && p['Bukti Pembayaran'] !== "-") {
                         bukti1 = `<button onclick="bukaBuktiModal('${p['Bukti Pembayaran']}')" class="bg-blue-500/10 text-blue-400 hover:bg-blue-500/20 px-2 md:px-3 py-1 md:py-1.5 rounded-lg md:rounded-xl text-[9px] md:text-[10px] font-bold transition-colors"><i class="fa-solid fa-image"></i> Struk</button>`;
                     }
                     let bukti2 = `<span class="text-[9px] md:text-[10px] text-zinc-600">-</span>`;
@@ -1083,7 +1093,6 @@
                        } else { bukti2 = `<span class="text-[8px] md:text-[9px] text-orange-400 font-bold bg-orange-500/10 px-1.5 md:px-2 py-0.5 md:py-1 rounded">Belum</span>`; }
                     }
 
-                    // Aksi Set Harga (Khusus Custom yg belum di-set)
                     let hargaTampil = formatRp(p['Total Harga']);
                     if (isCustomUnpriced) {
                         hargaTampil = `<button onclick="bukaModalHarga('${idTrx}')" class="bg-purple-600 text-white px-2 py-1 rounded text-[9px] font-bold hover:bg-purple-500 transition-colors">Set Harga</button>`;
@@ -1095,17 +1104,19 @@
                         <td class="px-3 md:px-5 py-2.5 md:py-3 cursor-pointer" onclick="bukaDetailPesananModal('${idTrx}')"><p class="font-bold text-white text-[10px] md:text-[11px] w-28 md:w-40 truncate" title="${p['Nama Baju']}">${p['Nama Baju']}</p>${varDetailHtml}</td>
                         <td class="px-3 md:px-5 py-2.5 md:py-3 cursor-pointer" onclick="bukaDetailPesananModal('${idTrx}')"><p class="text-blue-400 font-extrabold text-[10px] md:text-[11px] mt-0.5 md:mt-1">${hargaTampil} <span class="text-[8px] md:text-[9px] text-zinc-500 font-normal ml-0.5 md:ml-1">(${p.Jumlah}x)</span></p></td>
                         <td class="px-3 md:px-5 py-2.5 md:py-3 text-center">
-                            <span class="px-1.5 md:px-2 py-0.5 md:py-1 rounded text-[8px] md:text-[9px] font-bold uppercase bg-zinc-800 text-zinc-300 block mb-0.5 md:mb-1 border border-zinc-700">${p['Metode Bayar']||'Transfer'}</span>
+                            <span class="px-1.5 md:px-2 py-0.5 md:py-1 rounded text-[8px] md:text-[9px] font-bold uppercase bg-zinc-800 text-zinc-300 block mb-0.5 md:mb-1 border border-zinc-700">${metodeDisplay1List}</span>
                             <span class="px-1.5 md:px-2 py-0.5 md:py-1 rounded text-[8px] md:text-[9px] font-bold uppercase ${bayarBadge} block border border-transparent mb-1" title="${p['Detail DP']||''}">${p['Tipe Pembayaran']}</span>
                             ${fileDesign}
                         </td>
                         <td class="px-3 md:px-5 py-2.5 md:py-3 text-center" onclick="event.stopPropagation()">
                             <select onchange="updateDBStatus('${idTrx}', 'pembayaran', this.value)" class="w-full min-w-[80px] bg-[#09090b] border border-zinc-700 text-zinc-300 text-[9px] md:text-[10px] font-bold rounded px-1 py-1.5 outline-none text-center cursor-pointer mb-1">
-                                <option value="${p['Status Pembayaran']}" hidden selected>${p['Status Pembayaran']}</option>
+                                <option value="${statBayarList}" hidden selected>${statBayarList || 'Status'}</option>
                                 <option value="Belum Bayar">Belum Bayar</option>
-                                <option value="Belum DP">Belum DP (Cash)</option>
-                                <option value="Sudah DP">Sudah DP</option>
-                                <option value="Lunas">Lunas</option>
+                                <option value="Belum DP (Cash)">Belum DP (Cash)</option>
+                                <option value="Sudah DP (QRIS)">Sudah DP (QRIS)</option>
+                                <option value="Sudah DP (Cash)">Sudah DP (Cash)</option>
+                                <option value="Lunas (QRIS)">Lunas (QRIS)</option>
+                                <option value="Lunas (Cash)">Lunas (Cash)</option>
                             </select>
                             <div class="flex justify-center gap-1 mt-1">${bukti1} ${bukti2}</div>
                         </td>
@@ -1374,14 +1385,15 @@
                 </div>`;
             }
 
-            // LOGIC KALKULATOR SISA TAGIHAN / LUNAS
+            // LOGIC KALKULATOR SISA TAGIHAN & METODE PEMBAYARAN DINAMIS
             const isDP = trx['Tipe Pembayaran'] === 'DP';
             let totalHarga = parseInt(trx['Total Harga']) || 0;
             let dpNominal = 0;
             if(isDP && trx['Detail DP']) { const match = String(trx['Detail DP']).match(/Rp\s*(\d+)/); if(match) dpNominal = parseInt(match[1]); }
             
-            let sudahLunas = trx['Status Pembayaran'] === 'Lunas';
-            let sudahDP = trx['Status Pembayaran'] === 'Sudah DP' || sudahLunas;
+            let statBayarStr = trx['Status Pembayaran'] || '';
+            let sudahLunas = statBayarStr.includes('Lunas');
+            let sudahDP = statBayarStr.includes('Sudah DP') || sudahLunas;
 
             let sisaTagihan = totalHarga;
             if (isDP) {
@@ -1389,15 +1401,19 @@
                 else if (sudahDP) sisaTagihan = totalHarga - dpNominal;
             } else { if (sudahLunas) sisaTagihan = 0; }
 
-            let rincianBayarHtml = '';
-            if(isDP) {
-                rincianBayarHtml = `
-                    <div class="flex justify-between mb-1.5"><span class="text-[9px] md:text-[10px] text-zinc-500">Total Harga</span><span class="text-[9px] md:text-[10px] font-bold text-zinc-200">${formatRp(totalHarga)}</span></div>
-                    <div class="flex justify-between mb-1.5 ${sudahDP ? 'text-emerald-400' : 'text-orange-400'}"><span class="text-[9px] md:text-[10px] ${sudahDP ? 'font-medium' : 'text-zinc-500'}">DP (${trx['Detail DP']})</span><span class="text-[9px] md:text-[10px] font-bold">- ${formatRp(dpNominal)}</span></div>
-                    ${sudahLunas ? `<div class="flex justify-between mb-1.5 text-emerald-400"><span class="text-[9px] md:text-[10px] font-medium">Pelunasan</span><span class="text-[9px] md:text-[10px] font-bold">- ${formatRp(totalHarga - dpNominal)}</span></div>` : ''}
-                `;
-            } else {
-                rincianBayarHtml = `<div class="flex justify-between mb-1.5"><span class="text-[9px] md:text-[10px] text-zinc-500">Total Harga</span><span class="text-[9px] md:text-[10px] font-bold text-zinc-200">${formatRp(totalHarga)}</span></div>`;
+            let tipePembayaranAwal = trx['Tipe Pembayaran'];
+            let metodeBayarAwal = trx['Metode Bayar'] || '-';
+            let metodeDisplay1 = metodeBayarAwal;
+            let metodeDisplay2 = '';
+
+            if (statBayarStr.includes('Belum DP (Cash)') || statBayarStr.includes('Sudah DP (Cash)')) metodeDisplay1 = 'Cash';
+            else if (statBayarStr.includes('Sudah DP (QRIS)')) metodeDisplay1 = 'QRIS';
+            else if (statBayarStr.includes('Lunas (QRIS)')) { if(isDP) metodeDisplay2 = 'QRIS'; else metodeDisplay1 = 'QRIS'; }
+            else if (statBayarStr.includes('Lunas (Cash)')) { if(isDP) metodeDisplay2 = 'Cash'; else metodeDisplay1 = 'Cash'; }
+
+            let infoMetodeHtml = `<div class="flex justify-between mb-1.5"><span class="text-[9px] md:text-[10px] text-zinc-500">Tipe / Metode Awal</span><span class="text-[9px] md:text-[10px] font-bold text-zinc-200">${tipePembayaranAwal} - ${metodeDisplay1}</span></div>`;
+            if(metodeDisplay2) {
+                infoMetodeHtml += `<div class="flex justify-between mb-1.5"><span class="text-[9px] md:text-[10px] text-zinc-500">Metode Pelunasan</span><span class="text-[9px] md:text-[10px] font-bold text-emerald-400">Pelunasan (${metodeDisplay2})</span></div>`;
             }
 
             content.innerHTML = `
@@ -1412,10 +1428,12 @@
                 </div>
                 ${deskripsiCustomHTML}
                 <div class="bg-[#09090b] border border-zinc-800 p-3 md:p-4 rounded-xl mb-3 md:mb-4">
-                    <div class="flex justify-between mb-1.5"><span class="text-[9px] md:text-[10px] text-zinc-500">Tipe / Metode</span><span class="text-[9px] md:text-[10px] font-bold text-zinc-200">${trx['Tipe Pembayaran']} - ${trx['Metode Bayar']||'-'}</span></div>
-                    <div class="flex justify-between mb-1.5"><span class="text-[9px] md:text-[10px] text-zinc-500">Status Bayar</span><span class="text-[9px] md:text-[10px] font-bold ${sudahLunas ? 'text-emerald-400' : 'text-orange-400'}">${trx['Status Pembayaran']}</span></div>
+                    ${infoMetodeHtml}
+                    <div class="flex justify-between mb-1.5"><span class="text-[9px] md:text-[10px] text-zinc-500">Status Bayar</span><span class="text-[9px] md:text-[10px] font-bold ${sudahLunas ? 'text-emerald-400' : 'text-orange-400'}">${statBayarStr}</span></div>
                     <div class="h-px bg-zinc-800 w-full my-2"></div>
-                    ${rincianBayarHtml}
+                    <div class="flex justify-between mb-1.5"><span class="text-[9px] md:text-[10px] text-zinc-500">Total Harga</span><span class="text-[9px] md:text-[10px] font-bold text-zinc-200">${formatRp(totalHarga)}</span></div>
+                    ${(isDP && sudahDP) ? `<div class="flex justify-between mb-1.5 text-emerald-400"><span class="text-[9px] md:text-[10px] font-medium">DP (${trx['Detail DP']})</span><span class="text-[9px] md:text-[10px] font-bold">- ${formatRp(dpNominal)}</span></div>` : ''}
+                    ${(isDP && sudahLunas) ? `<div class="flex justify-between mb-1.5 text-emerald-400"><span class="text-[9px] md:text-[10px] font-medium">Pelunasan</span><span class="text-[9px] md:text-[10px] font-bold">- ${formatRp(totalHarga - dpNominal)}</span></div>` : ''}
                     <div class="flex justify-between mt-2 pt-2 border-t border-zinc-800"><span class="text-[9px] md:text-[10px] text-zinc-400 font-bold">${sudahLunas ? 'Status Tagihan' : 'Sisa Tagihan'}</span><span class="text-xs md:text-sm font-black ${sudahLunas ? 'text-emerald-400' : 'text-red-400'}">${sudahLunas ? '<i class="fa-solid fa-check-double mr-1"></i> LUNAS' : formatRp(sisaTagihan)}</span></div>
                 </div>
                 ${bukti1HTML}
@@ -1430,15 +1448,39 @@
             const isDP = p['Tipe Pembayaran'] === 'DP'; let totalHarga = parseInt(p['Total Harga']) || 0; let dpNominal = 0;
             if(isDP && p['Detail DP']) { const match = String(p['Detail DP']).match(/Rp\s*(\d+)/); if(match) dpNominal = parseInt(match[1]); }
             
-            let sudahLunas = p['Status Pembayaran'] === 'Lunas';
-            let sudahDP = p['Status Pembayaran'] === 'Sudah DP' || sudahLunas;
+            let statBayarStr = p['Status Pembayaran'] || '';
+            let sudahLunas = statBayarStr.includes('Lunas');
+            let sudahDP = statBayarStr.includes('Sudah DP') || sudahLunas;
 
             let sisaTagihan = totalHarga;
             if (isDP) { if (sudahLunas) sisaTagihan = 0; else if (sudahDP) sisaTagihan = totalHarga - dpNominal; } 
             else { if (sudahLunas) sisaTagihan = 0; }
 
             let statusColor = "#3b82f6"; if(p.Status === 'Selesai') statusColor = "#10b981"; if(p.Status === 'Dibatalkan') statusColor = "#ef4444"; 
-            let tagihanColor = sudahLunas ? '#10b981' : '#ef4444';
+            let tagihanStatus = isDP ? (sudahLunas ? 'LUNAS' : 'BELUM LUNAS') : 'LUNAS';
+            if(statBayarStr.includes('Belum Bayar') || statBayarStr.includes('Belum DP')) tagihanStatus = "BELUM LUNAS";
+            let tagihanColor = (tagihanStatus === 'LUNAS') ? '#10b981' : '#ef4444';
+
+            let tipePembayaranAwal = p['Tipe Pembayaran'];
+            let metodeBayarAwal = p['Metode Bayar'] || '-';
+            let metodeDisplay1 = metodeBayarAwal;
+            let metodeDisplay2 = '';
+
+            if (statBayarStr.includes('Belum DP (Cash)') || statBayarStr.includes('Sudah DP (Cash)')) metodeDisplay1 = 'Cash';
+            else if (statBayarStr.includes('Sudah DP (QRIS)')) metodeDisplay1 = 'QRIS';
+            else if (statBayarStr.includes('Lunas (QRIS)')) { if(isDP) metodeDisplay2 = 'QRIS'; else metodeDisplay1 = 'QRIS'; }
+            else if (statBayarStr.includes('Lunas (Cash)')) { if(isDP) metodeDisplay2 = 'Cash'; else metodeDisplay1 = 'Cash'; }
+
+            let infoMetodeHtml = `
+                <h3 style="margin-top: 20px;">Tipe / Metode Awal</h3>
+                <p>${tipePembayaranAwal} - ${metodeDisplay1}</p>
+            `;
+            if(metodeDisplay2) {
+                infoMetodeHtml += `
+                    <h3 style="margin-top: 10px;">Metode Pelunasan</h3>
+                    <p>Pelunasan (${metodeDisplay2})</p>
+                `;
+            }
 
             let varDetailStr = "-";
             try {
@@ -1486,7 +1528,7 @@
                             <div class="header-right"><h2>INVOICE</h2><p>#${p['ID Transaksi']}</p></div>
                         </div>
                         <div class="info-section">
-                            <div class="info-col"><h3>Informasi Pembeli</h3><p>${p['Username Pembeli']}</p><h3 style="margin-top: 20px;">Metode Pembayaran</h3><p>${p['Metode Bayar'] || '-'} <span style="font-weight:normal; color:#6b7280;">(${p['Tipe Pembayaran']})</span></p><h3 style="margin-top: 20px;">Status Pembayaran</h3><p style="color: ${tagihanColor};">${p['Status Pembayaran']}</p></div>
+                            <div class="info-col"><h3>Informasi Pembeli</h3><p>${p['Username Pembeli']}</p>${infoMetodeHtml}<h3 style="margin-top: 20px;">Status Pembayaran</h3><p style="color: ${tagihanColor};">${statBayarStr}</p></div>
                             <div class="info-col text-right"><h3>Tanggal Transaksi</h3><p>${p.Tanggal.split(',')[0]}</p><h3 style="margin-top: 20px;">Status Pesanan</h3><span class="status-badge">${p.Status}</span></div>
                         </div>
                         <table><thead><tr><th>Deskripsi Produk</th><th>Varian</th><th class="text-center">Qty</th><th class="text-right">Total</th></tr></thead><tbody><tr><td style="font-weight: 700; font-size: 15px;">${p['Nama Baju']}</td><td style="font-size: 13px; color: #6b7280;">${varDetailStr}</td><td class="text-center" style="font-weight: 600;">${p.Jumlah}</td><td class="text-right" style="font-weight: 700;">${formatRp(totalHarga)}</td></tr></tbody></table>
