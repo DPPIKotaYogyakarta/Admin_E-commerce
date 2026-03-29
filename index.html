@@ -1559,11 +1559,19 @@
            reader.onload = function(e) {
                const cropperImage = document.getElementById('cropper-image');
                cropperImage.removeAttribute('crossOrigin'); 
-               cropperImage.src = e.target.result;
                
-               const modal = document.getElementById('modal-cropper'); modal.classList.remove('opacity-0', 'pointer-events-none');
+               const modal = document.getElementById('modal-cropper'); 
+               modal.classList.remove('opacity-0', 'pointer-events-none');
+               setTimeout(() => modal.classList.add('show'), 10);
+               document.body.classList.add('modal-active');
+               
                if (cropperInstance) { cropperInstance.destroy(); cropperInstance = null; }
-               setTimeout(() => { cropperInstance = new Cropper(cropperImage, { viewMode: 1, dragMode: 'move', autoCropArea: 0.9, restore: false, guides: true, center: true, highlight: false, cropBoxMovable: true, cropBoxResizable: true, toggleDragModeOnDblclick: false }); }, 150);
+               
+               cropperImage.onload = function() {
+                   cropperInstance = new Cropper(cropperImage, { viewMode: 1, dragMode: 'move', autoCropArea: 0.9, restore: false, guides: true, center: true, highlight: false, cropBoxMovable: true, cropBoxResizable: true, toggleDragModeOnDblclick: false });
+                   cropperImage.onload = null;
+               };
+               cropperImage.src = e.target.result;
            }
            reader.readAsDataURL(file); event.target.value = ""; 
        }
@@ -1577,22 +1585,38 @@
            let finalUrl = previewEl.src;
            if (finalUrl.startsWith('http') && !finalUrl.includes('data:image')) { finalUrl += (finalUrl.includes('?') ? '&' : '?') + 'cb=' + new Date().getTime(); cropperImage.crossOrigin = "anonymous"; } 
            else { cropperImage.removeAttribute('crossOrigin'); }
-           cropperImage.src = finalUrl;
            
-           const modal = document.getElementById('modal-cropper'); modal.classList.remove('opacity-0', 'pointer-events-none');
+           const modal = document.getElementById('modal-cropper'); 
+           modal.classList.remove('opacity-0', 'pointer-events-none');
+           setTimeout(() => modal.classList.add('show'), 10);
+           document.body.classList.add('modal-active');
+           
            if (cropperInstance) { cropperInstance.destroy(); cropperInstance = null; }
-           setTimeout(() => { cropperInstance = new Cropper(cropperImage, { viewMode: 1, dragMode: 'move', autoCropArea: 0.9, restore: false, guides: true, center: true, highlight: false, cropBoxMovable: true, cropBoxResizable: true, toggleDragModeOnDblclick: false, checkCrossOrigin: true }); }, 150);
+           
+           cropperImage.onload = function() {
+               cropperInstance = new Cropper(cropperImage, { viewMode: 1, dragMode: 'move', autoCropArea: 0.9, restore: false, guides: true, center: true, highlight: false, cropBoxMovable: true, cropBoxResizable: true, toggleDragModeOnDblclick: false, checkCrossOrigin: true });
+               cropperImage.onload = null;
+           };
+           cropperImage.src = finalUrl;
        }
 
        function closeCropper() {
-           const modal = document.getElementById('modal-cropper'); modal.classList.add('opacity-0', 'pointer-events-none');
-           if (cropperInstance) { cropperInstance.destroy(); cropperInstance = null; }
+           const modal = document.getElementById('modal-cropper'); 
+           modal.classList.remove('show');
+           setTimeout(() => {
+               modal.classList.add('opacity-0', 'pointer-events-none');
+               document.body.classList.remove('modal-active');
+               if (cropperInstance) { cropperInstance.destroy(); cropperInstance = null; }
+               document.getElementById('cropper-image').src = '';
+           }, 300);
        }
 
        function applyCrop() {
            if (!cropperInstance) return;
            const MAX_SIZE = isLargeSize ? 1600 : 800;
            const canvas = cropperInstance.getCroppedCanvas({ maxWidth: MAX_SIZE, maxHeight: MAX_SIZE, imageSmoothingEnabled: true, imageSmoothingQuality: 'high' });
+           if(!canvas) { alert("Gagal memotong gambar."); return; }
+           
            const b64 = canvas.toDataURL('image/webp', 0.85); 
            window[targetVarBase64] = b64;
            const previewEl = document.getElementById(targetPreview);
