@@ -51,6 +51,18 @@
             transform: scale(0.98);
             background-color: rgba(39, 39, 42, 0.8);
         }
+
+        /* Class untuk animasi collapse Sidebar di Desktop/iPad */
+        @media (min-width: 768px) {
+            .sidebar-collapsed {
+                width: 0 !important;
+                margin-left: 0 !important;
+                margin-right: 0 !important;
+                opacity: 0 !important;
+                border-width: 0 !important;
+                padding: 0 !important;
+            }
+        }
     </style>
 </head>
 <body class="text-zinc-100 h-screen flex overflow-hidden selection:bg-blue-500/30 relative bg-[#09090b]">
@@ -83,35 +95,35 @@
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwPHoyf-hGR5_oYdnc3Fz6NIxcGicwV2Q63_6UntL6Xex8WtFv3-wlAZp01zica1keN/exec'; 
     </script>
 
-    <!-- Sidebar Admin Desktop (Tidak tampil di HP) -->
-    <aside class="w-72 m-4 mr-0 bg-[#18181b]/80 backdrop-blur-xl rounded-[32px] shadow-2xl flex flex-col transition-all duration-300 overflow-hidden border border-zinc-800 z-20 shrink-0 hidden md:flex relative">
+    <!-- Sidebar Admin Desktop -->
+    <aside id="desktop-sidebar" class="w-72 m-4 mr-0 bg-[#18181b]/80 backdrop-blur-xl rounded-[32px] shadow-2xl flex flex-col transition-all duration-300 overflow-hidden border border-zinc-800 z-20 shrink-0 hidden md:flex relative">
         <div class="p-8 pb-4 flex items-center gap-3">
-            <div class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center shadow-lg shadow-blue-900/50">
+            <div class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center shadow-lg shadow-blue-900/50 shrink-0">
                 <i class="fa-solid fa-user-shield text-xl"></i>
             </div>
-            <h1 class="text-xl font-bold tracking-tight text-white">Admin Panel</h1>
+            <h1 class="text-xl font-bold tracking-tight text-white whitespace-nowrap">Admin Panel</h1>
         </div>
         
         <nav class="flex-1 p-4 space-y-1.5 overflow-y-auto hide-scrollbar">
-            <button onclick="switchTab('dashboard')" id="nav-dashboard" class="w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl bg-blue-600 text-white font-semibold transition-all shadow-md shadow-blue-900/20 active:scale-95">
+            <button onclick="switchTab('dashboard')" id="nav-dashboard" class="w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl bg-blue-600 text-white font-semibold transition-all shadow-md shadow-blue-900/20 active:scale-95 whitespace-nowrap">
                 <i class="fa-solid fa-chart-pie w-5 text-lg"></i> Dashboard
             </button>
-            <button onclick="switchTab('produk')" id="nav-produk" class="w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl text-zinc-400 hover:bg-zinc-800/80 hover:text-white font-semibold transition-all active:scale-95">
+            <button onclick="switchTab('produk')" id="nav-produk" class="w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl text-zinc-400 hover:bg-zinc-800/80 hover:text-white font-semibold transition-all active:scale-95 whitespace-nowrap">
                 <i class="fa-solid fa-tags w-5 text-lg"></i> Kelola Produk
             </button>
-            <button onclick="switchTab('penjualan')" id="nav-penjualan" class="w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl text-zinc-400 hover:bg-zinc-800/80 hover:text-white font-semibold transition-all active:scale-95">
+            <button onclick="switchTab('penjualan')" id="nav-penjualan" class="w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl text-zinc-400 hover:bg-zinc-800/80 hover:text-white font-semibold transition-all active:scale-95 whitespace-nowrap">
                 <i class="fa-solid fa-file-invoice-dollar w-5 text-lg"></i> Pesanan
             </button>
-            <button onclick="switchTab('transkrip')" id="nav-transkrip" class="w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl text-zinc-400 hover:bg-zinc-800/80 hover:text-white font-semibold transition-all active:scale-95">
+            <button onclick="switchTab('transkrip')" id="nav-transkrip" class="w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl text-zinc-400 hover:bg-zinc-800/80 hover:text-white font-semibold transition-all active:scale-95 whitespace-nowrap">
                 <i class="fa-solid fa-book w-5 text-lg"></i> Transkrip Penjualan
             </button>
-            <button onclick="switchTab('pelanggan')" id="nav-pelanggan" class="w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl text-zinc-400 hover:bg-zinc-800/80 hover:text-white font-semibold transition-all active:scale-95">
+            <button onclick="switchTab('pelanggan')" id="nav-pelanggan" class="w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl text-zinc-400 hover:bg-zinc-800/80 hover:text-white font-semibold transition-all active:scale-95 whitespace-nowrap">
                 <i class="fa-solid fa-users w-5 text-lg"></i> Data Pelanggan
             </button>
             
             <div class="pt-4 mt-4 border-t border-zinc-800">
-                <p class="px-4 text-[11px] font-bold text-zinc-500 uppercase tracking-wider mb-2">Sistem</p>
-                <button onclick="switchTab('pengaturan')" id="nav-pengaturan" class="w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl text-zinc-400 hover:bg-zinc-800/80 hover:text-white font-semibold transition-all active:scale-95">
+                <p class="px-4 text-[11px] font-bold text-zinc-500 uppercase tracking-wider mb-2 whitespace-nowrap">Sistem</p>
+                <button onclick="switchTab('pengaturan')" id="nav-pengaturan" class="w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl text-zinc-400 hover:bg-zinc-800/80 hover:text-white font-semibold transition-all active:scale-95 whitespace-nowrap">
                     <i class="fa-solid fa-paint-roller w-5 text-lg"></i> Pengaturan Web
                 </button>
             </div>
@@ -129,7 +141,6 @@
         <div class="w-10 h-1.5 bg-zinc-600 mx-auto rounded-full mt-3 mb-1"></div>
         
         <div class="flex justify-start p-2 pt-2 pl-4 pr-6 overflow-x-auto hide-scrollbar scroll-touch gap-2 pb-4">
-            <!-- PENTING: toggleMobileNav() DIHAPUS DARI onclick AGAR NAV BAR TETAP MUNCUL SAAT DIKLIK -->
             <button onclick="switchTab('dashboard')" id="nav-mob-dashboard" class="flex flex-col items-center justify-center gap-1.5 p-2 text-blue-500 min-w-[72px] shrink-0 active:scale-90 transition-transform"><i class="fa-solid fa-chart-pie text-[22px]"></i><span class="text-[10px] font-bold">Dash</span></button>
             <button onclick="switchTab('produk')" id="nav-mob-produk" class="flex flex-col items-center justify-center gap-1.5 p-2 text-zinc-500 hover:text-zinc-300 min-w-[72px] shrink-0 active:scale-90 transition-transform"><i class="fa-solid fa-tags text-[22px]"></i><span class="text-[10px] font-bold">Produk</span></button>
             <button onclick="switchTab('penjualan')" id="nav-mob-penjualan" class="flex flex-col items-center justify-center gap-1.5 p-2 text-zinc-500 hover:text-zinc-300 min-w-[72px] shrink-0 active:scale-90 transition-transform"><i class="fa-solid fa-file-invoice text-[22px]"></i><span class="text-[10px] font-bold">Pesanan</span></button>
@@ -142,10 +153,18 @@
     <!-- Main Content Area -->
     <main class="flex-1 flex flex-col h-screen overflow-hidden relative z-10" id="main-content-area">
         <header class="px-5 md:px-8 safe-pt pb-4 flex flex-row justify-between items-center shrink-0 bg-[#09090b]/60 backdrop-blur-md z-10 border-b border-zinc-800/50 gap-2">
-            <div class="flex-1">
-                <p class="text-zinc-500 font-semibold text-[10px] md:text-sm mb-0.5 uppercase tracking-wider hidden sm:block">Ringkasan</p>
-                <h2 id="page-title" class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white tracking-tight drop-shadow-sm truncate">Dashboard</h2>
+            <div class="flex-1 flex items-center gap-3 md:gap-4">
+                <!-- Tombol Collapse Sidebar (Hanya tampil di Desktop/iPad) -->
+                <button onclick="toggleDesktopSidebar()" id="btn-toggle-sidebar" class="hidden md:flex w-10 h-10 rounded-xl bg-[#18181b]/80 border border-zinc-800 text-zinc-400 hover:text-white hover:bg-zinc-800 items-center justify-center transition-colors shadow-sm cursor-pointer shrink-0">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                
+                <div class="overflow-hidden">
+                    <p class="text-zinc-500 font-semibold text-[10px] md:text-sm mb-0.5 uppercase tracking-wider hidden sm:block">Ringkasan</p>
+                    <h2 id="page-title" class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white tracking-tight drop-shadow-sm truncate">Dashboard</h2>
+                </div>
             </div>
+            
             <div class="flex items-center gap-2">
                 <!-- Indikator Loading Mini -->
                 <div id="loading-indicator" class="hidden items-center gap-1.5 bg-[#18181b]/80 px-3 md:px-4 py-1.5 rounded-full shadow-sm border border-zinc-800 text-blue-400 font-semibold text-[10px] md:text-sm">
@@ -171,7 +190,7 @@
             <!-- DASHBOARD SECTION -->
             <section id="sec-dashboard" class="space-y-4 md:space-y-6">
                 <!-- Grid lebih padat di HP -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 md:gap-6">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
                     <div onclick="showDashDetail('produk')" class="bg-[#18181b]/80 backdrop-blur-md p-4 md:p-6 rounded-[28px] shadow-lg border border-zinc-800/80 flex flex-col justify-between h-32 md:h-40 cursor-pointer mobile-card group relative overflow-hidden">
                         <div class="flex justify-between items-start">
                             <div class="w-10 h-10 md:w-12 md:h-12 rounded-[14px] md:rounded-2xl bg-blue-500/10 text-blue-400 flex items-center justify-center text-lg md:text-xl shadow-inner"><i class="fa-solid fa-boxes-stacked"></i></div>
@@ -186,7 +205,7 @@
                         </div>
                         <div><p class="text-xs md:text-sm text-zinc-400 font-semibold">Baju Terjual</p><h3 id="dash-terjual" class="text-2xl md:text-3xl font-extrabold text-white">0</h3></div>
                     </div>
-                    <div onclick="showDashDetail('pendapatan')" class="bg-[#18181b]/80 backdrop-blur-md p-4 md:p-6 rounded-[28px] shadow-lg border border-zinc-800/80 flex flex-col justify-between h-32 md:h-40 cursor-pointer mobile-card group relative overflow-hidden sm:col-span-2 md:col-span-1">
+                    <div onclick="showDashDetail('pendapatan')" class="bg-[#18181b]/80 backdrop-blur-md p-4 md:p-6 rounded-[28px] shadow-lg border border-zinc-800/80 flex flex-col justify-between h-32 md:h-40 cursor-pointer mobile-card group relative overflow-hidden sm:col-span-2 lg:col-span-1">
                         <div class="flex justify-between items-start">
                             <div class="w-10 h-10 md:w-12 md:h-12 rounded-[14px] md:rounded-2xl bg-purple-500/10 text-purple-400 flex items-center justify-center text-lg md:text-xl shadow-inner"><i class="fa-solid fa-wallet"></i></div>
                             <span class="text-[9px] md:text-[10px] font-bold text-purple-400 opacity-0 group-hover:opacity-100 transition-opacity bg-purple-500/10 px-2 py-1 md:px-2.5 md:py-1.5 rounded-lg flex items-center gap-1">Detail <i class="fa-solid fa-arrow-right"></i></span>
@@ -231,11 +250,13 @@
 
                         <div class="col-span-1 md:col-span-6 mt-1">
                             <label class="block text-[11px] md:text-[12px] font-bold text-zinc-400 uppercase tracking-wider mb-1 md:mb-2 ml-1">Foto Baju <span class="text-[9px] md:text-[10px] lowercase italic font-normal text-blue-400 block sm:inline mt-0.5 sm:mt-0">(Otomatis dikompres & support multi-foto)</span></label>
+                            <!-- Accept="image/*" otomatis mendukung semua jenis format gambar dari HP atau PC -->
                             <div onclick="document.getElementById('p-gambar-file').click()" class="relative w-full min-h-[10rem] md:min-h-[12rem] rounded-xl md:rounded-[24px] bg-[#09090b] border border-zinc-800 hover:border-zinc-700 flex flex-col justify-center cursor-pointer overflow-hidden transition-colors p-3 md:p-4">
                                 <input type="file" id="p-gambar-file" accept="image/*" multiple class="hidden" onchange="previewImageMultiple(event)">
                                 <div id="upload-placeholder" class="text-center flex flex-col items-center py-4 md:py-6 w-full">
                                     <div class="w-12 h-12 md:w-14 md:h-14 bg-zinc-900 border border-zinc-800 rounded-full flex items-center justify-center shadow-sm mb-2 md:mb-3 text-blue-500"><i class="fa-solid fa-camera text-lg md:text-xl"></i></div>
                                     <span class="text-xs md:text-sm font-bold text-zinc-300">Ketuk untuk memilih foto</span>
+                                    <span class="text-xs text-zinc-500 mt-1">Otomatis dikompresi agar tetap jernih & ringan</span>
                                 </div>
                                 <div id="p-gambar-preview-container" class="hidden flex flex-wrap gap-2 md:gap-3 items-center justify-center sm:justify-start w-full"></div>
                             </div>
@@ -523,6 +544,7 @@
         let globalPenjualan = []; let globalPelanggan = []; let globalProduk = [];
         let activeBulanFilter = 'Semua Waktu'; let isEditingProduk = false; let produkIdToEdit = null;
         let navVisible = false;
+        let desktopSidebarVisible = true; // Status sidebar di layar besar
         let syncInterval = null;
 
         // --- FULL LOAD INITIALIZATION ---
@@ -590,6 +612,17 @@
             navVisible = !navVisible;
         }
 
+        // --- DESKTOP SIDEBAR TOGGLE ---
+        function toggleDesktopSidebar() {
+            const sidebar = document.getElementById('desktop-sidebar');
+            if (desktopSidebarVisible) {
+                sidebar.classList.add('sidebar-collapsed');
+            } else {
+                sidebar.classList.remove('sidebar-collapsed');
+            }
+            desktopSidebarVisible = !desktopSidebarVisible;
+        }
+
         function updateNavTitles(tab) {
             const titles = { 'dashboard': 'Dashboard', 'produk': 'Katalog', 'penjualan': 'Pesanan', 'transkrip': 'Laporan', 'pelanggan': 'Pelanggan', 'pengaturan': 'Sistem' };
             document.getElementById('page-title').textContent = titles[tab];
@@ -598,12 +631,12 @@
         function switchTab(tab) {
             ['dashboard', 'produk', 'penjualan', 'transkrip', 'pelanggan', 'pengaturan'].forEach(n => {
                 document.getElementById(`sec-${n}`).classList.add('hidden');
-                document.getElementById(`nav-${n}`).className = "w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl text-zinc-400 hover:bg-zinc-800/80 hover:text-white font-semibold transition-all active:scale-95";
+                document.getElementById(`nav-${n}`).className = "w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl text-zinc-400 hover:bg-zinc-800/80 hover:text-white font-semibold transition-all active:scale-95 whitespace-nowrap";
                 const mobEl = document.getElementById(`nav-mob-${n}`);
                 if(mobEl) mobEl.className = "flex flex-col items-center justify-center gap-1.5 p-2 text-zinc-500 hover:text-zinc-300 min-w-[72px] shrink-0 active:scale-90 transition-transform";
             });
             document.getElementById(`sec-${tab}`).classList.remove('hidden');
-            document.getElementById(`nav-${tab}`).className = "w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl bg-blue-600 text-white font-semibold transition-all shadow-md shadow-blue-900/20 active:scale-95";
+            document.getElementById(`nav-${tab}`).className = "w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl bg-blue-600 text-white font-semibold transition-all shadow-md shadow-blue-900/20 active:scale-95 whitespace-nowrap";
             const mobActive = document.getElementById(`nav-mob-${tab}`);
             if(mobActive) mobActive.className = "flex flex-col items-center justify-center gap-1.5 p-2 text-blue-500 min-w-[72px] shrink-0 active:scale-90 transition-transform drop-shadow-sm";
             
@@ -881,7 +914,7 @@
                     const img = new Image();
                     img.onload = function() {
                         const canvas = document.createElement('canvas'); 
-                        const MAX_SIZE = 1000; // Ditingkatkan agar kualitas lebih baik
+                        const MAX_SIZE = 1000; 
                         let w = img.width; let h = img.height;
                         
                         if (w > h && w > MAX_SIZE) { h *= MAX_SIZE / w; w = MAX_SIZE; } 
@@ -890,12 +923,10 @@
                         canvas.width = w; canvas.height = h; 
                         const ctx = canvas.getContext('2d');
                         
-                        // Aktifkan smoothing agar gambar tidak pecah saat di-resize
                         ctx.imageSmoothingEnabled = true;
                         ctx.imageSmoothingQuality = 'high';
                         ctx.drawImage(img, 0, 0, w, h);
                         
-                        // Ekspor sebagai WEBP: Ukuran file lebih kecil, namun resolusi & kejernihan tinggi
                         const b64 = canvas.toDataURL('image/webp', 0.85); 
                         base64GambarArray.push(b64);
                         container.innerHTML += `<img src="${b64}" class="w-16 h-16 md:w-20 md:h-20 object-cover rounded-lg md:rounded-xl shadow-sm shrink-0 border border-zinc-700">`;
