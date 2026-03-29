@@ -44,14 +44,33 @@
         }
     </style>
 </head>
-<body class="text-zinc-100 h-screen flex overflow-hidden selection:bg-blue-500/30 relative">
+<body class="text-zinc-100 h-screen flex overflow-hidden selection:bg-blue-500/30 relative bg-[#09090b]">
+
+    <!-- Ambient Neon Background Effect -->
+    <div class="fixed top-[-20%] left-[-10%] w-[60vw] h-[60vw] bg-blue-600/20 rounded-full blur-[120px] pointer-events-none z-0"></div>
+    <div class="fixed bottom-[-20%] right-[-10%] w-[60vw] h-[60vw] bg-purple-600/20 rounded-full blur-[120px] pointer-events-none z-0"></div>
+
+    <!-- Full Page Initial Loader -->
+    <div id="full-page-loader" class="fixed inset-0 z-[100] bg-[#09090b]/95 backdrop-blur-md flex flex-col items-center justify-center transition-opacity duration-700">
+        <div class="relative w-24 h-24 flex items-center justify-center mb-6">
+            <div class="absolute inset-0 border-4 border-zinc-800 rounded-full"></div>
+            <div class="absolute inset-0 border-4 border-transparent border-t-blue-500 border-r-purple-500 rounded-full animate-spin"></div>
+            <i class="fa-solid fa-bolt text-2xl text-blue-400 animate-pulse"></i>
+        </div>
+        <h2 class="text-white text-2xl font-black tracking-widest bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">ADMIN PANEL</h2>
+        <p class="text-zinc-400 text-sm mt-3 font-medium tracking-wide" id="loader-status">Memulai sistem...</p>
+        
+        <div class="w-64 h-1.5 bg-zinc-800 rounded-full mt-6 overflow-hidden">
+            <div id="loader-progress" class="h-full bg-gradient-to-r from-blue-500 to-purple-500 w-0 transition-all duration-300"></div>
+        </div>
+    </div>
 
     <script>
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwPHoyf-hGR5_oYdnc3Fz6NIxcGicwV2Q63_6UntL6Xex8WtFv3-wlAZp01zica1keN/exec'; 
     </script>
 
     <!-- Sidebar Admin Desktop -->
-    <aside class="w-72 m-4 mr-0 bg-[#18181b] rounded-[32px] shadow-2xl flex flex-col transition-all duration-300 overflow-hidden border border-zinc-800 z-20 shrink-0 hidden md:flex">
+    <aside class="w-72 m-4 mr-0 bg-[#18181b]/80 backdrop-blur-xl rounded-[32px] shadow-2xl flex flex-col transition-all duration-300 overflow-hidden border border-zinc-800 z-20 shrink-0 hidden md:flex relative">
         <div class="p-8 pb-4 flex items-center gap-3">
             <div class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center shadow-lg shadow-blue-900/50">
                 <i class="fa-solid fa-user-shield text-xl"></i>
@@ -63,22 +82,22 @@
             <button onclick="switchTab('dashboard')" id="nav-dashboard" class="w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl bg-blue-600 text-white font-semibold transition-all shadow-md shadow-blue-900/20 active:scale-95">
                 <i class="fa-solid fa-chart-pie w-5 text-lg"></i> Dashboard
             </button>
-            <button onclick="switchTab('produk')" id="nav-produk" class="w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl text-zinc-400 hover:bg-zinc-800 hover:text-white font-semibold transition-all active:scale-95">
+            <button onclick="switchTab('produk')" id="nav-produk" class="w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl text-zinc-400 hover:bg-zinc-800/80 hover:text-white font-semibold transition-all active:scale-95">
                 <i class="fa-solid fa-tags w-5 text-lg"></i> Kelola Produk
             </button>
-            <button onclick="switchTab('penjualan')" id="nav-penjualan" class="w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl text-zinc-400 hover:bg-zinc-800 hover:text-white font-semibold transition-all active:scale-95">
+            <button onclick="switchTab('penjualan')" id="nav-penjualan" class="w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl text-zinc-400 hover:bg-zinc-800/80 hover:text-white font-semibold transition-all active:scale-95">
                 <i class="fa-solid fa-file-invoice-dollar w-5 text-lg"></i> Pesanan
             </button>
-            <button onclick="switchTab('transkrip')" id="nav-transkrip" class="w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl text-zinc-400 hover:bg-zinc-800 hover:text-white font-semibold transition-all active:scale-95">
+            <button onclick="switchTab('transkrip')" id="nav-transkrip" class="w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl text-zinc-400 hover:bg-zinc-800/80 hover:text-white font-semibold transition-all active:scale-95">
                 <i class="fa-solid fa-book w-5 text-lg"></i> Transkrip Penjualan
             </button>
-            <button onclick="switchTab('pelanggan')" id="nav-pelanggan" class="w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl text-zinc-400 hover:bg-zinc-800 hover:text-white font-semibold transition-all active:scale-95">
+            <button onclick="switchTab('pelanggan')" id="nav-pelanggan" class="w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl text-zinc-400 hover:bg-zinc-800/80 hover:text-white font-semibold transition-all active:scale-95">
                 <i class="fa-solid fa-users w-5 text-lg"></i> Data Pelanggan
             </button>
             
             <div class="pt-4 mt-4 border-t border-zinc-800">
                 <p class="px-4 text-[11px] font-bold text-zinc-500 uppercase tracking-wider mb-2">Sistem</p>
-                <button onclick="switchTab('pengaturan')" id="nav-pengaturan" class="w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl text-zinc-400 hover:bg-zinc-800 hover:text-white font-semibold transition-all active:scale-95">
+                <button onclick="switchTab('pengaturan')" id="nav-pengaturan" class="w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl text-zinc-400 hover:bg-zinc-800/80 hover:text-white font-semibold transition-all active:scale-95">
                     <i class="fa-solid fa-paint-roller w-5 text-lg"></i> Pengaturan Web
                 </button>
             </div>
@@ -86,31 +105,46 @@
     </aside>
 
     <!-- FAB: Mobile -->
-    <button id="fab-menu" onclick="toggleMobileNav()" class="md:hidden fixed bottom-6 right-6 z-[60] w-14 h-14 rounded-full bg-blue-600 text-white shadow-lg shadow-blue-900/50 flex items-center justify-center transition-transform active:scale-90 pb-safe border border-blue-500">
-        <i id="fab-icon" class="fa-solid fa-bars text-xl"></i>
+    <button id="fab-menu" onclick="toggleMobileNav()" class="md:hidden fixed bottom-6 right-6 z-[60] w-14 h-14 rounded-full bg-blue-600 text-white shadow-lg shadow-blue-900/50 flex items-center justify-center transition-all duration-400 ease-in-out active:scale-90 pb-safe border border-blue-500">
+        <i id="fab-icon" class="fa-solid fa-bars text-xl transition-transform duration-300"></i>
     </button>
 
     <!-- Mobile Nav -->
     <div id="mobile-nav-container" class="md:hidden fixed bottom-0 inset-x-0 glass-panel z-50 rounded-t-[32px] shadow-[0_-8px_32px_rgba(0,0,0,0.5)] safe-pb-nav transform translate-y-full transition-transform duration-400 ease-in-out">
-        <div class="flex justify-start p-2 pt-4 pl-4 pr-24 overflow-x-auto hide-scrollbar scroll-touch gap-2">
-            <button onclick="switchTab('dashboard')" id="nav-mob-dashboard" class="flex flex-col items-center gap-1 p-2 text-blue-500 min-w-[72px] shrink-0 active:scale-90 transition-transform"><i class="fa-solid fa-chart-pie text-xl"></i><span class="text-[10px] font-bold">Dash</span></button>
-            <button onclick="switchTab('produk')" id="nav-mob-produk" class="flex flex-col items-center gap-1 p-2 text-zinc-500 min-w-[72px] shrink-0 active:scale-90 transition-transform"><i class="fa-solid fa-tags text-xl"></i><span class="text-[10px] font-bold">Produk</span></button>
-            <button onclick="switchTab('penjualan')" id="nav-mob-penjualan" class="flex flex-col items-center gap-1 p-2 text-zinc-500 min-w-[72px] shrink-0 active:scale-90 transition-transform"><i class="fa-solid fa-file-invoice text-xl"></i><span class="text-[10px] font-bold">Pesanan</span></button>
-            <button onclick="switchTab('transkrip')" id="nav-mob-transkrip" class="flex flex-col items-center gap-1 p-2 text-zinc-500 min-w-[72px] shrink-0 active:scale-90 transition-transform"><i class="fa-solid fa-book text-xl"></i><span class="text-[10px] font-bold">Transkrip</span></button>
-            <button onclick="switchTab('pelanggan')" id="nav-mob-pelanggan" class="flex flex-col items-center gap-1 p-2 text-zinc-500 min-w-[72px] shrink-0 active:scale-90 transition-transform"><i class="fa-solid fa-users text-xl"></i><span class="text-[10px] font-bold">Member</span></button>
-            <button onclick="switchTab('pengaturan')" id="nav-mob-pengaturan" class="flex flex-col items-center gap-1 p-2 text-zinc-500 min-w-[72px] shrink-0 active:scale-90 transition-transform"><i class="fa-solid fa-cog text-xl"></i><span class="text-[10px] font-bold">Setting</span></button>
+        <div class="flex justify-start p-2 pt-4 pl-4 pr-6 overflow-x-auto hide-scrollbar scroll-touch gap-2 pb-2">
+            <button onclick="switchTab('dashboard');toggleMobileNav()" id="nav-mob-dashboard" class="flex flex-col items-center gap-1 p-2 text-blue-500 min-w-[72px] shrink-0 active:scale-90 transition-transform"><i class="fa-solid fa-chart-pie text-xl"></i><span class="text-[10px] font-bold">Dash</span></button>
+            <button onclick="switchTab('produk');toggleMobileNav()" id="nav-mob-produk" class="flex flex-col items-center gap-1 p-2 text-zinc-500 min-w-[72px] shrink-0 active:scale-90 transition-transform"><i class="fa-solid fa-tags text-xl"></i><span class="text-[10px] font-bold">Produk</span></button>
+            <button onclick="switchTab('penjualan');toggleMobileNav()" id="nav-mob-penjualan" class="flex flex-col items-center gap-1 p-2 text-zinc-500 min-w-[72px] shrink-0 active:scale-90 transition-transform"><i class="fa-solid fa-file-invoice text-xl"></i><span class="text-[10px] font-bold">Pesanan</span></button>
+            <button onclick="switchTab('transkrip');toggleMobileNav()" id="nav-mob-transkrip" class="flex flex-col items-center gap-1 p-2 text-zinc-500 min-w-[72px] shrink-0 active:scale-90 transition-transform"><i class="fa-solid fa-book text-xl"></i><span class="text-[10px] font-bold">Transkrip</span></button>
+            <button onclick="switchTab('pelanggan');toggleMobileNav()" id="nav-mob-pelanggan" class="flex flex-col items-center gap-1 p-2 text-zinc-500 min-w-[72px] shrink-0 active:scale-90 transition-transform"><i class="fa-solid fa-users text-xl"></i><span class="text-[10px] font-bold">Member</span></button>
+            <button onclick="switchTab('pengaturan');toggleMobileNav()" id="nav-mob-pengaturan" class="flex flex-col items-center gap-1 p-2 text-zinc-500 min-w-[72px] shrink-0 active:scale-90 transition-transform"><i class="fa-solid fa-cog text-xl"></i><span class="text-[10px] font-bold">Setting</span></button>
         </div>
     </div>
 
     <!-- Main Content Area -->
-    <main class="flex-1 flex flex-col h-screen overflow-hidden relative" id="main-content-area">
-        <header class="px-5 md:px-8 safe-pt pb-4 flex justify-between items-end shrink-0 bg-[#09090b]/90 backdrop-blur-md z-10 border-b border-transparent">
+    <main class="flex-1 flex flex-col h-screen overflow-hidden relative z-10" id="main-content-area">
+        <header class="px-5 md:px-8 safe-pt pb-4 flex justify-between items-end shrink-0 bg-[#09090b]/40 backdrop-blur-md z-10 border-b border-zinc-800/50">
             <div>
                 <p class="text-zinc-500 font-semibold text-xs md:text-sm mb-1 uppercase tracking-wider">Ringkasan</p>
-                <h2 id="page-title" class="text-3xl md:text-4xl font-extrabold text-white tracking-tight">Dashboard</h2>
+                <h2 id="page-title" class="text-3xl md:text-4xl font-extrabold text-white tracking-tight drop-shadow-sm">Dashboard</h2>
             </div>
-            <div id="loading-indicator" class="hidden flex items-center gap-2 bg-[#18181b] px-3 md:px-4 py-1.5 md:py-2 rounded-full shadow-sm border border-zinc-800 text-blue-400 font-semibold text-xs md:text-sm">
-                <i class="fa-solid fa-circle-notch fa-spin"></i> <span class="hidden sm:inline">Memproses...</span>
+            <div class="flex flex-col items-end gap-2">
+                <!-- Indikator Loading Mini -->
+                <div id="loading-indicator" class="hidden items-center gap-2 bg-[#18181b]/80 px-3 md:px-4 py-1.5 md:py-2 rounded-full shadow-sm border border-zinc-800 text-blue-400 font-semibold text-xs md:text-sm">
+                    <i class="fa-solid fa-circle-notch fa-spin"></i> <span class="hidden sm:inline">Memproses...</span>
+                </div>
+                
+                <!-- Toggle Auto Sync -->
+                <div class="flex items-center gap-3 bg-[#18181b]/80 backdrop-blur-md px-3 md:px-4 py-1.5 md:py-2 rounded-full shadow-sm border border-zinc-800 transition-all">
+                    <div class="flex items-center gap-1.5 cursor-pointer group" onclick="document.getElementById('auto-sync-toggle').click()">
+                        <i id="sync-icon" class="fa-solid fa-rotate text-blue-400 text-xs transition-transform"></i>
+                        <span class="text-[10px] md:text-xs font-bold text-zinc-400 group-hover:text-zinc-300 hidden sm:inline">AUTO SYNC 15s</span>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="auto-sync-toggle" class="sr-only peer" onchange="toggleAutoSync()">
+                        <div class="w-7 h-4 bg-zinc-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-blue-500 shadow-inner"></div>
+                    </label>
+                </div>
             </div>
         </header>
 
@@ -119,26 +153,23 @@
             <!-- DASHBOARD SECTION -->
             <section id="sec-dashboard" class="space-y-4 md:space-y-6">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
-                    <!-- Modifikasi Card 1 -->
-                    <div onclick="showDashDetail('produk')" class="bg-[#18181b] p-5 md:p-6 rounded-[32px] shadow-lg border border-zinc-800 flex flex-col justify-between h-40 cursor-pointer hover:bg-zinc-800/80 hover:border-zinc-700 transition-all group relative overflow-hidden">
+                    <div onclick="showDashDetail('produk')" class="bg-[#18181b]/80 backdrop-blur-md p-5 md:p-6 rounded-[32px] shadow-lg border border-zinc-800/80 flex flex-col justify-between h-40 cursor-pointer hover:bg-zinc-800 hover:border-zinc-700 transition-all group relative overflow-hidden">
                         <div class="flex justify-between items-start">
-                            <div class="w-12 h-12 rounded-2xl bg-blue-500/10 text-blue-400 flex items-center justify-center text-xl"><i class="fa-solid fa-boxes-stacked"></i></div>
+                            <div class="w-12 h-12 rounded-2xl bg-blue-500/10 text-blue-400 flex items-center justify-center text-xl shadow-inner"><i class="fa-solid fa-boxes-stacked"></i></div>
                             <span class="text-[10px] font-bold text-blue-400 opacity-0 group-hover:opacity-100 transition-opacity bg-blue-500/10 px-2.5 py-1.5 rounded-xl flex items-center gap-1">Detail <i class="fa-solid fa-arrow-right"></i></span>
                         </div>
                         <div><p class="text-sm text-zinc-400 font-semibold">Total Produk Baju</p><h3 id="dash-produk" class="text-3xl font-extrabold text-white">0</h3></div>
                     </div>
-                    <!-- Modifikasi Card 2 -->
-                    <div onclick="showDashDetail('terjual')" class="bg-[#18181b] p-5 md:p-6 rounded-[32px] shadow-lg border border-zinc-800 flex flex-col justify-between h-40 cursor-pointer hover:bg-zinc-800/80 hover:border-zinc-700 transition-all group relative overflow-hidden">
+                    <div onclick="showDashDetail('terjual')" class="bg-[#18181b]/80 backdrop-blur-md p-5 md:p-6 rounded-[32px] shadow-lg border border-zinc-800/80 flex flex-col justify-between h-40 cursor-pointer hover:bg-zinc-800 hover:border-zinc-700 transition-all group relative overflow-hidden">
                         <div class="flex justify-between items-start">
-                            <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-xl"><i class="fa-solid fa-cart-arrow-down"></i></div>
+                            <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-xl shadow-inner"><i class="fa-solid fa-cart-arrow-down"></i></div>
                             <span class="text-[10px] font-bold text-emerald-400 opacity-0 group-hover:opacity-100 transition-opacity bg-emerald-500/10 px-2.5 py-1.5 rounded-xl flex items-center gap-1">Detail <i class="fa-solid fa-arrow-right"></i></span>
                         </div>
                         <div><p class="text-sm text-zinc-400 font-semibold">Baju Terjual</p><h3 id="dash-terjual" class="text-3xl font-extrabold text-white">0</h3></div>
                     </div>
-                    <!-- Modifikasi Card 3 -->
-                    <div onclick="showDashDetail('pendapatan')" class="bg-[#18181b] p-5 md:p-6 rounded-[32px] shadow-lg border border-zinc-800 flex flex-col justify-between h-40 cursor-pointer hover:bg-zinc-800/80 hover:border-zinc-700 transition-all group relative overflow-hidden">
+                    <div onclick="showDashDetail('pendapatan')" class="bg-[#18181b]/80 backdrop-blur-md p-5 md:p-6 rounded-[32px] shadow-lg border border-zinc-800/80 flex flex-col justify-between h-40 cursor-pointer hover:bg-zinc-800 hover:border-zinc-700 transition-all group relative overflow-hidden">
                         <div class="flex justify-between items-start">
-                            <div class="w-12 h-12 rounded-2xl bg-purple-500/10 text-purple-400 flex items-center justify-center text-xl"><i class="fa-solid fa-wallet"></i></div>
+                            <div class="w-12 h-12 rounded-2xl bg-purple-500/10 text-purple-400 flex items-center justify-center text-xl shadow-inner"><i class="fa-solid fa-wallet"></i></div>
                             <span class="text-[10px] font-bold text-purple-400 opacity-0 group-hover:opacity-100 transition-opacity bg-purple-500/10 px-2.5 py-1.5 rounded-xl flex items-center gap-1">Detail <i class="fa-solid fa-arrow-right"></i></span>
                         </div>
                         <div><p class="text-sm text-zinc-400 font-semibold">Total Pendapatan</p><h3 id="dash-pendapatan" class="text-3xl font-extrabold text-white">Rp 0</h3></div>
@@ -150,7 +181,7 @@
             <section id="sec-produk" class="hidden space-y-6 md:space-y-8">
                 
                 <!-- KONTINER FORM TAMBAH/EDIT PRODUK -->
-                <div class="bg-[#18181b] p-5 md:p-8 rounded-[40px] shadow-lg border border-zinc-800 transition-all hidden" id="form-produk-container">
+                <div class="bg-[#18181b]/90 backdrop-blur-xl p-5 md:p-8 rounded-[40px] shadow-lg border border-zinc-800 transition-all hidden" id="form-produk-container">
                     <div class="flex justify-between items-center mb-5 md:mb-6">
                         <h3 class="text-lg md:text-xl font-bold text-white tracking-tight flex items-center gap-2" id="title-form-produk">
                             <div class="w-7 h-7 rounded-full bg-blue-500/10 text-blue-400 flex items-center justify-center text-xs"><i class="fa-solid fa-plus" id="icon-form-produk"></i></div>
@@ -174,7 +205,6 @@
                         <div class="col-span-1 md:col-span-2"><label class="block text-[12px] font-bold text-zinc-400 uppercase mb-2 ml-1">Harga (Rp)</label><input type="number" id="p-harga" required class="w-full bg-[#09090b] border border-zinc-800 rounded-2xl px-4 py-3.5 focus:ring-2 focus:ring-blue-500 outline-none font-semibold text-white placeholder-zinc-600"></div>
                         <div class="col-span-1 md:col-span-2"><label class="block text-[12px] font-bold text-zinc-400 uppercase mb-2 ml-1">Stok</label><input type="number" id="p-stok" required class="w-full bg-[#09090b] border border-zinc-800 rounded-2xl px-4 py-3.5 focus:ring-2 focus:ring-blue-500 outline-none font-semibold text-white placeholder-zinc-600"></div>
                         
-                        <!-- Deskripsi Produk -->
                         <div class="col-span-1 md:col-span-6">
                             <label class="block text-[12px] font-bold text-zinc-400 uppercase mb-2 ml-1">Deskripsi Produk <span class="text-[10px] normal-case font-normal">(Opsional)</span></label>
                             <textarea id="p-deskripsi" rows="3" placeholder="Tuliskan bahan, detail ukuran, keunggulan..." class="w-full bg-[#09090b] border border-zinc-800 rounded-2xl px-4 py-3.5 focus:ring-2 focus:ring-blue-500 outline-none font-semibold text-white placeholder-zinc-600"></textarea>
@@ -198,7 +228,7 @@
                     </form>
                 </div>
                 
-                <div class="bg-[#18181b] rounded-[40px] shadow-lg border border-zinc-800 overflow-hidden">
+                <div class="bg-[#18181b]/90 backdrop-blur-xl rounded-[40px] shadow-lg border border-zinc-800 overflow-hidden">
                     <div class="flex justify-between items-center p-5 md:p-8 border-b border-zinc-800">
                         <h3 class="font-bold text-white text-lg md:text-xl tracking-tight">Daftar Produk</h3>
                         <div class="flex gap-2">
@@ -225,12 +255,12 @@
 
             <!-- PENJUALAN SECTION -->
             <section id="sec-penjualan" class="hidden space-y-6 md:space-y-8">
-                <div class="bg-[#18181b] p-5 rounded-[24px] shadow-lg border border-zinc-800">
+                <div class="bg-[#18181b]/90 backdrop-blur-xl p-5 rounded-[24px] shadow-lg border border-zinc-800">
                     <h3 class="font-bold text-white text-sm tracking-tight mb-3">Filter Berdasarkan Bulan</h3>
                     <div id="filter-bulan-container" class="flex gap-2 overflow-x-auto scroll-touch hide-scrollbar pb-1"></div>
                 </div>
 
-                <div class="bg-[#18181b] rounded-[40px] shadow-lg border border-zinc-800 overflow-hidden">
+                <div class="bg-[#18181b]/90 backdrop-blur-xl rounded-[40px] shadow-lg border border-zinc-800 overflow-hidden">
                     <div class="flex justify-between items-center p-5 md:p-8 border-b border-zinc-800">
                         <h3 class="font-bold text-white text-lg md:text-xl tracking-tight">Pesanan: <span id="label-bulan-aktif" class="text-blue-400">Semua Waktu</span></h3>
                         <button onclick="fetchPenjualan(true)" class="bg-blue-500/10 text-blue-400 border border-blue-500/20 px-4 py-2 rounded-full text-xs md:text-sm font-bold hover:bg-blue-500/20 transition active:scale-95 flex items-center gap-2"><i class="fa-solid fa-rotate-right"></i> Refresh</button>
@@ -255,7 +285,7 @@
 
             <!-- TRANSKRIP PENJUALAN -->
             <section id="sec-transkrip" class="hidden space-y-6 md:space-y-8">
-                <div class="bg-[#18181b] p-5 md:p-8 rounded-[40px] shadow-lg border border-zinc-800">
+                <div class="bg-[#18181b]/90 backdrop-blur-xl p-5 md:p-8 rounded-[40px] shadow-lg border border-zinc-800">
                     <div class="flex justify-between items-center mb-6">
                         <div>
                             <h3 class="text-xl font-bold text-white tracking-tight">Transkrip Penjualan Produk</h3>
@@ -269,7 +299,7 @@
 
             <!-- PELANGGAN -->
             <section id="sec-pelanggan" class="hidden space-y-6 md:space-y-8">
-                <div class="bg-[#18181b] p-5 md:p-8 rounded-[40px] shadow-lg border border-zinc-800">
+                <div class="bg-[#18181b]/90 backdrop-blur-xl p-5 md:p-8 rounded-[40px] shadow-lg border border-zinc-800">
                     <div class="flex justify-between items-center mb-6">
                         <div>
                             <h3 class="text-xl font-bold text-white tracking-tight">Database Pelanggan</h3>
@@ -282,8 +312,9 @@
 
             <!-- PENGATURAN -->
             <section id="sec-pengaturan" class="hidden space-y-6 md:space-y-8">
-                <div class="bg-[#18181b] p-5 md:p-8 rounded-[40px] shadow-lg border border-zinc-800">
+                <div class="bg-[#18181b]/90 backdrop-blur-xl p-5 md:p-8 rounded-[40px] shadow-lg border border-zinc-800">
                     <h3 class="text-xl font-bold mb-2 text-white tracking-tight">Personalisasi Toko & Sistem</h3>
+                    <p class="text-xs text-zinc-400 mb-6">Informasi yang tampil di bawah ini adalah data yang telah disimpan di server. Ubah untuk memperbarui.</p>
                     <form id="form-pengaturan" onsubmit="handleSavePengaturan(event)" class="space-y-6 mt-6">
                         
                         <!-- Info Admin WA & QRIS Name -->
@@ -303,16 +334,42 @@
                         </div>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div class="bg-[#09090b] border border-zinc-800 p-5 rounded-[24px]"><label class="block font-bold text-white mb-1">Logo Aplikasi</label><div onclick="document.getElementById('set-logo').click()" class="w-20 h-20 bg-zinc-800 rounded-[20px] flex items-center justify-center cursor-pointer shadow-sm relative overflow-hidden border border-zinc-700"><input type="file" id="set-logo" accept="image/*" class="hidden" onchange="previewImageSingle(event, 'preview-logo', 'base64Logo')"><i class="fa-solid fa-image text-zinc-500 text-xl"></i><img id="preview-logo" src="" class="absolute inset-0 w-full h-full object-contain p-2 hidden bg-zinc-800"></div></div>
-                            <div class="bg-[#09090b] border border-zinc-800 p-5 rounded-[24px]"><label class="block font-bold text-white mb-1">Wallpaper Login</label><div onclick="document.getElementById('set-loginbg').click()" class="w-full h-20 bg-zinc-800 rounded-[20px] flex items-center justify-center cursor-pointer shadow-sm relative overflow-hidden border border-zinc-700"><input type="file" id="set-loginbg" accept="image/*" class="hidden" onchange="previewImageSingle(event, 'preview-loginbg', 'base64LoginBg', true)"><i class="fa-solid fa-image text-zinc-500 text-xl"></i><img id="preview-loginbg" src="" class="absolute inset-0 w-full h-full object-cover hidden bg-zinc-800"></div></div>
+                            <div class="bg-[#09090b] border border-zinc-800 p-5 rounded-[24px]">
+                                <label class="block font-bold text-white mb-1">Logo Aplikasi</label>
+                                <div onclick="document.getElementById('set-logo').click()" class="w-20 h-20 bg-zinc-800 rounded-[20px] flex items-center justify-center cursor-pointer shadow-sm relative overflow-hidden border border-zinc-700 hover:border-zinc-500 transition">
+                                    <input type="file" id="set-logo" accept="image/*" class="hidden" onchange="previewImageSingle(event, 'preview-logo', 'base64Logo')">
+                                    <i class="fa-solid fa-image text-zinc-500 text-xl"></i>
+                                    <img id="preview-logo" src="" class="absolute inset-0 w-full h-full object-contain p-2 hidden bg-zinc-800">
+                                </div>
+                            </div>
+                            <div class="bg-[#09090b] border border-zinc-800 p-5 rounded-[24px]">
+                                <label class="block font-bold text-white mb-1">Wallpaper Login</label>
+                                <div onclick="document.getElementById('set-loginbg').click()" class="w-full h-20 bg-zinc-800 rounded-[20px] flex items-center justify-center cursor-pointer shadow-sm relative overflow-hidden border border-zinc-700 hover:border-zinc-500 transition">
+                                    <input type="file" id="set-loginbg" accept="image/*" class="hidden" onchange="previewImageSingle(event, 'preview-loginbg', 'base64LoginBg', true)">
+                                    <i class="fa-solid fa-image text-zinc-500 text-xl"></i>
+                                    <img id="preview-loginbg" src="" class="absolute inset-0 w-full h-full object-cover hidden bg-zinc-800">
+                                </div>
+                            </div>
                         </div>
                         
                         <div class="bg-[#09090b] border border-zinc-800 p-5 rounded-[24px]">
                             <label class="block font-bold text-white mb-2">Banner Promo</label>
                             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                                <div onclick="document.getElementById('set-ban1').click()" class="h-28 bg-zinc-800 rounded-[20px] flex flex-col items-center justify-center cursor-pointer shadow-sm relative overflow-hidden border border-zinc-700"><input type="file" id="set-ban1" accept="image/*" class="hidden" onchange="previewImageSingle(event, 'preview-ban1', 'base64Ban1', true)"><span class="text-[10px] font-bold text-zinc-400 mt-2">Slot 1</span><img id="preview-ban1" src="" class="absolute inset-0 w-full h-full object-cover hidden"></div>
-                                <div onclick="document.getElementById('set-ban2').click()" class="h-28 bg-zinc-800 rounded-[20px] flex flex-col items-center justify-center cursor-pointer shadow-sm relative overflow-hidden border border-zinc-700"><input type="file" id="set-ban2" accept="image/*" class="hidden" onchange="previewImageSingle(event, 'preview-ban2', 'base64Ban2', true)"><span class="text-[10px] font-bold text-zinc-400 mt-2">Slot 2</span><img id="preview-ban2" src="" class="absolute inset-0 w-full h-full object-cover hidden"></div>
-                                <div onclick="document.getElementById('set-ban3').click()" class="h-28 bg-zinc-800 rounded-[20px] flex flex-col items-center justify-center cursor-pointer shadow-sm relative overflow-hidden border border-zinc-700"><input type="file" id="set-ban3" accept="image/*" class="hidden" onchange="previewImageSingle(event, 'preview-ban3', 'base64Ban3', true)"><span class="text-[10px] font-bold text-zinc-400 mt-2">Slot 3</span><img id="preview-ban3" src="" class="absolute inset-0 w-full h-full object-cover hidden"></div>
+                                <div onclick="document.getElementById('set-ban1').click()" class="h-28 bg-zinc-800 rounded-[20px] flex flex-col items-center justify-center cursor-pointer shadow-sm relative overflow-hidden border border-zinc-700 hover:border-zinc-500 transition">
+                                    <input type="file" id="set-ban1" accept="image/*" class="hidden" onchange="previewImageSingle(event, 'preview-ban1', 'base64Ban1', true)">
+                                    <span class="text-[10px] font-bold text-zinc-400 mt-2">Slot 1</span>
+                                    <img id="preview-ban1" src="" class="absolute inset-0 w-full h-full object-cover hidden">
+                                </div>
+                                <div onclick="document.getElementById('set-ban2').click()" class="h-28 bg-zinc-800 rounded-[20px] flex flex-col items-center justify-center cursor-pointer shadow-sm relative overflow-hidden border border-zinc-700 hover:border-zinc-500 transition">
+                                    <input type="file" id="set-ban2" accept="image/*" class="hidden" onchange="previewImageSingle(event, 'preview-ban2', 'base64Ban2', true)">
+                                    <span class="text-[10px] font-bold text-zinc-400 mt-2">Slot 2</span>
+                                    <img id="preview-ban2" src="" class="absolute inset-0 w-full h-full object-cover hidden">
+                                </div>
+                                <div onclick="document.getElementById('set-ban3').click()" class="h-28 bg-zinc-800 rounded-[20px] flex flex-col items-center justify-center cursor-pointer shadow-sm relative overflow-hidden border border-zinc-700 hover:border-zinc-500 transition">
+                                    <input type="file" id="set-ban3" accept="image/*" class="hidden" onchange="previewImageSingle(event, 'preview-ban3', 'base64Ban3', true)">
+                                    <span class="text-[10px] font-bold text-zinc-400 mt-2">Slot 3</span>
+                                    <img id="preview-ban3" src="" class="absolute inset-0 w-full h-full object-cover hidden">
+                                </div>
                             </div>
                         </div>
                         
@@ -332,14 +389,16 @@
                             </div>
                         </div>
 
-                        <div class="flex justify-end pt-2"><button type="submit" id="btn-save-pengaturan" class="w-full md:w-auto bg-blue-600 text-white px-8 py-4 rounded-full font-bold shadow-lg shadow-blue-900/20 active:scale-95 text-sm transition-all hover:bg-blue-500">Terapkan Perubahan</button></div>
+                        <div class="flex justify-end pt-2">
+                            <button type="submit" id="btn-save-pengaturan" class="w-full md:w-auto bg-blue-600 text-white px-8 py-4 rounded-full font-bold shadow-lg shadow-blue-900/20 active:scale-95 text-sm transition-all hover:bg-blue-500">Terapkan Perubahan</button>
+                        </div>
                     </form>
                 </div>
             </section>
         </div>
     </main>
 
-    <!-- Modal Detail Produk (untuk list) -->
+    <!-- Modal Detail Produk -->
     <div id="modal-detail-produk" class="modal opacity-0 pointer-events-none fixed w-full h-full top-0 left-0 flex items-end sm:items-center justify-center z-[80] transition-opacity duration-300">
         <div class="absolute w-full h-full bg-black/60 backdrop-blur-sm" onclick="toggleModalDetailProduk()"></div>
         <div class="modal-sheet bg-[#18181b] w-full sm:max-w-md mx-auto rounded-t-[40px] sm:rounded-[40px] shadow-2xl z-[80] flex flex-col relative p-6 pb-safe border border-zinc-800">
@@ -358,7 +417,6 @@
                 <button onclick="toggleModalDashDetail()" class="bg-zinc-800 hover:bg-zinc-700 text-zinc-300 w-8 h-8 rounded-full flex items-center justify-center transition-colors"><i class="fa-solid fa-times"></i></button>
             </div>
             <div id="dash-detail-content" class="p-6 overflow-y-auto hide-scrollbar scroll-touch flex-1">
-                <!-- Content goes here -->
             </div>
         </div>
     </div>
@@ -415,7 +473,11 @@
 
     <script>
         const formatRp = (angka) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka);
-        const showLoading = (show) => document.getElementById('loading-indicator').style.display = show ? 'flex' : 'none';
+        const showLoading = (show) => {
+            const ind = document.getElementById('loading-indicator');
+            if (show) { ind.classList.remove('hidden'); ind.classList.add('flex'); }
+            else { ind.classList.add('hidden'); ind.classList.remove('flex'); }
+        };
 
         // VARIABEL CACHING
         let dataLoaded = { dashboard: false, produk: false, penjualan: false, pelanggan: false, pengaturan: false };
@@ -424,11 +486,61 @@
         let globalPenjualan = []; let globalPelanggan = []; let globalProduk = [];
         let activeBulanFilter = 'Semua Waktu'; let isEditingProduk = false; let produkIdToEdit = null;
         let navVisible = false;
+        let syncInterval = null;
 
+        // --- FULL LOAD INITIALIZATION ---
+        async function initApp() {
+            try {
+                const updateProgress = (pct, text) => {
+                    document.getElementById('loader-progress').style.width = pct + '%';
+                    document.getElementById('loader-status').textContent = text;
+                }
+
+                updateProgress(20, 'Mengambil Dashboard...');
+                await fetchDashboard(true, true);
+                
+                updateProgress(40, 'Mengambil Katalog Produk...');
+                await fetchProduk(true, true);
+                
+                updateProgress(60, 'Memuat Rekapan Penjualan...');
+                await fetchPenjualan(true, true);
+                
+                updateProgress(80, 'Memuat Data Pelanggan...');
+                await fetchPelanggan(true, true);
+                
+                updateProgress(90, 'Memeriksa Pengaturan Sistem...');
+                await fetchPengaturanAdmin(true, true);
+                
+                updateProgress(100, 'Selesai! Menyiapkan antarmuka...');
+                switchTab('dashboard');
+
+                // Hilangkan Full Page Loader dengan efek fade
+                setTimeout(() => {
+                    const loader = document.getElementById('full-page-loader');
+                    loader.classList.add('opacity-0');
+                    setTimeout(() => loader.remove(), 700);
+                }, 500);
+
+            } catch (err) {
+                document.getElementById('loader-status').textContent = "Gagal memuat. Periksa koneksi dan muat ulang.";
+            }
+        }
+
+        // --- MOBILE NAV TOGGLE ---
         function toggleMobileNav() {
-            const nav = document.getElementById('mobile-nav-container'); const icon = document.getElementById('fab-icon');
-            if(!navVisible) { nav.classList.replace('translate-y-full', 'translate-y-0'); icon.className = "fa-solid fa-times text-xl"; } 
-            else { nav.classList.replace('translate-y-0', 'translate-y-full'); icon.className = "fa-solid fa-bars text-xl"; }
+            const nav = document.getElementById('mobile-nav-container'); 
+            const fab = document.getElementById('fab-menu');
+            const icon = document.getElementById('fab-icon');
+            if(!navVisible) { 
+                nav.classList.replace('translate-y-full', 'translate-y-0'); 
+                icon.className = "fa-solid fa-chevron-down text-xl transition-transform duration-300"; 
+                fab.classList.replace('bottom-6', 'bottom-[90px]');
+            } 
+            else { 
+                nav.classList.replace('translate-y-0', 'translate-y-full'); 
+                icon.className = "fa-solid fa-bars text-xl transition-transform duration-300"; 
+                fab.classList.replace('bottom-[90px]', 'bottom-6');
+            }
             navVisible = !navVisible;
         }
 
@@ -440,7 +552,7 @@
         function switchTab(tab) {
             ['dashboard', 'produk', 'penjualan', 'transkrip', 'pelanggan', 'pengaturan'].forEach(n => {
                 document.getElementById(`sec-${n}`).classList.add('hidden');
-                document.getElementById(`nav-${n}`).className = "w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl text-zinc-400 hover:bg-zinc-800 hover:text-white font-semibold transition-all active:scale-95";
+                document.getElementById(`nav-${n}`).className = "w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl text-zinc-400 hover:bg-zinc-800/80 hover:text-white font-semibold transition-all active:scale-95";
                 const mobEl = document.getElementById(`nav-mob-${n}`);
                 if(mobEl) mobEl.className = "flex flex-col items-center gap-1 p-2 text-zinc-500 min-w-[72px] shrink-0 active:scale-90 transition-transform";
             });
@@ -453,9 +565,33 @@
             if (tab === 'dashboard') fetchDashboard();
             if (tab === 'produk') fetchProduk();
             if (tab === 'penjualan') fetchPenjualan();
-            if (tab === 'transkrip') fetchTranskrip();
-            if (tab === 'pelanggan') { fetchPelanggan(); fetchPenjualan(); }
+            if (tab === 'transkrip') { renderGridTranskrip(); }
+            if (tab === 'pelanggan') { fetchPelanggan(); }
             if (tab === 'pengaturan') fetchPengaturanAdmin();
+        }
+
+        // --- AUTO SYNC FEATURE ---
+        function toggleAutoSync() {
+            const isEnabled = document.getElementById('auto-sync-toggle').checked;
+            if (isEnabled) {
+                syncInterval = setInterval(syncAllDataSilently, 15000);
+            } else {
+                clearInterval(syncInterval);
+            }
+        }
+
+        async function syncAllDataSilently() {
+            const syncIcon = document.getElementById('sync-icon');
+            if (syncIcon) syncIcon.classList.add('fa-spin');
+            
+            await Promise.all([
+                fetchDashboard(true, true),
+                fetchProduk(true, true),
+                fetchPenjualan(true, true),
+                fetchPelanggan(true, true)
+            ]);
+
+            if (syncIcon) syncIcon.classList.remove('fa-spin');
         }
 
         function renderDashboard() {
@@ -466,15 +602,17 @@
             }
         }
 
-        async function fetchDashboard(force = false) {
+        async function fetchDashboard(force = false, silent = false) {
             if (!force && dataLoaded.dashboard) { renderDashboard(); return; }
-            showLoading(true);
+            if(!silent) showLoading(true);
             try {
-                const res = await fetch(`${SCRIPT_URL}?action=getDashboard&t=${new Date().getTime()}`); const data = await res.json();
+                const res = await fetch(`${SCRIPT_URL}?action=getDashboard&t=${new Date().getTime()}`); 
+                const data = await res.json();
                 if(data.status === 'success') {
                     dashData = data.data; dataLoaded.dashboard = true; renderDashboard();
                 }
-            } catch (err) {} showLoading(false);
+            } catch (err) {} 
+            if(!silent) showLoading(false);
         }
 
         // --- DASHBOARD DETAILS MODAL LOGIC ---
@@ -491,12 +629,8 @@
 
         async function showDashDetail(type) {
             showLoading(true);
-            // Ensure raw data is loaded before displaying details
-            if (type === 'produk' && (!dataLoaded.produk || globalProduk.length === 0)) {
-                await fetchProduk(true);
-            } else if ((type === 'terjual' || type === 'pendapatan') && (!dataLoaded.penjualan || globalPenjualan.length === 0)) {
-                await fetchPenjualan(true);
-            }
+            if (type === 'produk' && (!dataLoaded.produk || globalProduk.length === 0)) await fetchProduk(true);
+            else if ((type === 'terjual' || type === 'pendapatan') && (!dataLoaded.penjualan || globalPenjualan.length === 0)) await fetchPenjualan(true);
             showLoading(false);
 
             const titleEl = document.getElementById('dash-detail-title');
@@ -542,7 +676,7 @@
                 titleEl.innerHTML = '<i class="fa-solid fa-cart-arrow-down text-emerald-400 mr-2"></i> Detail Penjualan per Jenis';
                 const terjual = {};
                 globalPenjualan.forEach(p => {
-                    if (p.Status === 'Dibatalkan') return; // Exclude cancelled orders
+                    if (p.Status === 'Dibatalkan') return; 
                     const nama = p['Nama Baju'];
                     if (!terjual[nama]) terjual[nama] = { qty: 0, total: 0 };
                     terjual[nama].qty += parseInt(p.Jumlah || 0);
@@ -570,7 +704,6 @@
                 }
             } else if (type === 'pendapatan') {
                 titleEl.innerHTML = '<i class="fa-solid fa-wallet text-purple-400 mr-2"></i> Rincian Sumber Pendapatan';
-                // Filter transactions that bring in revenue (not cancelled)
                 const validTrx = globalPenjualan
                     .filter(p => p.Status !== 'Dibatalkan')
                     .sort((a, b) => new Date(b.Tanggal) - new Date(a.Tanggal));
@@ -602,7 +735,6 @@
             contentEl.innerHTML = contentHTML;
             toggleModalDashDetail();
         }
-        // ---------------------------------------------
 
 
         function updateDatalistKategori() {
@@ -654,13 +786,14 @@
             toggleModalDetailProduk();
         }
 
-        async function fetchProduk(force = false) {
+        async function fetchProduk(force = false, silent = false) {
             if(!force && dataLoaded.produk && globalProduk.length > 0) { renderTableProduk(); return; }
-            showLoading(true); 
+            if(!silent) showLoading(true); 
             try {
                 const res = await fetch(`${SCRIPT_URL}?action=getProduk&t=${new Date().getTime()}`); const data = await res.json();
                 if(data.status === 'success') { globalProduk = data.data; dataLoaded.produk = true; updateDatalistKategori(); renderTableProduk(); }
-            } catch (err) {} showLoading(false);
+            } catch (err) {} 
+            if(!silent) showLoading(false);
         }
 
         function renderTableProduk() {
@@ -782,13 +915,14 @@
             } catch(e) {} return "Bulan Lainnya";
         }
 
-        async function fetchPenjualan(force = false) {
+        async function fetchPenjualan(force = false, silent = false) {
             if(!force && dataLoaded.penjualan && globalPenjualan.length > 0) { renderFilterBulan(); renderTabelPenjualan(activeBulanFilter); return; }
-            showLoading(true);
+            if(!silent) showLoading(true);
             try {
                 const res = await fetch(`${SCRIPT_URL}?action=getPenjualan&t=${new Date().getTime()}`); const data = await res.json();
-                if(data.status === 'success') { globalPenjualan = data.data.reverse(); dataLoaded.penjualan = true; renderFilterBulan(); renderTabelPenjualan(activeBulanFilter); }
-            } catch (err) {} showLoading(false);
+                if(data.status === 'success') { globalPenjualan = data.data.reverse(); dataLoaded.penjualan = true; renderFilterBulan(); renderTabelPenjualan(activeBulanFilter); renderGridTranskrip(); }
+            } catch (err) {} 
+            if(!silent) showLoading(false);
         }
 
         function renderFilterBulan() {
@@ -853,13 +987,10 @@
                 const res = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: "updateStatus", id_transaksi: idTransaksi, status_baru: statusBaru }), headers: { 'Content-Type': 'text/plain' } });
                 const data = await res.json();
                 if(data.status === 'success') { 
-                    // Update tampilan lokal seketika agar tidak nge-freeze (Optimistic UI)
                     const trx = globalPenjualan.find(p => p['ID Transaksi'] === idTransaksi);
                     if(trx) trx.Status = statusBaru;
                     renderTabelPenjualan(activeBulanFilter);
-                    
-                    // Sinkronisasi data di background
-                    fetchPenjualan(true); fetchDashboard(true); fetchTranskrip(true); 
+                    fetchPenjualan(true, true); fetchDashboard(true, true);
                 } else {
                     alert('Gagal: ' + data.message);
                 }
@@ -869,15 +1000,7 @@
             showLoading(false);
         }
 
-        async function fetchTranskrip(force = false) {
-            if(!force && dataLoaded.penjualan) { renderGridTranskrip(); return; }
-            showLoading(true);
-            try {
-                const res = await fetch(`${SCRIPT_URL}?action=getPenjualan&t=${new Date().getTime()}`); const data = await res.json();
-                if(data.status === 'success') { globalPenjualan = data.data.reverse(); dataLoaded.penjualan = true; renderGridTranskrip(); }
-            } catch(e) {} showLoading(false);
-        }
-
+        // Transkrip is derived from globalPenjualan, no need to fetch if loaded
         function renderGridTranskrip() {
             const grid = document.getElementById('grid-transkrip'); const produkTerjual = {};
             globalPenjualan.forEach(p => {
@@ -930,7 +1053,7 @@
         }
 
         function toggleModalTranskrip() {
-            const body = document.querySelector('body'); const modal = document.getElementById('modal-transkrip');
+            const modal = document.getElementById('modal-transkrip');
             if(modal.classList.contains('opacity-0')) { modal.classList.remove('opacity-0', 'pointer-events-none'); setTimeout(() => modal.classList.add('show'), 10); } 
             else { modal.classList.remove('show'); setTimeout(() => { modal.classList.add('opacity-0', 'pointer-events-none'); }, 300); }
         }
@@ -942,13 +1065,14 @@
         }
         function bukaBuktiModal(url) { document.getElementById('img-bukti-detail').src = url; toggleModalBukti(); }
 
-        async function fetchPelanggan(force = false) {
+        async function fetchPelanggan(force = false, silent = false) {
             if(!force && dataLoaded.pelanggan && globalPelanggan.length > 0) { renderGridPelanggan(); return; }
-            showLoading(true); 
+            if(!silent) showLoading(true); 
             try {
                 const res = await fetch(`${SCRIPT_URL}?action=getPelanggan&t=${new Date().getTime()}`); const data = await res.json();
                 if(data.status === 'success') { globalPelanggan = data.data; dataLoaded.pelanggan = true; renderGridPelanggan(); }
-            } catch(e){} showLoading(false);
+            } catch(e){} 
+            if(!silent) showLoading(false);
         }
 
         function renderGridPelanggan() {
@@ -1002,7 +1126,6 @@
             const trx = globalPenjualan.find(p => p['ID Transaksi'] === idTrx); if(!trx) return;
             const content = document.getElementById('content-detail-pesanan');
             
-            // Bukti
             let bukti1HTML = `<div class="text-center text-[10px] text-zinc-400 bg-zinc-800 border border-zinc-700 py-2 rounded-lg mb-2">Cash (Tanpa Struk Utama)</div>`;
             if(trx['Bukti Pembayaran'] && trx['Bukti Pembayaran'] !== "Bayar Cash") {
                 bukti1HTML = `<button onclick="bukaBuktiModal('${trx['Bukti Pembayaran']}')" class="w-full bg-blue-500/10 text-blue-400 font-bold py-2 rounded-lg text-[11px] mb-2 hover:bg-blue-500/20 transition-colors"><i class="fa-solid fa-image"></i> Struk Utama/DP</button>`;
@@ -1063,27 +1186,29 @@
             reader.readAsDataURL(file);
         }
 
-        async function fetchPengaturanAdmin(force = false) {
+        async function fetchPengaturanAdmin(force = false, silent = false) {
             if(!force && dataLoaded.pengaturan) return;
-            showLoading(true);
+            if(!silent) showLoading(true);
             try {
                 const res = await fetch(`${SCRIPT_URL}?action=getPengaturan&t=${new Date().getTime()}`); const data = await res.json();
                 if(data.status === 'success' && data.data) {
                     dataLoaded.pengaturan = true;
                     data.data.forEach(item => {
-                        if(item.Key === 'logo' && item.Value) { document.getElementById('preview-logo').src = item.Value; document.getElementById('preview-logo').classList.remove('hidden'); }
-                        if(item.Key === 'login_bg' && item.Value) { document.getElementById('preview-loginbg').src = item.Value; document.getElementById('preview-loginbg').classList.remove('hidden'); }
-                        if(item.Key === 'banner_1' && item.Value) { document.getElementById('preview-ban1').src = item.Value; document.getElementById('preview-ban1').classList.remove('hidden'); }
-                        if(item.Key === 'banner_2' && item.Value) { document.getElementById('preview-ban2').src = item.Value; document.getElementById('preview-ban2').classList.remove('hidden'); }
-                        if(item.Key === 'banner_3' && item.Value) { document.getElementById('preview-ban3').src = item.Value; document.getElementById('preview-ban3').classList.remove('hidden'); }
-                        if(item.Key === 'qris_lunas' && item.Value) { document.getElementById('preview-qris-lunas').src = item.Value; document.getElementById('preview-qris-lunas').classList.remove('hidden'); }
-                        if(item.Key === 'qris_dp' && item.Value) { document.getElementById('preview-qris-dp').src = item.Value; document.getElementById('preview-qris-dp').classList.remove('hidden'); }
+                        // Memastikan base64 tersimpan sehingga tidak hilang saat save ulang
+                        if(item.Key === 'logo' && item.Value) { document.getElementById('preview-logo').src = item.Value; document.getElementById('preview-logo').classList.remove('hidden'); base64Logo = item.Value; }
+                        if(item.Key === 'login_bg' && item.Value) { document.getElementById('preview-loginbg').src = item.Value; document.getElementById('preview-loginbg').classList.remove('hidden'); base64LoginBg = item.Value; }
+                        if(item.Key === 'banner_1' && item.Value) { document.getElementById('preview-ban1').src = item.Value; document.getElementById('preview-ban1').classList.remove('hidden'); base64Ban1 = item.Value; }
+                        if(item.Key === 'banner_2' && item.Value) { document.getElementById('preview-ban2').src = item.Value; document.getElementById('preview-ban2').classList.remove('hidden'); base64Ban2 = item.Value; }
+                        if(item.Key === 'banner_3' && item.Value) { document.getElementById('preview-ban3').src = item.Value; document.getElementById('preview-ban3').classList.remove('hidden'); base64Ban3 = item.Value; }
+                        if(item.Key === 'qris_lunas' && item.Value) { document.getElementById('preview-qris-lunas').src = item.Value; document.getElementById('preview-qris-lunas').classList.remove('hidden'); base64QrisLunas = item.Value; }
+                        if(item.Key === 'qris_dp' && item.Value) { document.getElementById('preview-qris-dp').src = item.Value; document.getElementById('preview-qris-dp').classList.remove('hidden'); base64QrisDp = item.Value; }
                         
                         if(item.Key === 'admin_wa') document.getElementById('set-admin-wa').value = item.Value || "";
                         if(item.Key === 'qris_name') document.getElementById('set-qris-name').value = item.Value || "";
                     });
                 }
-            } catch(e){} showLoading(false);
+            } catch(e){} 
+            if(!silent) showLoading(false);
         }
 
         async function handleSavePengaturan(e) {
@@ -1103,13 +1228,16 @@
                 const data = await res.json();
                 if(data.status === 'success') {
                     alert('Pengaturan berhasil diperbarui!');
-                    base64Logo = ""; base64LoginBg = ""; base64Ban1 = ""; base64Ban2 = ""; base64Ban3 = ""; base64QrisLunas = ""; base64QrisDp = "";
                 } else alert('Gagal: ' + data.message);
-            } catch (err) {}
+            } catch (err) {
+                alert('Terjadi kesalahan koneksi.');
+            }
             btn.innerHTML = 'Terapkan Perubahan'; btn.disabled = false;
         }
 
-        window.onload = () => { switchTab('dashboard'); };
+        // Mulai aplikasi saat window berhasil diload
+        window.onload = initApp;
+
     </script>
 </body>
 </html>
