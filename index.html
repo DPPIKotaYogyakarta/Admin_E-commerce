@@ -52,10 +52,15 @@
 
     <!-- Full Page Initial Loader -->
     <div id="full-page-loader" class="fixed inset-0 z-[100] bg-[#09090b]/95 backdrop-blur-md flex flex-col items-center justify-center transition-opacity duration-700">
-        <div class="relative w-24 h-24 flex items-center justify-center mb-6">
+        <div class="relative w-28 h-28 flex items-center justify-center mb-6 p-2 rounded-full bg-zinc-900/30 shadow-2xl">
             <div class="absolute inset-0 border-4 border-zinc-800 rounded-full"></div>
-            <div class="absolute inset-0 border-4 border-transparent border-t-blue-500 border-r-purple-500 rounded-full animate-spin"></div>
-            <i class="fa-solid fa-bolt text-2xl text-blue-400 animate-pulse"></i>
+            <div class="absolute inset-0 border-4 border-transparent border-t-blue-500 border-r-purple-500 rounded-full animate-spin z-10"></div>
+            
+            <!-- Default icon jika logo belum disetting -->
+            <i id="loader-default-icon" class="fa-solid fa-store text-4xl text-blue-400 animate-pulse"></i>
+            
+            <!-- Gambar logo dari pengaturan (disembunyikan secara default) -->
+            <img id="loader-logo-img" src="" class="w-full h-full object-contain rounded-full hidden animate-pulse bg-[#18181b] p-2 z-0 border border-zinc-800">
         </div>
         <h2 class="text-white text-2xl font-black tracking-widest bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">ADMIN PANEL</h2>
         <p class="text-zinc-400 text-sm mt-3 font-medium tracking-wide" id="loader-status">Memulai sistem...</p>
@@ -496,20 +501,29 @@
                     document.getElementById('loader-status').textContent = text;
                 }
 
-                updateProgress(20, 'Mengambil Dashboard...');
+                // 1. Load pengaturan pertama kali untuk mengambil Logo Aplikasi
+                updateProgress(10, 'Memeriksa Pengaturan Sistem...');
+                await fetchPengaturanAdmin(true, true);
+                
+                // Menampilkan logo di loading screen jika ada
+                if(base64Logo && base64Logo.trim() !== "") {
+                    document.getElementById('loader-logo-img').src = base64Logo;
+                    document.getElementById('loader-logo-img').classList.remove('hidden');
+                    document.getElementById('loader-default-icon').classList.add('hidden');
+                }
+                
+                // Lanjutkan loading sisa data
+                updateProgress(30, 'Mengambil Dashboard...');
                 await fetchDashboard(true, true);
                 
-                updateProgress(40, 'Mengambil Katalog Produk...');
+                updateProgress(50, 'Mengambil Katalog Produk...');
                 await fetchProduk(true, true);
                 
-                updateProgress(60, 'Memuat Rekapan Penjualan...');
+                updateProgress(70, 'Memuat Rekapan Penjualan...');
                 await fetchPenjualan(true, true);
                 
-                updateProgress(80, 'Memuat Data Pelanggan...');
+                updateProgress(90, 'Memuat Data Pelanggan...');
                 await fetchPelanggan(true, true);
-                
-                updateProgress(90, 'Memeriksa Pengaturan Sistem...');
-                await fetchPengaturanAdmin(true, true);
                 
                 updateProgress(100, 'Selesai! Menyiapkan antarmuka...');
                 switchTab('dashboard');
