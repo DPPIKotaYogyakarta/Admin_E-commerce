@@ -40,11 +40,9 @@
 </head>
 <body class="text-zinc-100 h-screen flex overflow-hidden selection:bg-blue-500/30 relative bg-[#09090b]">
 
-    <!-- Ambient Neon Background Effect -->
     <div class="fixed top-[-20%] left-[-10%] w-[60vw] h-[60vw] bg-blue-600/20 rounded-full blur-[120px] pointer-events-none z-0"></div>
     <div class="fixed bottom-[-20%] right-[-10%] w-[60vw] h-[60vw] bg-purple-600/20 rounded-full blur-[120px] pointer-events-none z-0"></div>
 
-    <!-- Full Page Initial Loader -->
     <div id="full-page-loader" class="fixed inset-0 z-[100] bg-[#09090b]/95 backdrop-blur-md flex flex-col items-center justify-center transition-opacity duration-700">
         <div class="relative w-24 h-24 md:w-28 md:h-28 flex items-center justify-center mb-6 p-2 rounded-full bg-zinc-900/30 shadow-2xl">
             <div class="absolute inset-0 border-4 border-zinc-800 rounded-full"></div>
@@ -61,10 +59,9 @@
 
     <script>
         // GANTI DENGAN URL WEB APP DEPLOY ANDA
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxaD064omgY9Q63nJShA4WAFsIRVcUnt2IK5Av5GeqErt79wAstPOVs7QLEH-gvUoVQ/exec'; 
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxdYMxLM_DqIfdOhC_uHKctWa8EfrxzrRFP-yIfCwYaRk5ir3DNi-TQ-lOpMbmtsnpw/exec'; 
     </script>
 
-    <!-- Sidebar Admin Desktop -->
     <aside id="desktop-sidebar" class="w-72 m-4 mr-0 bg-[#18181b]/80 backdrop-blur-xl rounded-[32px] shadow-2xl flex flex-col transition-all duration-300 overflow-hidden border border-zinc-800 z-20 shrink-0 hidden md:flex relative">
         <div class="p-8 pb-4 flex items-center gap-3">
             <div class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center shadow-lg shadow-blue-900/50 shrink-0"><i class="fa-solid fa-user-shield text-xl"></i></div>
@@ -83,12 +80,10 @@
         </nav>
     </aside>
 
-    <!-- FAB: Mobile -->
     <button id="fab-menu" onclick="toggleMobileNav()" class="md:hidden fixed bottom-6 right-5 z-[60] w-14 h-14 rounded-full bg-blue-600 text-white shadow-lg shadow-blue-900/50 flex items-center justify-center transition-all duration-400 ease-in-out active:scale-90 pb-safe border border-blue-500">
         <i id="fab-icon" class="fa-solid fa-bars text-xl transition-transform duration-300"></i>
     </button>
 
-    <!-- Mobile Nav -->
     <div id="mobile-nav-container" class="md:hidden fixed bottom-0 inset-x-0 glass-panel z-50 rounded-t-[32px] shadow-[0_-10px_40px_rgba(0,0,0,0.5)] safe-pb-nav transform translate-y-full transition-transform duration-400 ease-in-out border-t border-zinc-700/50">
         <div class="w-10 h-1.5 bg-zinc-600 mx-auto rounded-full mt-3 mb-1"></div>
         <div class="flex justify-start p-2 pt-2 pl-4 pr-6 overflow-x-auto hide-scrollbar scroll-touch gap-2 pb-4">
@@ -101,7 +96,6 @@
         </div>
     </div>
 
-    <!-- Main Content Area -->
     <main class="flex-1 flex flex-col h-screen overflow-hidden relative z-10" id="main-content-area">
         <header class="px-5 md:px-8 safe-pt pb-4 flex flex-row justify-between items-center shrink-0 bg-[#09090b]/60 backdrop-blur-md z-10 border-b border-zinc-800/50 gap-2">
             <div class="flex-1 flex items-center gap-3 md:gap-4">
@@ -130,7 +124,6 @@
 
         <div class="flex-1 overflow-y-auto px-3 sm:px-4 md:px-8 pb-32 md:pb-8 pt-4 md:pt-6 hide-scrollbar scroll-touch relative">
             
-            <!-- DASHBOARD SECTION -->
             <section id="sec-dashboard" class="space-y-4 md:space-y-6">
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
                     <div onclick="showDashDetail('produk')" class="bg-[#18181b]/80 backdrop-blur-md p-4 md:p-6 rounded-[28px] shadow-lg border border-zinc-800/80 flex flex-col justify-between h-32 md:h-40 cursor-pointer mobile-card group relative overflow-hidden">
@@ -157,10 +150,7 @@
                 </div>
             </section>
 
-            <!-- PRODUK SECTION -->
             <section id="sec-produk" class="hidden space-y-4 md:space-y-8">
-                
-                <!-- KONTINER FORM TAMBAH/EDIT PRODUK -->
                 <div class="bg-[#18181b]/95 backdrop-blur-xl p-4 sm:p-5 md:p-8 rounded-[32px] md:rounded-[40px] shadow-lg border border-zinc-800 transition-all hidden" id="form-produk-container">
                     <div class="flex flex-wrap sm:flex-nowrap justify-between items-center gap-3 mb-4 md:mb-6">
                         <h3 class="text-base md:text-xl font-bold text-white tracking-tight flex items-center gap-2 w-full sm:w-auto" id="title-form-produk">
@@ -183,7 +173,6 @@
                             <datalist id="list-kategori"></datalist>
                         </div>
                         
-                        <!-- VARIAN BUILDER -->
                         <div class="col-span-1 md:col-span-6 mt-1 bg-[#09090b] border border-zinc-800 rounded-xl md:rounded-2xl p-3 md:p-4">
                             <div class="flex justify-between items-center mb-3 border-b border-zinc-800 pb-2">
                                 <div>
@@ -192,9 +181,7 @@
                                 </div>
                                 <button type="button" onclick="addVariantRow()" class="bg-blue-600/20 text-blue-400 hover:bg-blue-600/40 px-3 py-1.5 rounded-lg text-[10px] md:text-xs font-bold transition flex items-center gap-1.5"><i class="fa-solid fa-plus"></i> Tambah Varian</button>
                             </div>
-                            <div id="variant-container" class="space-y-2 max-h-56 overflow-y-auto hide-scrollbar scroll-touch pb-2">
-                                <!-- Varian Rows Injected via JS -->
-                            </div>
+                            <div id="variant-container" class="space-y-2 max-h-56 overflow-y-auto hide-scrollbar scroll-touch pb-2"></div>
                         </div>
                         
                         <div class="col-span-1 md:col-span-6 mt-1">
@@ -246,7 +233,6 @@
                 </div>
             </section>
 
-            <!-- PENJUALAN SECTION -->
             <section id="sec-penjualan" class="hidden space-y-4 md:space-y-8">
                 <div class="bg-[#18181b]/90 backdrop-blur-xl p-4 md:p-5 rounded-[24px] shadow-lg border border-zinc-800">
                     <h3 class="font-bold text-white text-xs md:text-sm tracking-tight mb-2 md:mb-3">Filter Berdasarkan Bulan</h3>
@@ -276,7 +262,6 @@
                 </div>
             </section>
 
-            <!-- TRANSKRIP PENJUALAN -->
             <section id="sec-transkrip" class="hidden space-y-4 md:space-y-8">
                 <div class="bg-[#18181b]/90 backdrop-blur-xl p-4 md:p-8 rounded-[32px] md:rounded-[40px] shadow-lg border border-zinc-800">
                     <div class="flex justify-between items-center mb-4 md:mb-6">
@@ -290,7 +275,6 @@
                 </div>
             </section>
 
-            <!-- PELANGGAN -->
             <section id="sec-pelanggan" class="hidden space-y-4 md:space-y-8">
                 <div class="bg-[#18181b]/90 backdrop-blur-xl p-4 md:p-8 rounded-[32px] md:rounded-[40px] shadow-lg border border-zinc-800">
                     <div class="flex justify-between items-center mb-4 md:mb-6">
@@ -304,14 +288,12 @@
                 </div>
             </section>
 
-            <!-- PENGATURAN -->
             <section id="sec-pengaturan" class="hidden space-y-4 md:space-y-8">
                 <div class="bg-[#18181b]/90 backdrop-blur-xl p-4 md:p-8 rounded-[32px] md:rounded-[40px] shadow-lg border border-zinc-800">
                     <h3 class="text-base md:text-xl font-bold mb-1 md:mb-2 text-white tracking-tight">Personalisasi & Sistem</h3>
                     <p class="text-[10px] md:text-xs text-zinc-400 mb-4 md:mb-6">Klik kotak gambar untuk ganti file, atau klik icon biru untuk mengedit gambar yang sudah ada.</p>
                     <form id="form-pengaturan" onsubmit="handleSavePengaturan(event)" class="space-y-4 md:space-y-6 mt-4">
                         
-                        <!-- Info Admin WA & QRIS Name -->
                         <div class="bg-blue-900/10 border border-blue-900/30 p-4 md:p-5 rounded-[20px] md:rounded-[24px] space-y-3 md:space-y-4">
                             <h4 class="font-bold text-blue-400 text-xs md:text-sm">Kontak & Rekening</h4>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
@@ -326,7 +308,6 @@
                             </div>
                         </div>
 
-                        <!-- FITUR PREVIEW GAMBAR + TOMBOL HAPUS -->
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                             <div class="bg-[#09090b] border border-zinc-800 p-4 md:p-5 rounded-[20px] md:rounded-[24px]">
                                 <label class="block font-bold text-white text-xs md:text-sm mb-3">Logo Aplikasi</label>
@@ -448,7 +429,7 @@
             <div class="space-y-4">
                 <div>
                     <label class="font-bold text-zinc-400 text-xs block mb-1">Total Harga Disepakati (Rp)</label>
-                    <input type="number" id="mh-harga" class="w-full bg-[#09090b] border border-zinc-800 rounded-xl px-3 py-2.5 text-white font-bold outline-none focus:border-blue-500">
+                    <input type="number" id="mh-harga" oninput="hitungDPCustom('pct')" class="w-full bg-[#09090b] border border-zinc-800 rounded-xl px-3 py-2.5 text-white font-bold outline-none focus:border-blue-500">
                 </div>
                 <div>
                     <label class="font-bold text-zinc-400 text-xs block mb-1">Metode Pembayaran</label>
@@ -459,14 +440,25 @@
                 </div>
                 <div>
                     <label class="font-bold text-zinc-400 text-xs block mb-1">Tipe Pembayaran</label>
-                    <select id="mh-tipe" class="w-full bg-[#09090b] border border-zinc-800 rounded-xl px-3 py-2.5 text-white font-bold outline-none focus:border-blue-500">
+                    <select id="mh-tipe" onchange="toggleMHDpUI()" class="w-full bg-[#09090b] border border-zinc-800 rounded-xl px-3 py-2.5 text-white font-bold outline-none focus:border-blue-500">
                         <option value="Lunas">Lunas</option>
                         <option value="DP">Sistem DP (Panjar)</option>
                     </select>
                 </div>
-                <div>
-                    <label class="font-bold text-zinc-400 text-xs block mb-1">Keterangan DP (opsional)</label>
-                    <input type="text" id="mh-dp" placeholder="Contoh: DP 50% = Rp 150.000" class="w-full bg-[#09090b] border border-zinc-800 rounded-xl px-3 py-2.5 text-white outline-none focus:border-blue-500">
+                <!-- Area Kalkulator DP Custom -->
+                <div id="mh-area-dp" class="hidden bg-zinc-900/50 p-3 md:p-4 rounded-xl border border-zinc-800 mt-2">
+                    <label class="font-bold text-blue-400 text-[11px] block mb-2 uppercase tracking-wider">Tentukan Nilai DP</label>
+                    <div class="flex gap-2 items-center">
+                        <div class="relative flex-1">
+                            <input type="number" id="mh-dp-pct" placeholder="%" value="50" oninput="hitungDPCustom('pct')" class="w-full bg-[#09090b] border border-zinc-700 rounded-lg px-2 sm:px-3 py-2.5 text-white font-bold outline-none focus:border-blue-500 text-xs sm:text-sm transition-colors">
+                            <span class="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 font-bold text-xs">%</span>
+                        </div>
+                        <span class="text-zinc-500 font-bold">=</span>
+                        <div class="relative flex-[2]">
+                            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500 font-bold text-xs">Rp</span>
+                            <input type="number" id="mh-dp-nom" placeholder="Nominal" oninput="hitungDPCustom('nom')" class="w-full bg-[#09090b] border border-zinc-700 rounded-lg pl-8 pr-3 py-2.5 text-white font-bold outline-none focus:border-blue-500 text-xs sm:text-sm transition-colors">
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="mt-6 flex gap-3">
@@ -516,11 +508,15 @@
         <div class="absolute w-full h-full bg-black/50 backdrop-blur-sm" onclick="toggleModalTranskrip()"></div>
         <div class="modal-sheet bg-[#09090b] w-full sm:max-w-4xl mx-auto rounded-t-[32px] sm:rounded-t-[40px] shadow-2xl z-[70] max-h-[90vh] flex flex-col relative pb-safe border-t border-zinc-800">
             <div class="w-12 h-1.5 bg-zinc-700 mx-auto rounded-full mt-3 sm:hidden"></div>
-            <div class="px-5 py-3 sm:py-4 flex justify-between items-start shrink-0">
+            <div class="px-5 py-3 sm:py-4 flex justify-between items-start shrink-0 border-b border-zinc-800 mb-2">
                 <div class="pr-4"><h3 id="transkrip-nama-produk" class="font-bold text-lg sm:text-xl text-white truncate">Nama Baju</h3></div>
                 <button type="button" onclick="toggleModalTranskrip()" class="bg-zinc-800 w-8 h-8 rounded-full text-zinc-300 hover:bg-zinc-700 shrink-0"><i class="fa-solid fa-times"></i></button>
             </div>
-            <div class="px-4 sm:px-5 mb-3"><div id="transkrip-filter-bulan" class="flex gap-2 overflow-x-auto hide-scrollbar pb-2"></div></div>
+            <div class="px-4 sm:px-5 mb-2"><div id="transkrip-filter-bulan" class="flex gap-2 overflow-x-auto hide-scrollbar pb-2"></div></div>
+            
+            <!-- REKAP VARIAN SUMMARY -->
+            <div id="transkrip-summary-varian" class="px-4 sm:px-5 mb-4 grid grid-cols-2 md:grid-cols-4 gap-2"></div>
+
             <div class="flex-1 overflow-y-auto px-4 sm:px-5 pb-8 bg-[#18181b] rounded-t-[24px] sm:rounded-t-[32px] pt-4"><div class="overflow-x-auto"><table class="w-full text-left text-sm whitespace-nowrap min-w-[400px]"><thead class="border-b border-zinc-800 text-zinc-400"><tr><th class="px-3 py-2 sm:py-3 text-[10px] sm:text-xs">Trx</th><th class="px-3 py-2 sm:py-3 text-[10px] sm:text-xs">Pembeli</th><th class="px-3 py-2 sm:py-3 text-[10px] sm:text-xs">Item</th><th class="px-3 py-2 sm:py-3 text-center text-[10px] sm:text-xs">Status</th></tr></thead><tbody id="transkrip-table-body" class="divide-y divide-zinc-800/50"></tbody></table></div></div>
         </div>
     </div>
@@ -549,7 +545,7 @@
             <div class="flex justify-between items-center mb-3 sm:mb-4 border-b border-zinc-800 pb-3">
                 <h3 class="font-bold text-lg sm:text-xl text-white">Info Pesanan</h3>
                 <div class="flex gap-2">
-                    <button type="button" onclick="cetakStruk()" class="bg-blue-600/20 text-blue-400 hover:bg-blue-600 hover:text-white w-8 h-8 rounded-full flex items-center justify-center transition-colors"><i class="fa-solid fa-print"></i></button>
+                    <button type="button" onclick="cetakStruk()" class="bg-blue-600/20 text-blue-400 hover:bg-blue-600 hover:text-white w-8 h-8 rounded-full flex items-center justify-center transition-colors shadow-sm"><i class="fa-solid fa-print"></i></button>
                     <button type="button" onclick="toggleModalDetailPesanan()" class="bg-zinc-800 hover:bg-zinc-700 text-zinc-300 w-8 h-8 rounded-full flex items-center justify-center transition-colors"><i class="fa-solid fa-times"></i></button>
                 </div>
             </div>
@@ -596,7 +592,30 @@
         let appSettings = {}; // Cached for print logo
         let currentTrxPrint = null; // Cached for printing
 
-        // Varian Logics
+        // LOGIC KALKULATOR DP CUSTOM
+        function toggleMHDpUI() {
+            const tipe = document.getElementById('mh-tipe').value;
+            if(tipe === 'DP') { document.getElementById('mh-area-dp').classList.remove('hidden'); hitungDPCustom('pct'); }
+            else { document.getElementById('mh-area-dp').classList.add('hidden'); }
+        }
+
+        function hitungDPCustom(sumber) {
+            let total = parseInt(document.getElementById('mh-harga').value) || 0;
+            let inpPct = document.getElementById('mh-dp-pct');
+            let inpNom = document.getElementById('mh-dp-nom');
+            
+            if(sumber === 'pct') {
+                let p = parseFloat(inpPct.value) || 0;
+                if(p > 100) { p = 100; inpPct.value = 100; }
+                inpNom.value = Math.round(total * (p / 100));
+            } else if(sumber === 'nom') {
+                let n = parseFloat(inpNom.value) || 0;
+                if(n > total) { n = total; inpNom.value = total; }
+                if(total > 0) inpPct.value = ((n / total) * 100).toFixed(1);
+            }
+        }
+
+        // Varian Logics (Untuk Produk)
         function addVariantRow(uk = '', len = 'Pendek', hrg = '', stk = '') {
             const id = 'var-' + Date.now() + Math.floor(Math.random()*100);
             const html = `
@@ -720,8 +739,8 @@
                                         <p class="text-[9px] md:text-[10px] text-zinc-500 font-mono mt-0.5 truncate">${p.ID || p.id}</p>
                                     </div>
                                     <div class="text-right shrink-0">
-                                        <p class="text-[10px] md:text-xs text-zinc-400 mb-0.5">Stok: <span class="font-bold ${p.Stok <= 5 ? 'text-red-400' : 'text-zinc-200'}">${p.Stok || p.stok}</span></p>
-                                        <p class="text-[11px] md:text-xs font-bold text-emerald-400">${formatRp(p.Harga || p.harga)}</p>
+                                        <p class="text-[10px] md:text-xs text-zinc-400 mb-0.5">Stok: <span class="font-bold ${p['Stok Total'] <= 5 ? 'text-red-400' : 'text-zinc-200'}">${p['Stok Total']}</span></p>
+                                        <p class="text-[11px] md:text-xs font-bold text-emerald-400">${formatRp(p['Harga Base'])}</p>
                                     </div>
                                 </div>`;
                         });
@@ -874,10 +893,8 @@
                     let varianArr = []; let dispHarga = formatRp(hrgBase);
                     try { if(p.Varian) varianArr = JSON.parse(p.Varian); } catch(e){}
                     if(varianArr.length > 1) {
-                        const min = Math.min(...varianArr.map(v => v.harga));
-                        const max = Math.max(...varianArr.map(v => v.harga));
-                        if(min !== max) dispHarga = `<span class="text-[9px] text-zinc-500 block">Mulai dari</span>${formatRp(min)}`;
-                        else dispHarga = formatRp(min);
+                        const min = Math.min(...varianArr.map(v => v.harga)); const max = Math.max(...varianArr.map(v => v.harga));
+                        if(min !== max) dispHarga = `<span class="text-[9px] text-zinc-500 block">Mulai dari</span>${formatRp(min)}`; else dispHarga = formatRp(min);
                     } else if (varianArr.length === 1) { dispHarga = formatRp(varianArr[0].harga); }
 
                     return `
@@ -911,8 +928,7 @@
                     img.onload = function() {
                         const canvas = document.createElement('canvas'); const MAX_SIZE = 1000; 
                         let w = img.width; let h = img.height;
-                        if (w > h && w > MAX_SIZE) { h *= MAX_SIZE / w; w = MAX_SIZE; } 
-                        else if (h > MAX_SIZE) { w *= MAX_SIZE / h; h = MAX_SIZE; }
+                        if (w > h && w > MAX_SIZE) { h *= MAX_SIZE / w; w = MAX_SIZE; } else if (h > MAX_SIZE) { w *= MAX_SIZE / h; h = MAX_SIZE; }
                         canvas.width = w; canvas.height = h; const ctx = canvas.getContext('2d');
                         ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high'; ctx.drawImage(img, 0, 0, w, h);
                         const b64 = canvas.toDataURL('image/webp', 0.85); base64GambarArray.push(b64);
@@ -926,7 +942,6 @@
 
         function mulaiEditProduk(id) {
             const p = globalProduk.find(x => x.ID == id || x.id == id); if(!p) return;
-
             isEditingProduk = true; produkIdToEdit = id;
             document.getElementById('title-form-produk').innerHTML = `<div class="w-6 h-6 md:w-7 md:h-7 rounded-full bg-orange-500/10 text-orange-400 flex items-center justify-center text-[10px] md:text-xs"><i class="fa-solid fa-pen"></i></div><span>Edit Model Baju: ${id}</span>`;
             document.getElementById('btn-batal-edit').classList.remove('hidden'); document.getElementById('form-produk-container').classList.remove('hidden');
@@ -936,22 +951,15 @@
             document.getElementById('p-kategori').value = p.Kategori || p.kategori; 
             document.getElementById('p-deskripsi').value = p.Deskripsi ? p.Deskripsi.replace(/\\n/g, '\n') : "";
             
-            document.getElementById('variant-container').innerHTML = '';
-            let varianArr = [];
-            try { if(p.Varian) varianArr = JSON.parse(p.Varian); } catch(e){}
+            document.getElementById('variant-container').innerHTML = ''; let varianArr = []; try { if(p.Varian) varianArr = JSON.parse(p.Varian); } catch(e){}
+            if(varianArr.length === 0) { addVariantRow('-', 'Bebas', p['Harga Base']||0, p['Stok Total']||0); } else { varianArr.forEach(v => addVariantRow(v.ukuran, v.lengan, v.harga, v.stok)); }
             
-            if(varianArr.length === 0) { addVariantRow('-', 'Bebas', p['Harga Base']||0, p['Stok Total']||0); } 
-            else { varianArr.forEach(v => addVariantRow(v.ukuran, v.lengan, v.harga, v.stok)); }
-            
-            let gbrRaw = p['URL Gambar'] || '';
-            base64GambarArray = gbrRaw ? gbrRaw.split(',') : [];
+            let gbrRaw = p['URL Gambar'] || ''; base64GambarArray = gbrRaw ? gbrRaw.split(',') : [];
             const container = document.getElementById('p-gambar-preview-container');
             if(base64GambarArray.length > 0 && base64GambarArray[0] !== "") { 
                 document.getElementById('upload-placeholder').classList.add('hidden'); container.classList.remove('hidden');
                 container.innerHTML = base64GambarArray.map(url => `<img src="${url}" class="w-16 h-16 md:w-20 md:h-20 object-cover rounded-lg md:rounded-xl shadow-sm shrink-0 border border-zinc-700">`).join('');
-            } else { 
-                container.classList.add('hidden'); container.innerHTML = ''; document.getElementById('upload-placeholder').classList.remove('hidden'); 
-            }
+            } else { container.classList.add('hidden'); container.innerHTML = ''; document.getElementById('upload-placeholder').classList.remove('hidden'); }
 
             const btnSubmit = document.getElementById('btn-submit-produk');
             btnSubmit.innerHTML = `<i class="fa-solid fa-pen-to-square"></i> Update Produk`; btnSubmit.className = "bg-orange-600 text-white hover:bg-orange-500 px-6 md:px-8 py-3 md:py-4 rounded-xl md:rounded-full font-bold transition-colors w-full sm:w-auto text-sm md:text-base";
@@ -964,9 +972,7 @@
             document.getElementById('btn-batal-edit').classList.add('hidden');
             document.getElementById('p-id').disabled = false; document.getElementById('p-id').classList.remove('opacity-50', 'cursor-not-allowed');
             document.getElementById('form-produk').reset();
-            
             document.getElementById('variant-container').innerHTML = ''; addVariantRow(); 
-
             base64GambarArray = []; document.getElementById('p-gambar-preview-container').classList.add('hidden'); document.getElementById('p-gambar-preview-container').innerHTML = ''; document.getElementById('upload-placeholder').classList.remove('hidden');
             const btnSubmit = document.getElementById('btn-submit-produk'); btnSubmit.innerHTML = `<i class="fa-solid fa-cloud-arrow-up"></i> Simpan ke Katalog`; btnSubmit.className = "bg-blue-600 hover:bg-blue-500 text-white px-6 md:px-8 py-3 md:py-4 rounded-xl md:rounded-full font-bold transition-colors w-full sm:w-auto text-sm md:text-base";
             document.getElementById('form-produk-container').classList.add('hidden');
@@ -974,12 +980,10 @@
 
         async function handleSaveProduk(e) {
             e.preventDefault();
-            
             let varianData = []; let minHarga = Infinity; let totalStok = 0;
             const rows = document.querySelectorAll('.variant-row');
             rows.forEach(r => {
-                let h = parseInt(r.querySelector('.var-hrg').value) || 0;
-                let s = parseInt(r.querySelector('.var-stk').value) || 0;
+                let h = parseInt(r.querySelector('.var-hrg').value) || 0; let s = parseInt(r.querySelector('.var-stk').value) || 0;
                 varianData.push({ ukuran: r.querySelector('.var-uk').value.trim(), lengan: r.querySelector('.var-len').value, harga: h, stok: s });
                 if(h < minHarga) minHarga = h; totalStok += s;
             });
@@ -1003,10 +1007,7 @@
 
         async function hapusProduk(id) {
             if(!confirm(`Hapus produk ID: ${id}?`)) return; showLoading(true);
-            try {
-                const res = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({action: "deleteProduk", id: id}), headers: { 'Content-Type': 'text/plain' } });
-                const data = await res.json(); if(data.status === 'success') fetchProduk(true);
-            } catch (e) {} showLoading(false);
+            try { const res = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({action: "deleteProduk", id: id}), headers: { 'Content-Type': 'text/plain' } }); const data = await res.json(); if(data.status === 'success') fetchProduk(true); } catch (e) {} showLoading(false);
         }
 
         function getBulanTahun(tglStr) {
@@ -1059,7 +1060,6 @@
                     let badgeColor = status === 'Diproses' ? "bg-blue-500/10 text-blue-400" : (status === 'Selesai' ? "bg-emerald-500/10 text-emerald-400" : (status === 'Dibatalkan' ? "bg-red-500/10 text-red-400" : "bg-orange-500/10 text-orange-400"));
                     const bayarBadge = isDP ? "bg-purple-500/10 text-purple-400" : "bg-emerald-500/10 text-emerald-400";
                     
-                    // Format Detail Varian
                     let varDetailHtml = "";
                     try {
                         const varObj = JSON.parse(p['Varian Detail']);
@@ -1070,7 +1070,7 @@
                         }
                     } catch(e){}
 
-                    const fileDesign = p['File Desain'] ? `<a href="${p['File Desain']}" target="_blank" class="bg-indigo-500/10 text-indigo-400 hover:bg-indigo-500/20 px-2 py-1 rounded-lg text-[9px] md:text-[10px] font-bold border border-indigo-500/20 active:scale-95 transition-transform"><i class="fa-solid fa-file-pdf"></i> Desain Custom</a>` : '';
+                    const fileDesign = p['File Desain'] ? `<a href="${p['File Desain']}" target="_blank" class="bg-indigo-500/10 text-indigo-400 hover:bg-indigo-500/20 px-2 py-1 rounded-lg text-[9px] md:text-[10px] font-bold border border-indigo-500/20 active:scale-95 transition-transform mt-1 inline-block"><i class="fa-solid fa-file-pdf"></i> Desain Custom</a>` : '';
 
                     let bukti1 = `<span class="text-[9px] md:text-[10px] text-zinc-500 font-medium italic">Cash</span>`;
                     if(!isCash && p['Bukti Pembayaran'] && p['Bukti Pembayaran'] !== "Bayar Cash" && p['Bukti Pembayaran'] !== "-") {
@@ -1156,18 +1156,22 @@
 
         function bukaModalHarga(idTrx) {
             document.getElementById('mh-id').value = idTrx;
-            document.getElementById('mh-harga').value = "";
-            document.getElementById('mh-dp').value = "";
+            document.getElementById('mh-harga').value = ""; document.getElementById('mh-dp-nom').value = ""; document.getElementById('mh-dp-pct').value = "50";
+            document.getElementById('mh-tipe').value = "Lunas"; toggleMHDpUI();
             toggleModalHarga();
         }
 
         async function simpanHargaCustom() {
             showLoading(true); 
             toggleModalHarga();
+            let tipeBayar = document.getElementById('mh-tipe').value;
+            let detailDpVal = "-";
+            if(tipeBayar === 'DP') { detailDpVal = `${document.getElementById('mh-dp-pct').value}% (Rp ${document.getElementById('mh-dp-nom').value})`; }
+            
             const payload = {
                 action: "updateCustomHarga", id_transaksi: document.getElementById('mh-id').value,
                 total_harga: document.getElementById('mh-harga').value, metode_bayar: document.getElementById('mh-metode').value,
-                tipe_pembayaran: document.getElementById('mh-tipe').value, detail_dp: document.getElementById('mh-dp').value || "-"
+                tipe_pembayaran: tipeBayar, detail_dp: detailDpVal
             };
             try { 
                 const res = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
@@ -1205,6 +1209,7 @@
             activeTranskripId = id; activeTranskripBulan = 'Semua Waktu'; const p = globalPenjualan.find(x => x['ID Baju'] === id);
             document.getElementById('transkrip-nama-produk').textContent = p ? p['Nama Baju'] : id; renderTranskripFilterBulan(); renderTranskripTable(); toggleModalTranskrip();
         }
+        
         function renderTranskripFilterBulan() {
             const container = document.getElementById('transkrip-filter-bulan'); const dataProduk = globalPenjualan.filter(p => p['ID Baju'] === activeTranskripId);
             let listBulan = [...new Set(dataProduk.map(p => getBulanTahun(p.Tanggal)))];
@@ -1215,10 +1220,35 @@
             });
             container.innerHTML = html;
         }
+        
         function setTranskripBulan(bulan) { activeTranskripBulan = bulan; renderTranskripFilterBulan(); renderTranskripTable(); }
+        
         function renderTranskripTable() {
-            const tbody = document.getElementById('transkrip-table-body'); let dataTampil = globalPenjualan.filter(p => p['ID Baju'] === activeTranskripId);
+            const tbody = document.getElementById('transkrip-table-body'); 
+            let dataTampil = globalPenjualan.filter(p => p['ID Baju'] === activeTranskripId && p.Status !== 'Dibatalkan');
             if(activeTranskripBulan !== 'Semua Waktu') { dataTampil = dataTampil.filter(p => getBulanTahun(p.Tanggal) === activeTranskripBulan); }
+
+            // LOGIC REKAP VARIAN SUMMARY
+            let varianSummary = {};
+            dataTampil.forEach(p => {
+                try {
+                    let vars = JSON.parse(p['Varian Detail']);
+                    if (Array.isArray(vars)) {
+                        vars.forEach(v => { let key = `${v.ukuran} - ${v.lengan}`; if (!varianSummary[key]) varianSummary[key] = 0; varianSummary[key] += parseInt(v.jumlah); });
+                    } else if (vars.ukuran) {
+                        let key = `${vars.ukuran} - ${vars.lengan}`; if (!varianSummary[key]) varianSummary[key] = 0; varianSummary[key] += parseInt(p.Jumlah);
+                    }
+                } catch(e) {}
+            });
+
+            const summaryContainer = document.getElementById('transkrip-summary-varian');
+            let summaryHtml = '';
+            for (const [key, qty] of Object.entries(varianSummary)) {
+                if(!key.includes("Default")) summaryHtml += `<div class="bg-zinc-800/50 border border-zinc-700 p-2 rounded-lg text-center"><p class="text-[9px] md:text-[10px] text-zinc-400 font-bold uppercase">${key}</p><p class="text-blue-400 font-bold text-sm md:text-base mt-0.5">${qty} Pcs</p></div>`;
+            }
+            if(summaryHtml === '') summaryHtml = `<div class="col-span-full text-xs text-zinc-500 font-medium px-1">Tidak ada detail ukuran spesifik (Pembelian Default).</div>`;
+            summaryContainer.innerHTML = summaryHtml;
+
             if(dataTampil.length > 0) {
                 tbody.innerHTML = dataTampil.map(p => {
                     let statusColor = p.Status === 'Diproses' ? 'text-blue-400' : (p.Status === 'Selesai' ? 'text-emerald-400' : (p.Status === 'Dibatalkan' ? 'text-red-400' : 'text-orange-400'));
@@ -1335,15 +1365,39 @@
                 }
             } catch(e){}
 
-            // Custom Order Info
             let deskripsiCustomHTML = '';
             if (trx['ID Baju'] === 'CUSTOM') {
                 deskripsiCustomHTML = `
                 <div class="bg-[#09090b] border border-zinc-800 p-3 md:p-4 rounded-xl mb-3 md:mb-4">
                     <p class="text-[9px] md:text-[10px] text-zinc-500 mb-1">Catatan Custom:</p>
                     <p class="text-[11px] md:text-sm text-zinc-300 font-medium italic">${trx['Deskripsi Custom'] || '-'}</p>
-                </div>
+                </div>`;
+            }
+
+            // LOGIC KALKULATOR SISA TAGIHAN / LUNAS
+            const isDP = trx['Tipe Pembayaran'] === 'DP';
+            let totalHarga = parseInt(trx['Total Harga']) || 0;
+            let dpNominal = 0;
+            if(isDP && trx['Detail DP']) { const match = String(trx['Detail DP']).match(/Rp\s*(\d+)/); if(match) dpNominal = parseInt(match[1]); }
+            
+            let sudahLunas = trx['Status Pembayaran'] === 'Lunas';
+            let sudahDP = trx['Status Pembayaran'] === 'Sudah DP' || sudahLunas;
+
+            let sisaTagihan = totalHarga;
+            if (isDP) {
+                if (sudahLunas) sisaTagihan = 0;
+                else if (sudahDP) sisaTagihan = totalHarga - dpNominal;
+            } else { if (sudahLunas) sisaTagihan = 0; }
+
+            let rincianBayarHtml = '';
+            if(isDP) {
+                rincianBayarHtml = `
+                    <div class="flex justify-between mb-1.5"><span class="text-[9px] md:text-[10px] text-zinc-500">Total Harga</span><span class="text-[9px] md:text-[10px] font-bold text-zinc-200">${formatRp(totalHarga)}</span></div>
+                    <div class="flex justify-between mb-1.5 ${sudahDP ? 'text-emerald-400' : 'text-orange-400'}"><span class="text-[9px] md:text-[10px] ${sudahDP ? 'font-medium' : 'text-zinc-500'}">DP (${trx['Detail DP']})</span><span class="text-[9px] md:text-[10px] font-bold">- ${formatRp(dpNominal)}</span></div>
+                    ${sudahLunas ? `<div class="flex justify-between mb-1.5 text-emerald-400"><span class="text-[9px] md:text-[10px] font-medium">Pelunasan</span><span class="text-[9px] md:text-[10px] font-bold">- ${formatRp(totalHarga - dpNominal)}</span></div>` : ''}
                 `;
+            } else {
+                rincianBayarHtml = `<div class="flex justify-between mb-1.5"><span class="text-[9px] md:text-[10px] text-zinc-500">Total Harga</span><span class="text-[9px] md:text-[10px] font-bold text-zinc-200">${formatRp(totalHarga)}</span></div>`;
             }
 
             content.innerHTML = `
@@ -1354,17 +1408,15 @@
                 <div class="mb-3 md:mb-4">
                     <p class="font-bold text-white text-sm md:text-base">${trx['Nama Baju']}</p>
                     <p class="text-[9px] md:text-[10px] font-bold text-zinc-400">${trx.Jumlah} Pcs</p>
-                    <div class="mt-2 text-sm text-zinc-400">
-                        <span class="font-bold">Detail Varian:</span>
-                        ${varDetailHtml}
-                    </div>
+                    <div class="mt-2 text-sm text-zinc-400"><span class="font-bold">Detail Varian:</span> ${varDetailHtml}</div>
                 </div>
                 ${deskripsiCustomHTML}
                 <div class="bg-[#09090b] border border-zinc-800 p-3 md:p-4 rounded-xl mb-3 md:mb-4">
                     <div class="flex justify-between mb-1.5"><span class="text-[9px] md:text-[10px] text-zinc-500">Tipe / Metode</span><span class="text-[9px] md:text-[10px] font-bold text-zinc-200">${trx['Tipe Pembayaran']} - ${trx['Metode Bayar']||'-'}</span></div>
-                    <div class="flex justify-between mb-1.5"><span class="text-[9px] md:text-[10px] text-zinc-500">Status Bayar</span><span class="text-[9px] md:text-[10px] font-bold ${trx['Status Pembayaran'] === 'Lunas' ? 'text-emerald-400' : 'text-orange-400'}">${trx['Status Pembayaran']}</span></div>
-                    ${trx['Tipe Pembayaran'] === 'DP' ? `<div class="flex justify-between mb-1.5"><span class="text-[9px] md:text-[10px] text-zinc-500">Detail DP</span><span class="text-[9px] md:text-[10px] font-bold text-purple-400">${trx['Detail DP']}</span></div>` : ''}
-                    <div class="flex justify-between mt-2 pt-2 border-t border-zinc-800"><span class="text-[9px] md:text-[10px] text-zinc-400 font-bold">Total Harga</span><span class="text-xs md:text-sm font-bold text-white">${formatRp(trx['Total Harga'])}</span></div>
+                    <div class="flex justify-between mb-1.5"><span class="text-[9px] md:text-[10px] text-zinc-500">Status Bayar</span><span class="text-[9px] md:text-[10px] font-bold ${sudahLunas ? 'text-emerald-400' : 'text-orange-400'}">${trx['Status Pembayaran']}</span></div>
+                    <div class="h-px bg-zinc-800 w-full my-2"></div>
+                    ${rincianBayarHtml}
+                    <div class="flex justify-between mt-2 pt-2 border-t border-zinc-800"><span class="text-[9px] md:text-[10px] text-zinc-400 font-bold">${sudahLunas ? 'Status Tagihan' : 'Sisa Tagihan'}</span><span class="text-xs md:text-sm font-black ${sudahLunas ? 'text-emerald-400' : 'text-red-400'}">${sudahLunas ? '<i class="fa-solid fa-check-double mr-1"></i> LUNAS' : formatRp(sisaTagihan)}</span></div>
                 </div>
                 ${bukti1HTML}
                 ${bukti2HTML}
@@ -1375,173 +1427,80 @@
         function cetakStruk() {
             if(!currentTrxPrint) return;
             const p = currentTrxPrint;
-            const isDP = p['Tipe Pembayaran'] === 'DP';
-            let totalHarga = parseInt(p['Total Harga']) || 0;
-            let dpNominal = 0;
-            if(isDP && p['Detail DP']) {
-                const match = String(p['Detail DP']).match(/Rp\s*(\d+)/);
-                if(match) dpNominal = parseInt(match[1]);
-            }
+            const isDP = p['Tipe Pembayaran'] === 'DP'; let totalHarga = parseInt(p['Total Harga']) || 0; let dpNominal = 0;
+            if(isDP && p['Detail DP']) { const match = String(p['Detail DP']).match(/Rp\s*(\d+)/); if(match) dpNominal = parseInt(match[1]); }
             
-            const sudahLunas = p['Status Pembayaran'] === 'Lunas';
-            const sisa = isDP ? (totalHarga - dpNominal) : 0;
+            let sudahLunas = p['Status Pembayaran'] === 'Lunas';
+            let sudahDP = p['Status Pembayaran'] === 'Sudah DP' || sudahLunas;
 
-            let statusColor = "#3b82f6"; 
-            if(p.Status === 'Selesai') statusColor = "#10b981"; 
-            if(p.Status === 'Dibatalkan') statusColor = "#ef4444"; 
+            let sisaTagihan = totalHarga;
+            if (isDP) { if (sudahLunas) sisaTagihan = 0; else if (sudahDP) sisaTagihan = totalHarga - dpNominal; } 
+            else { if (sudahLunas) sisaTagihan = 0; }
 
-            let tagihanStatus = isDP ? (sudahLunas ? 'LUNAS' : 'BELUM LUNAS') : 'LUNAS';
-            if(p['Status Pembayaran'] === 'Belum Bayar' || p['Status Pembayaran'] === 'Belum DP') tagihanStatus = "BELUM LUNAS";
-            let tagihanColor = (tagihanStatus === 'LUNAS') ? '#10b981' : '#ef4444';
+            let statusColor = "#3b82f6"; if(p.Status === 'Selesai') statusColor = "#10b981"; if(p.Status === 'Dibatalkan') statusColor = "#ef4444"; 
+            let tagihanColor = sudahLunas ? '#10b981' : '#ef4444';
 
             let varDetailStr = "-";
             try {
                 const varObj = JSON.parse(p['Varian Detail']);
-                if(Array.isArray(varObj)) { 
-                    varDetailStr = varObj.map(v => `${v.ukuran}-${v.lengan}(${v.jumlah})`).join(', ');
-                } else if (varObj.ukuran) { 
-                    varDetailStr = `${varObj.ukuran} - ${varObj.lengan}`;
-                }
+                if(Array.isArray(varObj)) { varDetailStr = varObj.map(v => `${v.ukuran}-${v.lengan}(${v.jumlah})`).join(', '); } 
+                else if (varObj.ukuran) { varDetailStr = `${varObj.ukuran} - ${varObj.lengan}`; }
             } catch(e){}
 
             const printLogoUrl = appSettings.logo_light || appSettings.logo_dark || '';
 
             const printWindow = window.open('', '_blank');
             printWindow.document.write(`
-                <!DOCTYPE html>
-                <html>
-                <head>
-                    <title>Invoice - ${p['ID Transaksi']}</title>
-                    <style>
-                        body { font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #111827; padding: 40px; font-size: 14px; max-width: 800px; margin: auto; background: #F2F2F7; }
-                        .invoice-box { background: #fff; border: 1px solid #e5e7eb; padding: 40px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
-                        .header { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid #f3f4f6; padding-bottom: 20px; margin-bottom: 30px; }
-                        .header-left img { max-height: 50px; margin-bottom: 10px; }
-                        .header-left h1 { margin: 0; font-size: 28px; color: #3b82f6; letter-spacing: -0.5px; font-weight: 900; }
-                        .header-left p { margin: 5px 0 0; color: #6b7280; font-size: 13px; }
-                        .header-right { text-align: right; }
-                        .header-right h2 { margin: 0; font-size: 24px; color: #111827; font-weight: 800; letter-spacing: 2px; }
-                        .header-right p { margin: 5px 0 0; color: #6b7280; font-size: 13px; font-weight: 600; }
-                        
-                        .info-section { display: flex; justify-content: space-between; margin-bottom: 40px; }
-                        .info-col { width: 48%; }
-                        .info-col h3 { font-size: 11px; text-transform: uppercase; color: #9ca3af; margin-bottom: 5px; letter-spacing: 1px; }
-                        .info-col p { margin: 0; font-weight: 700; color: #374151; font-size: 15px; }
-                        .status-badge { display: inline-block; padding: 4px 12px; border-radius: 999px; font-size: 12px; font-weight: bold; color: white; background-color: ${statusColor}; margin-top: 5px; }
-
-                        table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
-                        th { background-color: #f9fafb; text-align: left; padding: 15px 12px; font-size: 12px; text-transform: uppercase; color: #6b7280; border-bottom: 2px solid #e5e7eb; border-top: 1px solid #e5e7eb; }
-                        td { padding: 20px 12px; border-bottom: 1px solid #f3f4f6; color: #111827; }
-                        .text-right { text-align: right; }
-                        .text-center { text-align: center; }
-                        
-                        .summary-section { width: 100%; display: flex; justify-content: flex-end; }
-                        .summary-box { width: 350px; }
-                        .summary-row { display: flex; justify-content: space-between; padding: 10px 0; color: #4b5563; font-size: 14px; }
-                        .summary-row.bold { font-weight: bold; color: #111827; }
-                        .summary-row.total { font-size: 20px; font-weight: 900; color: #111827; border-top: 2px solid #e5e7eb; padding-top: 15px; margin-top: 5px; }
-                        .tagihan-badge { display: inline-block; padding: 6px 12px; border-radius: 8px; font-size: 15px; font-weight: 900; color: white; background-color: ${tagihanColor}; letter-spacing: 1px;}
-
-                        .footer { text-align: center; margin-top: 50px; padding-top: 20px; border-top: 1px solid #f3f4f6; color: #9ca3af; font-size: 12px; line-height: 1.6; }
-                        
-                        @media print { 
-                            body { padding: 0; margin: 0; background: #fff; } 
-                            .invoice-box { border: none; box-shadow: none; padding: 0; }
-                            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-                        }
-                    </style>
-                </head>
-                <body>
+                <!DOCTYPE html><html><head><title>Invoice - ${p['ID Transaksi']}</title>
+                <style>
+                    body { font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #111827; padding: 40px; font-size: 14px; max-width: 800px; margin: auto; background: #F2F2F7; }
+                    .invoice-box { background: #fff; border: 1px solid #e5e7eb; padding: 40px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
+                    .header { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid #f3f4f6; padding-bottom: 20px; margin-bottom: 30px; }
+                    .header-left img { max-height: 50px; margin-bottom: 10px; }
+                    .header-left h1 { margin: 0; font-size: 28px; color: #3b82f6; letter-spacing: -0.5px; font-weight: 900; }
+                    .header-left p { margin: 5px 0 0; color: #6b7280; font-size: 13px; }
+                    .header-right { text-align: right; }
+                    .header-right h2 { margin: 0; font-size: 24px; color: #111827; font-weight: 800; letter-spacing: 2px; }
+                    .header-right p { margin: 5px 0 0; color: #6b7280; font-size: 13px; font-weight: 600; }
+                    .info-section { display: flex; justify-content: space-between; margin-bottom: 40px; }
+                    .info-col { width: 48%; }
+                    .info-col h3 { font-size: 11px; text-transform: uppercase; color: #9ca3af; margin-bottom: 5px; letter-spacing: 1px; }
+                    .info-col p { margin: 0; font-weight: 700; color: #374151; font-size: 15px; }
+                    .status-badge { display: inline-block; padding: 4px 12px; border-radius: 999px; font-size: 12px; font-weight: bold; color: white; background-color: ${statusColor}; margin-top: 5px; }
+                    table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
+                    th { background-color: #f9fafb; text-align: left; padding: 15px 12px; font-size: 12px; text-transform: uppercase; color: #6b7280; border-bottom: 2px solid #e5e7eb; border-top: 1px solid #e5e7eb; }
+                    td { padding: 20px 12px; border-bottom: 1px solid #f3f4f6; color: #111827; }
+                    .text-right { text-align: right; } .text-center { text-align: center; }
+                    .summary-section { width: 100%; display: flex; justify-content: flex-end; }
+                    .summary-box { width: 350px; }
+                    .summary-row { display: flex; justify-content: space-between; padding: 10px 0; color: #4b5563; font-size: 14px; }
+                    .summary-row.total { font-size: 20px; font-weight: 900; color: #111827; border-top: 2px solid #e5e7eb; padding-top: 15px; margin-top: 5px; }
+                    .tagihan-badge { display: inline-block; padding: 6px 12px; border-radius: 8px; font-size: 15px; font-weight: 900; color: white; background-color: ${tagihanColor}; letter-spacing: 1px;}
+                    .footer { text-align: center; margin-top: 50px; padding-top: 20px; border-top: 1px solid #f3f4f6; color: #9ca3af; font-size: 12px; line-height: 1.6; }
+                    @media print { body { padding: 0; margin: 0; background: #fff; } .invoice-box { border: none; box-shadow: none; padding: 0; } * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; } }
+                </style>
+                </head><body>
                     <div class="invoice-box">
                         <div class="header">
-                            <div class="header-left">
-                                ${printLogoUrl ? `<img src="${printLogoUrl}" alt="Logo">` : `<h1>TOKOBAJU</h1>`}
-                                <p>Elegansi dalam Setiap Jahitan.</p>
-                            </div>
-                            <div class="header-right">
-                                <h2>INVOICE</h2>
-                                <p>#${p['ID Transaksi']}</p>
-                            </div>
+                            <div class="header-left">${printLogoUrl ? `<img src="${printLogoUrl}" alt="Logo">` : `<h1>TOKOBAJU</h1>`}<p>Elegansi dalam Setiap Jahitan.</p></div>
+                            <div class="header-right"><h2>INVOICE</h2><p>#${p['ID Transaksi']}</p></div>
                         </div>
-                        
                         <div class="info-section">
-                            <div class="info-col">
-                                <h3>Informasi Pembeli</h3>
-                                <p>${p['Username Pembeli']}</p>
-                                <h3 style="margin-top: 20px;">Metode Pembayaran</h3>
-                                <p>${p['Metode Bayar'] || '-'} <span style="font-weight:normal; color:#6b7280;">(${p['Tipe Pembayaran']})</span></p>
-                                <h3 style="margin-top: 20px;">Status Pembayaran</h3>
-                                <p style="color: ${tagihanColor};">${p['Status Pembayaran']}</p>
-                            </div>
-                            <div class="info-col text-right">
-                                <h3>Tanggal Transaksi</h3>
-                                <p>${p.Tanggal.split(',')[0]}</p>
-                                <h3 style="margin-top: 20px;">Status Pesanan</h3>
-                                <span class="status-badge">${p.Status}</span>
-                            </div>
+                            <div class="info-col"><h3>Informasi Pembeli</h3><p>${p['Username Pembeli']}</p><h3 style="margin-top: 20px;">Metode Pembayaran</h3><p>${p['Metode Bayar'] || '-'} <span style="font-weight:normal; color:#6b7280;">(${p['Tipe Pembayaran']})</span></p><h3 style="margin-top: 20px;">Status Pembayaran</h3><p style="color: ${tagihanColor};">${p['Status Pembayaran']}</p></div>
+                            <div class="info-col text-right"><h3>Tanggal Transaksi</h3><p>${p.Tanggal.split(',')[0]}</p><h3 style="margin-top: 20px;">Status Pesanan</h3><span class="status-badge">${p.Status}</span></div>
                         </div>
-
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Deskripsi Produk</th>
-                                    <th>Varian</th>
-                                    <th class="text-center">Qty</th>
-                                    <th class="text-right">Total</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td style="font-weight: 700; font-size: 15px;">${p['Nama Baju']}</td>
-                                    <td style="font-size: 13px; color: #6b7280;">${varDetailStr}</td>
-                                    <td class="text-center" style="font-weight: 600;">${p.Jumlah}</td>
-                                    <td class="text-right" style="font-weight: 700;">${formatRp(totalHarga)}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-
-                        <div class="summary-section">
-                            <div class="summary-box">
-                                <div class="summary-row">
-                                    <span>Subtotal</span>
-                                    <span style="font-weight: 600;">${formatRp(totalHarga)}</span>
-                                </div>
-                                ${isDP ? `
-                                    <div class="summary-row">
-                                        <span>DP Dibayar</span>
-                                        <span style="font-weight: 600;">- ${formatRp(dpNominal)}</span>
-                                    </div>
-                                    ${sudahLunas ? `
-                                    <div class="summary-row">
-                                        <span>Pelunasan</span>
-                                        <span style="font-weight: 600;">- ${formatRp(sisa)}</span>
-                                    </div>
-                                    ` : ''}
-                                ` : ''}
-                                
-                                <div class="summary-row total">
-                                    <span>${tagihanStatus === 'LUNAS' ? 'Status Tagihan' : 'Sisa Tagihan'}</span>
-                                    ${tagihanStatus === 'LUNAS' ? `
-                                        <span class="tagihan-badge">LUNAS</span>
-                                    ` : `
-                                        <span style="color: #ef4444;">${formatRp(isDP ? sisa : totalHarga)}</span>
-                                    `}
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="footer">
-                            <p style="font-weight: 600; color: #6b7280; font-size: 14px;">Terima kasih atas kepercayaan Anda berbelanja di TokoBaju.</p>
-                            <p>Jika Anda memiliki pertanyaan, silakan hubungi layanan pelanggan kami.</p>
-                        </div>
+                        <table><thead><tr><th>Deskripsi Produk</th><th>Varian</th><th class="text-center">Qty</th><th class="text-right">Total</th></tr></thead><tbody><tr><td style="font-weight: 700; font-size: 15px;">${p['Nama Baju']}</td><td style="font-size: 13px; color: #6b7280;">${varDetailStr}</td><td class="text-center" style="font-weight: 600;">${p.Jumlah}</td><td class="text-right" style="font-weight: 700;">${formatRp(totalHarga)}</td></tr></tbody></table>
+                        <div class="summary-section"><div class="summary-box">
+                                <div class="summary-row"><span>Total Harga</span><span style="font-weight: 600;">${formatRp(totalHarga)}</span></div>
+                                ${isDP && sudahDP ? `<div class="summary-row"><span>DP Dibayar</span><span style="font-weight: 600;">- ${formatRp(dpNominal)}</span></div>` : ''}
+                                ${isDP && sudahLunas ? `<div class="summary-row"><span>Pelunasan</span><span style="font-weight: 600;">- ${formatRp(totalHarga - dpNominal)}</span></div>` : ''}
+                                <div class="summary-row total"><span>${sudahLunas ? 'Status Tagihan' : 'Sisa Tagihan'}</span>${sudahLunas ? `<span class="tagihan-badge">LUNAS</span>` : `<span style="color: #ef4444;">${formatRp(sisaTagihan)}</span>`}</div>
+                        </div></div>
+                        <div class="footer"><p style="font-weight: 600; color: #6b7280; font-size: 14px;">Terima kasih atas kepercayaan Anda berbelanja di TokoBaju.</p><p>Jika Anda memiliki pertanyaan, silakan hubungi layanan pelanggan kami.</p></div>
                     </div>
-                    <script>
-                        window.onload = function() { setTimeout(() => { window.print(); }, 500); }
-                    <\/script>
-                </body>
-                </html>
-            `);
-            printWindow.document.close();
+                    <script>window.onload = function() { setTimeout(() => { window.print(); }, 500); }<\/script>
+                </body></html>
+            `); printWindow.document.close();
         }
 
        var base64LogoLight = ""; var base64LogoDark = ""; var base64LoginBg = ""; 
@@ -1634,7 +1593,6 @@
                         if(item.Key === 'admin_wa') document.getElementById('set-admin-wa').value = item.Value || "";
                         if(item.Key === 'qris_name') document.getElementById('set-qris-name').value = item.Value || "";
                         
-                        // Simpan untuk keperluan cetak logo struk
                         if(item.Value) { appSettings[item.Key] = item.Value; }
                     });
                 }
